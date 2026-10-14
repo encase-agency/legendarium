@@ -1,0 +1,181 @@
+/* Figma 530:5772: 1512x968 frame on #f4f4f4; --u is one design pixel. */
+.mb {
+  --u: calc(100vw / 1512);
+  position: relative;
+  height: calc(968 * var(--u));
+  overflow: hidden;
+  background: #f4f4f4;
+  color: #313131;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.mb-fan {
+  position: absolute;
+  inset: 0;
+}
+
+.mb-photo {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mb-card {
+  flex: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.mb-card img,
+.mb-center img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mb-center {
+  position: absolute;
+  left: calc(587.3 * var(--u));
+  top: calc(260 * var(--u));
+  width: calc(336 * var(--u));
+  height: calc(495 * var(--u));
+}
+
+.mb-head {
+  position: absolute;
+  left: 50%;
+  top: calc(83 * var(--u));
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(24 * var(--u));
+  text-align: center;
+}
+
+.mb-heading {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mb-sub {
+  width: calc(574 * var(--u));
+  margin: 0;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #7e7e7e;
+}
+
+.mb-cta {
+  position: absolute;
+  left: calc(50% - 0.5 * var(--u));
+  bottom: calc(110 * var(--u));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(24 * var(--u));
+  border-radius: calc(14 * var(--u));
+  background: #313131;
+  font-weight: 600;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.mb-cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #b07f30;
+}
+
+/* Phone / tablet layout (Figma 549:8894, 390x753): the six photos fan out around the centre one, all of them kept. */
+@media (max-width: 1100px) {
+  .mb {
+    --u: var(--mu);
+    height: calc(753 * var(--u));
+  }
+
+  .mb-fan {
+    inset: auto;
+    left: calc(-31 * var(--u));
+    top: calc(241 * var(--u));
+    width: calc(451 * var(--u));
+    height: calc(322 * var(--u));
+  }
+
+  .mb-photo {
+    left: calc(var(--m-x) * var(--u)) !important;
+    top: calc(var(--m-y) * var(--u)) !important;
+    width: calc(var(--m-w) * var(--u)) !important;
+    height: calc(var(--m-h) * var(--u)) !important;
+  }
+
+  .mb-card {
+    width: calc(var(--m-cw) * var(--u)) !important;
+    height: calc(var(--m-ch) * var(--u)) !important;
+  }
+
+  .mb-center {
+    left: calc(122.53 * var(--u));
+    top: 0;
+    width: calc(218.725 * var(--u));
+    height: calc(322.229 * var(--u));
+  }
+
+  .mb-head {
+    top: calc(64.9 * var(--u));
+    width: calc(358 * var(--u));
+    gap: calc(16 * var(--u));
+  }
+
+  .mb-heading {
+    font-size: calc(34 * var(--u));
+    font-weight: 600;
+    letter-spacing: calc(-0.68 * var(--u));
+    white-space: normal;
+  }
+
+  .mb-heading br {
+    display: none;
+  }
+
+  .mb-sub {
+    width: calc(336 * var(--u));
+    font-size: calc(13 * var(--u));
+    white-space: normal;
+  }
+
+  .mb-cta {
+    bottom: calc(62 * var(--u));
+    gap: calc(12 * var(--u));
+    height: calc(42 * var(--u));
+    padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(18 * var(--u));
+    border-radius: calc(11.26 * var(--u));
+    font-size: calc(13 * var(--u));
+  }
+
+  .mb-cta-icon {
+    padding: calc(9 * var(--u));
+    border-radius: calc(9.65 * var(--u));
+  }
+
+  .mb-cta-icon .arrow-icon {
+    --u: calc(0.8 * var(--mu));
+  }
+}

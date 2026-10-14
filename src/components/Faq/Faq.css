@@ -1,0 +1,277 @@
+/* Figma 537:6074 / 537:5958: 1512px frame on #1b1d20; --u is one design pixel.
+   Closed rows are 86px tall (20 + 46 button + 20) with no borders; opened rows get 1px lines. */
+.faq {
+  --u: calc(100vw / 1512);
+  position: relative;
+  padding: calc(79 * var(--u)) 0 calc(80 * var(--u));
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.faq-heading {
+  margin: 0 0 0 calc(116 * var(--u));
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.faq-sub {
+  margin: calc(129 * var(--u) - 79 * var(--u) - 50.233 * var(--u) * 0.85) 0 0 calc(116 * var(--u));
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #b6b6b6;
+  white-space: nowrap;
+}
+
+.faq-list {
+  width: calc(1280 * var(--u));
+  /* 207 (list top) - 129 (sub top) - 14 * 1.3 (sub height) */
+  margin: calc(78 * var(--u) - 18.2 * var(--u)) auto 0;
+}
+
+.faq-row {
+  position: relative;
+  padding: calc(20 * var(--u)) 0;
+  border: 0 solid #393939;
+  border-top-width: 0;
+  border-bottom-width: 0;
+  transition:
+    border-width 0.3s ease,
+    padding 0.3s ease;
+}
+
+.faq-row.is-open {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.faq-row.is-open.is-pad24 {
+  padding: calc(24 * var(--u)) 0;
+}
+
+.faq-h {
+  margin: 0;
+}
+
+.faq-q {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: calc(46 * var(--u));
+  margin: 0;
+  padding: 0 calc(84 * var(--u)) 0 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: min-height 0.3s ease;
+}
+
+.faq-row.is-open .faq-q {
+  min-height: calc(28.8 * var(--u));
+}
+
+.faq-title {
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(24 * var(--u));
+  line-height: 1.2;
+  letter-spacing: calc(-0.48 * var(--u));
+  text-transform: uppercase;
+}
+
+/* The round button is positioned against the row, so it stays at the top while the row grows. */
+.faq-icon {
+  position: absolute;
+  right: 0;
+  top: calc(20 * var(--u));
+  width: calc(46 * var(--u));
+  height: calc(46 * var(--u));
+  border-radius: 50%;
+  background: #ffffff;
+  transition:
+    transform 0.25s ease,
+    top 0.3s ease;
+}
+
+.faq-row.is-open.is-pad24 .faq-icon {
+  top: calc(24 * var(--u));
+}
+
+.faq-q:hover .faq-icon {
+  transform: scale(1.08);
+}
+
+.faq-q:focus-visible {
+  outline: none;
+}
+
+.faq-q:focus-visible .faq-icon {
+  outline: 2px solid #b07f30;
+  outline-offset: calc(3 * var(--u));
+}
+
+.faq-icon img {
+  position: absolute;
+  left: calc(14 * var(--u));
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s ease;
+}
+
+.faq-plus {
+  top: calc(14 * var(--u));
+  width: calc(18 * var(--u));
+  height: calc(18 * var(--u));
+}
+
+.faq-minus {
+  top: calc(24 * var(--u));
+  width: calc(18 * var(--u));
+  height: calc(2 * var(--u));
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+.faq-row.is-open .faq-plus {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+.faq-row.is-open .faq-minus {
+  opacity: 1;
+  transform: none;
+}
+
+.faq-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.faq-row.is-open .faq-a {
+  grid-template-rows: 1fr;
+}
+
+.faq-a-in {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.faq-text {
+  max-width: calc(var(--w) * var(--u));
+  margin: 0;
+  padding-top: calc(12 * var(--u));
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  letter-spacing: calc(-0.32 * var(--u));
+  color: #b6b6b6;
+  white-space: pre-line;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.faq-row.is-open .faq-text {
+  opacity: 1;
+  transition-delay: 0.1s;
+}
+
+/* Phone / tablet layout (Figma 549:9281): 40px round buttons, 20px row padding. */
+@media (max-width: 1100px) {
+  .faq {
+    --u: var(--mu);
+    padding: calc(56 * var(--u)) calc(16 * var(--u)) calc(24 * var(--u));
+  }
+
+  .faq-heading {
+    margin: 0;
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+    white-space: normal;
+  }
+
+  .faq-sub {
+    margin: calc(16 * var(--u)) 0 0;
+    font-size: calc(13 * var(--u));
+    white-space: normal;
+  }
+
+  .faq-list {
+    width: auto;
+    margin: calc(32 * var(--u)) 0 0;
+  }
+
+  .faq-row {
+    padding: calc(20 * var(--u)) 0;
+  }
+
+  .faq-row.is-open {
+    padding: calc(12 * var(--u)) 0;
+  }
+
+  .faq-row.is-open.is-pad24 {
+    padding: calc(24 * var(--u)) 0;
+  }
+
+  .faq-q {
+    min-height: calc(40 * var(--u));
+    padding-right: calc(78 * var(--u));
+  }
+
+  .faq-row.is-open .faq-q {
+    min-height: calc(24 * var(--u));
+  }
+
+  .faq-title {
+    font-size: calc(20 * var(--u));
+    letter-spacing: calc(-0.4 * var(--u));
+  }
+
+  .faq-icon {
+    top: calc(20 * var(--u));
+    width: calc(40 * var(--u));
+    height: calc(40 * var(--u));
+  }
+
+  .faq-row.is-open .faq-icon {
+    top: calc(12 * var(--u));
+  }
+
+  .faq-row.is-open.is-pad24 .faq-icon {
+    top: calc(24 * var(--u));
+  }
+
+  .faq-icon img {
+    left: calc(12 * var(--u));
+  }
+
+  .faq-plus {
+    top: calc(12 * var(--u));
+    width: calc(16 * var(--u));
+    height: calc(16 * var(--u));
+  }
+
+  .faq-minus {
+    top: calc(19 * var(--u));
+    width: calc(16 * var(--u));
+    height: calc(2 * var(--u));
+  }
+
+  .faq-text {
+    max-width: none;
+    font-size: calc(16 * var(--u));
+    letter-spacing: calc(-0.32 * var(--u));
+  }
+
+  .faq-row.is-pad24 .faq-text {
+    font-size: calc(14 * var(--u));
+    letter-spacing: calc(-0.28 * var(--u));
+  }
+}

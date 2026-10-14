@@ -1,0 +1,96 @@
+/* Figma 514:1923: 1512x956 frame; --u is one design pixel. */
+.statement {
+  --u: calc(100vw / 1512);
+  position: relative;
+  height: calc(956 * var(--u));
+  overflow: hidden;
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.st-logo {
+  position: absolute;
+  left: calc(735 * var(--u));
+  top: calc(93 * var(--u));
+  width: calc(41 * var(--u));
+  height: calc(73.992 * var(--u));
+}
+
+.st-caption {
+  position: absolute;
+  left: 50%;
+  top: calc(167 * var(--u));
+  width: calc(112 * var(--u));
+  margin: 0;
+  transform: translateX(-50%);
+  font-size: calc(9 * var(--u));
+  line-height: 1.3;
+  text-align: center;
+  color: #9b9b9b;
+}
+
+.st-text {
+  position: absolute;
+  left: 50%;
+  top: calc(225 * var(--u));
+  width: calc(1212 * var(--u));
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(93 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.86 * var(--u));
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.st-text em {
+  font-weight: 500;
+  font-style: italic;
+  color: #c58927;
+}
+
+/* Phone / tablet layout (Figma 530:5372, 390x794). */
+.st-m {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .statement {
+    --u: var(--mu);
+    height: calc(794 * var(--u));
+  }
+
+  .st-logo {
+    left: 50%;
+    top: calc(123 * var(--u));
+    width: calc(27 * var(--u));
+    height: calc(48.727 * var(--u));
+    transform: translateX(-50%);
+  }
+
+  .st-caption {
+    top: calc(172 * var(--u));
+    width: calc(112 * var(--u));
+    font-size: calc(9 * var(--u));
+  }
+
+  .st-text {
+    top: calc(224 * var(--u));
+    width: calc(358 * var(--u));
+    font-size: calc(40 * var(--u));
+    letter-spacing: calc(-0.8 * var(--u));
+    white-space: nowrap;
+  }
+
+  .st-d {
+    display: none;
+  }
+
+  .st-m {
+    display: inline;
+  }
+}

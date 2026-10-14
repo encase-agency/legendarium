@@ -1,0 +1,232 @@
+/* Figma 530:2905: 1512x918 frame on #f4f4f4; --u is one design pixel. */
+.fp {
+  --u: calc(100vw / 1512);
+  position: relative;
+  height: calc(918 * var(--u));
+  background: #f4f4f4;
+  color: #000000;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.fp-wave {
+  position: absolute;
+  left: calc(50% + 1 * var(--u));
+  top: calc(-11 * var(--u));
+  width: calc(1560 * var(--u));
+  height: calc(108 * var(--u));
+  transform: translateX(-50%);
+}
+
+.fp-slot {
+  position: absolute;
+  left: calc(50 * var(--u));
+  top: 0;
+  width: calc(637 * var(--u));
+  height: calc(705 * var(--u));
+}
+
+.fp-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fp-sign {
+  position: absolute;
+  left: calc(475 * var(--u));
+  top: calc(518 * var(--u));
+  width: calc(300 * var(--u));
+  height: calc(400 * var(--u));
+}
+
+.fp-text {
+  position: absolute;
+  left: calc(815 * var(--u));
+  top: calc(458.5 * var(--u));
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(40 * var(--u));
+  width: calc(611 * var(--u));
+}
+
+.fp-name {
+  margin: 0;
+  font-weight: 500;
+  font-size: calc(20 * var(--u));
+  line-height: 1.3;
+}
+
+.fp-name span {
+  color: #b07f30;
+}
+
+.fp-name b {
+  font-weight: 500;
+}
+
+.fp-heading {
+  margin: calc(-20 * var(--u)) 0 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fp-heading em {
+  font-weight: 500;
+  font-style: italic;
+  color: #b07f30;
+}
+
+.fp-body {
+  width: calc(588 * var(--u));
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+}
+
+.fp-body p {
+  margin: 0 0 1.3em;
+}
+
+.fp-body p:last-child {
+  margin-bottom: 0;
+}
+
+.fp-cta {
+  margin-top: calc(-3 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(24 * var(--u));
+  border-radius: calc(14 * var(--u));
+  background: #313131;
+  font-weight: 600;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.fp-cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #b07f30;
+}
+
+/* The photo that flies in: fixed to the viewport, driven by scroll (hidden on phones). */
+.fp-float {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  object-fit: cover;
+  visibility: hidden;
+  pointer-events: none;
+  will-change: left, top, width, height;
+}
+
+.fp-m {
+  display: none;
+}
+
+/* Phone / tablet layout (Figma 549:8091, 390x985): the photo is plain (no fly-in), the signature overlaps its top edge. */
+@media (max-width: 1100px) {
+  .fp {
+    --u: var(--mu);
+    height: calc(985 * var(--u));
+    overflow: hidden;
+  }
+
+  .fp-wave {
+    left: 0;
+    top: calc(-1.5 * var(--u));
+    width: 100%;
+    height: calc(57 * var(--u));
+    transform: none;
+  }
+
+  .fp-slot {
+    left: 0;
+    top: calc(594.5 * var(--u));
+    width: 100%;
+    height: calc(391 * var(--u));
+    overflow: hidden;
+  }
+
+  .fp-photo {
+    object-position: 50% 0;
+  }
+
+  .fp-sign {
+    left: calc(207 * var(--u));
+    top: calc(485.5 * var(--u));
+    width: calc(167.25 * var(--u));
+    height: calc(223 * var(--u));
+  }
+
+  .fp-text {
+    left: calc(16 * var(--u));
+    top: calc(112 * var(--u));
+    width: calc(358 * var(--u));
+    transform: none;
+    gap: 0;
+  }
+
+  .fp-name {
+    font-size: calc(14 * var(--u));
+  }
+
+  .fp-heading {
+    margin: calc(20 * var(--u)) 0 0;
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+    white-space: normal;
+  }
+
+  .fp-d {
+    display: none;
+  }
+
+  .fp-m {
+    display: inline;
+  }
+
+  .fp-body {
+    width: calc(333 * var(--u));
+    margin-top: calc(16 * var(--u));
+    font-size: calc(13 * var(--u));
+  }
+
+  .fp-cta {
+    margin-top: calc(37 * var(--u));
+    gap: calc(12 * var(--u));
+    height: calc(42 * var(--u));
+    padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(18 * var(--u));
+    border-radius: calc(11.26 * var(--u));
+    font-size: calc(13 * var(--u));
+  }
+
+  .fp-cta-icon {
+    padding: calc(9 * var(--u));
+    border-radius: calc(9.65 * var(--u));
+  }
+
+  .fp-cta-icon .arrow-icon {
+    --u: calc(0.8 * var(--mu));
+  }
+
+  .fp-float {
+    display: none;
+  }
+}

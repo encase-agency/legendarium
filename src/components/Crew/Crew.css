@@ -1,0 +1,273 @@
+/* Figma 518:2236 + animation frames 521:2354 / 521:2392 / 521:2429.
+   1512x825 frame on #1b1d20; --u is one design pixel. A column is 340 wide and
+   grows to 500 while it is active; the photo inside re-frames with it. */
+.crew {
+  --u: calc(100vw / 1512);
+  --ease: cubic-bezier(0.22, 0.8, 0.2, 1);
+  --dur: 0.65s;
+  position: relative;
+  height: calc(825 * var(--u));
+  overflow: hidden;
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.cw-row {
+  position: absolute;
+  left: calc(50 * var(--u));
+  top: 0;
+  height: 100%;
+  display: flex;
+  gap: calc(17 * var(--u));
+  transition: transform var(--dur) var(--ease);
+}
+
+/* With the last column open the row slides left so it stays inside the frame. */
+.cw-row[data-active='3'] {
+  transform: translateX(calc(-160 * var(--u)));
+}
+
+.cw-col {
+  position: relative;
+  flex: none;
+  width: calc(340 * var(--u));
+  height: 100%;
+  outline: none;
+  cursor: pointer;
+  transition: width var(--dur) var(--ease);
+}
+
+.cw-col.is-active {
+  width: calc(500 * var(--u));
+}
+
+.cw-photo {
+  position: absolute;
+  left: 0;
+  top: calc(83 * var(--u));
+  width: 100%;
+  height: calc(511 * var(--u));
+  margin: 0;
+  overflow: hidden;
+}
+
+.cw-photo--andrey {
+  background: #d9d9d9;
+}
+
+.cw-photo img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  height: auto;
+  min-height: 100%;
+  transition:
+    width var(--dur) var(--ease),
+    left var(--dur) var(--ease),
+    top var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
+}
+
+/* Captions hang from 88 design px above the bottom edge, as in the file. */
+.cw-caption {
+  position: absolute;
+  left: 0;
+  bottom: calc(88 * var(--u));
+  width: calc(278 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--u));
+}
+
+.cw-caption--platform,
+.cw-caption--mentors,
+.cw-caption--community {
+  height: calc(114 * var(--u));
+}
+
+.cw-title {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(24 * var(--u));
+  line-height: 0.7689;
+  letter-spacing: calc(-0.48 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cw-body {
+  margin: 0;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #c1c1c1;
+  white-space: nowrap;
+}
+
+.cw-body strong {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+@media (min-width: 1101px) {
+  /* Photo geometry per state, in design px, read off the four Figma frames. */
+  .cw-photo--platform img {
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .cw-col.is-active .cw-photo--platform img {
+    top: calc(-120 * var(--u));
+  }
+
+  /* Default frame (525:2485) shows the plain photo; as soon as any column is
+     hovered it cross-fades to the zoomed one used in the other three states. */
+  .cw-photo--mentors .cw-base {
+    left: 0.02%;
+    top: 0;
+    width: 100.09%;
+    height: 100.09%;
+  }
+  .cw-photo--mentors .cw-zoom {
+    left: calc(-27.3 * var(--u));
+    top: calc(-81.5 * var(--u));
+    width: calc(393.9 * var(--u));
+    opacity: 0;
+  }
+  .cw-row:not([data-active='none']) .cw-photo--mentors .cw-zoom {
+    opacity: 1;
+  }
+  .cw-col.is-active .cw-photo--mentors .cw-zoom {
+    left: 0;
+    top: calc(-181 * var(--u));
+    width: calc(500 * var(--u));
+  }
+
+  .cw-photo--andrey img {
+    left: calc(-112.6 * var(--u));
+    top: 0;
+    width: calc(565.2 * var(--u));
+  }
+  .cw-col.is-active .cw-photo--andrey img {
+    left: calc(-88.2 * var(--u));
+    top: 0;
+    width: calc(651 * var(--u));
+  }
+
+  .cw-photo--community img {
+    left: calc(-2.4 * var(--u));
+    top: 0;
+    width: calc(383.2 * var(--u));
+  }
+  .cw-col.is-active .cw-photo--community img {
+    left: 0;
+    top: calc(-78 * var(--u));
+    width: calc(500 * var(--u));
+  }
+}
+
+.cw-m {
+  display: none;
+}
+
+/* Phone / tablet layout (Figma 549:7299): four stacked columns, 400px photo + caption; no hover states. */
+@media (max-width: 1100px) {
+  .crew {
+    --u: var(--mu);
+    height: auto;
+    padding: calc(56 * var(--u)) calc(16 * var(--u));
+    /* rolls over the pinned "Образовательная платформа" block, which waits for one more screen */
+    position: relative;
+    z-index: 5;
+    margin-top: -100svh;
+    box-shadow: 0 -24px 48px rgba(0, 0, 0, 0.45);
+  }
+
+  .cw-row {
+    position: static;
+    height: auto;
+    flex-direction: column;
+    gap: calc(48 * var(--u));
+    transform: none !important;
+  }
+
+  .cw-col,
+  .cw-col.is-active {
+    width: auto;
+    height: auto;
+    cursor: default;
+  }
+
+  .cw-photo,
+  .cw-caption {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    width: auto;
+    height: auto;
+  }
+
+  .cw-photo {
+    height: calc(400 * var(--u));
+  }
+
+  .cw-photo img {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    transition: none;
+  }
+
+  .cw-photo--mentors .cw-base {
+    display: none;
+  }
+
+  .cw-photo--community img {
+    inset: auto;
+    left: -0.1%;
+    top: -16.32%;
+    width: 111.28%;
+    height: 132.8%;
+  }
+
+  .cw-caption,
+  .cw-caption--platform,
+  .cw-caption--mentors,
+  .cw-caption--community {
+    width: 100%;
+    height: auto;
+    margin-top: calc(16 * var(--u));
+  }
+
+  .cw-caption--platform {
+    width: calc(278 * var(--u));
+  }
+
+  .cw-title {
+    width: calc(209 * var(--u));
+  }
+
+  .cw-body {
+    white-space: normal;
+  }
+
+  .cw-body br {
+    display: none;
+  }
+
+  .cw-body .cw-m br,
+  .cw-body br.cw-keep {
+    display: inline;
+  }
+
+  .cw-d {
+    display: none;
+  }
+
+  .cw-m {
+    display: inline;
+  }
+}

@@ -1,0 +1,165 @@
+/* Figma 291:5241: 1512x900 frame on #1b1d20, items 32px with a 32px gap, left padding 100px. */
+.mn {
+  --u: calc(100vw / 1512);
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  padding: calc(24 * var(--u)) calc(24 * var(--u)) calc(24 * var(--u)) calc(100 * var(--u));
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  animation: mn-in 0.35s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+
+.mn.is-closing {
+  animation: mn-out 0.25s ease-in both;
+}
+
+@keyframes mn-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mn-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.mn-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(32 * var(--u));
+  margin: auto 0;
+}
+
+.mn-item {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+  font-weight: 700;
+  font-size: calc(32 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-0.64 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #ffffff;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateX(calc(-16 * var(--u)));
+  animation: mn-item 0.5s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+  animation-delay: calc(0.05s + var(--i) * 0.035s);
+  transition: color 0.2s ease;
+}
+
+@keyframes mn-item {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.mn-badge {
+  --u: calc(var(--mu) * 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(24 * var(--mu));
+  height: calc(24 * var(--mu));
+  border-radius: calc(9.273 * var(--mu));
+  background: #b07f30;
+  opacity: 0;
+  transform: translateX(calc(-6 * var(--mu)));
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s ease;
+}
+
+.mn {
+  --mu: calc(100vw / 1512);
+}
+
+.mn-item:hover,
+.mn-item:focus-visible {
+  color: #b07f30;
+  outline: none;
+}
+
+.mn-item:hover .mn-badge,
+.mn-item:focus-visible .mn-badge {
+  opacity: 1;
+  transform: none;
+}
+
+.mn-close {
+  position: absolute;
+  right: calc(50 * var(--u));
+  top: calc(50 * var(--u));
+  width: calc(20 * var(--u));
+  height: calc(20 * var(--u));
+  padding: 0;
+  border: 0;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mn-close img {
+  width: calc(12.91 * var(--u));
+  height: calc(12.91 * var(--u));
+  transform: rotate(45deg);
+  transition: transform 0.25s ease;
+}
+
+.mn-close:hover img {
+  transform: rotate(135deg);
+}
+
+.mn-close:focus-visible {
+  outline: 1px solid #ffffff;
+  outline-offset: calc(6 * var(--u));
+}
+
+@media (max-width: 1100px) {
+  .mn,
+  .mn-badge {
+    --u: 1px;
+    --mu: 1px;
+  }
+
+  .mn {
+    padding: 72px 24px 32px;
+  }
+
+  .mn-list {
+    gap: 22px;
+  }
+
+  .mn-item {
+    font-size: 28px;
+  }
+
+  .mn-badge {
+    opacity: 1;
+    transform: none;
+    display: none;
+  }
+
+  .mn-close {
+    right: 20px;
+    top: 20px;
+  }
+}

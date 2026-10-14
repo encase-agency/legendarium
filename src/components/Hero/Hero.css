@@ -1,0 +1,443 @@
+.hero {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.hero-scene {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+}
+
+/* Real text/HTML interface, matched to the Figma design pulled via
+   get_design_context (file c5KdvO1dGDKBYe34wippIj, node 487:1719). The
+   design's own reference frame is 1512x908px ("MacBook Pro 14'", confirmed
+   from the returned screenshot's 1024x615 aspect ratio) - every element
+   below is positioned with top/left as that exact px value divided by
+   1512 or 908, so the layout is pixel-identical to Figma at that width and
+   holds the same relative placement at any other size, the same way the
+   WebGL layers' cover-UV does. Pointer-events are off by default so the
+   brush still tracks the mouse everywhere; only the actual interactive
+   controls re-enable them. */
+.hero-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hero-topbar {
+  position: absolute;
+  top: 2.2%;
+  left: 3.31%;
+  right: 3.31%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* Figma crops a much larger source logo image (shield + "LEGENDARIUM"
+   wordmark + tagline) down to just the shield emblem via a fixed-size
+   overflow:hidden window with an oversized, offset child image - replicated
+   exactly here rather than re-cropping the asset ourselves. */
+.hero-logo {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: clamp(29px, 2.71vw, 41px);
+  height: clamp(35px, 3.24vw, 49px);
+}
+
+.hero-logo-img {
+  position: absolute;
+  left: -24.39%;
+  top: -30.61%;
+  width: 382.93%;
+  max-width: none;
+  height: 160.2%;
+}
+
+.hero-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.06vw;
+  pointer-events: auto;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  border-radius: clamp(10px, 0.93vw, 14px);
+  height: clamp(32px, 2.71vw, 41px);
+  padding: 0 1.1em;
+  font-family: inherit;
+  font-size: clamp(0.78rem, 0.93vw, 0.95rem);
+  font-weight: 400;
+  text-decoration: none;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.hero-menu-label {
+  font-family: -apple-system, 'Inter Tight', sans-serif;
+}
+
+.btn-dark {
+  background: #313131;
+  color: #ffffff;
+}
+
+.btn-light {
+  background: #e4e4e4;
+  color: #313131;
+}
+
+.hero-headline {
+  position: absolute;
+  left: 3.31%;
+  top: 22.58%;
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-size: clamp(1.9rem, 3.32vw, 3.35rem);
+  line-height: 0.85;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: #313131;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.hero-accent {
+  color: #b07f30;
+}
+
+.hero-paragraph {
+  position: absolute;
+  left: 3.31%;
+  top: 33.81%;
+  margin: 0;
+  width: 26.65%;
+  min-width: 18em;
+  font-size: clamp(0.8rem, 0.93vw, 0.95rem);
+  line-height: 1.3;
+  color: #313131;
+  pointer-events: auto;
+}
+
+.hero-cta {
+  position: absolute;
+  left: 3.31%;
+  top: 46.15%;
+  /* The CTA is its own, larger button - not the shared .btn size used by the
+     topbar (reference export: 224x52px at the 1512px frame, vs the topbar's
+     41px) - so its height/padding are overridden here instead of inherited. */
+  height: clamp(40px, 3.44vw, 52px);
+  padding: 0.25em 0.25em 0.25em 1.55em;
+  gap: 0.95em;
+  font-size: clamp(0.85rem, 1.06vw, 1.07rem);
+  font-weight: 600;
+  pointer-events: auto;
+}
+
+.hero-cta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75em;
+  height: 2.75em;
+  border-radius: clamp(8px, 0.8vw, 12px);
+  background: #b07f30;
+  flex-shrink: 0;
+}
+
+.hero-cta-icon img {
+  width: 55%;
+  height: 55%;
+  /* The source SVG's own drawn orientation points left; Figma's export
+     wraps it in a rotate(180)+rotate(-45) pair to land on "up-right" - net
+     135deg, reproduced directly instead of carrying the double transform. */
+  transform: rotate(135deg);
+}
+
+.hero-info-card {
+  position: absolute;
+  left: 69.78%;
+  top: 22.25%;
+  width: 26.92%;
+  display: flex;
+  align-items: stretch;
+  gap: 0.86vw;
+  background: #ededec;
+  border-radius: clamp(12px, 1.06vw, 16px);
+  padding: 0.53vw;
+  text-align: left;
+  pointer-events: auto;
+}
+
+.hero-info-icon {
+  flex-shrink: 0;
+  position: relative;
+  width: 6.6vw;
+  max-width: 100px;
+  aspect-ratio: 100 / 125;
+  border-radius: clamp(10px, 0.93vw, 14px);
+  overflow: hidden;
+}
+
+.hero-info-icon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-info-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.6em 0.8em 0.6em 0;
+  font-size: clamp(0.78rem, 0.93vw, 0.95rem);
+  line-height: 1.3;
+  color: #313131;
+}
+
+.hero-info-text strong {
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.59vw, 1.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.hero-info-text p {
+  margin: 0;
+}
+
+.hero-info-sub {
+  display: block;
+  color: #686868;
+}
+
+.hero-right-footer {
+  position: absolute;
+  left: 70.44%;
+  top: 41.63%;
+  font-size: clamp(0.78rem, 0.93vw, 0.95rem);
+  color: #313131;
+  pointer-events: auto;
+}
+
+.hero-right-footer p {
+  margin: 0;
+}
+
+.hero-link {
+  position: absolute;
+  left: 89.75%;
+  top: 40.86%;
+  color: #000000;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+  font-size: clamp(0.85rem, 1.06vw, 1.07rem);
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+.hero-cert-badge {
+  position: absolute;
+  left: 93.25%;
+  top: 51.98%;
+  width: clamp(56px, 6.81vw, 103px);
+  height: auto;
+}
+
+.hero-scrim {
+  display: none;
+}
+
+/* Mobile / tablet: Figma mobile frame 530:4507 (390 wide), shifted up by the 46px of status bar the design carries,
+   so the page header (fixed, see Header.css) sits at the top. --u is one mobile design pixel. */
+@media (max-width: 1100px) {
+  .hero {
+    overflow: visible;
+    --u: var(--mu);
+    height: calc(952 * var(--u));
+    background: #ffffff;
+  }
+
+  /* The man: a canvas under the text, from y=358 to the bottom of the block */
+  .hero-scene {
+    touch-action: auto; /* a finger on the man must still scroll the page */
+    inset: auto 0 0 0;
+    top: calc(358 * var(--u));
+  }
+
+  .hero-ui {
+    display: block;
+    padding: 0;
+  }
+
+  .hero-ui > * {
+    position: absolute;
+    margin: 0;
+  }
+
+  .hero-headline {
+    left: 50%;
+    top: calc(100 * var(--u));
+    width: calc(340 * var(--u));
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: calc(36 * var(--u));
+    line-height: 0.85;
+    letter-spacing: calc(-0.72 * var(--u));
+    white-space: nowrap;
+  }
+
+  .hero-paragraph {
+    left: 50%;
+    top: calc(171 * var(--u));
+    width: calc(348 * var(--u));
+    min-width: 0;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: calc(12 * var(--u));
+    line-height: 1.3;
+    display: block;
+    overflow: visible;
+  }
+
+  .hero-paragraph br:not(:last-of-type) {
+    display: none;
+  }
+
+  .hero-cta {
+    left: 50%;
+    top: calc(257 * var(--u));
+    transform: translateX(-50%);
+    height: calc(42 * var(--u));
+    padding: calc(3.2 * var(--u)) calc(3.2 * var(--u)) calc(3.2 * var(--u)) calc(19.3 * var(--u));
+    gap: calc(12.87 * var(--u));
+    border-radius: calc(11.26 * var(--u));
+    font-size: calc(12.866 * var(--u));
+  }
+
+  .hero-cta:hover {
+    transform: translateX(-50%);
+  }
+
+  .hero-cta-icon {
+    width: calc(35.5 * var(--u));
+    height: calc(35.5 * var(--u));
+    border-radius: calc(9.65 * var(--u));
+  }
+
+  .hero-cta-icon img {
+    width: calc(11.9 * var(--u));
+    height: calc(13.2 * var(--u));
+  }
+
+  /* Black strip behind the info card. It lies BEHIND the canvas, so the jacket with the zipper runs over it, as in the frame. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(157 * var(--u));
+    background: #0b0d0f;
+    box-shadow: 0 0 0 100vmax #0b0d0f;
+    clip-path: inset(0 -100vmax);
+    pointer-events: none;
+  }
+
+  .hero-scrim {
+    display: none;
+  }
+
+  .hero-info-card {
+    left: 50%;
+    top: calc(795 * var(--u));
+    width: calc(285 * var(--u));
+    transform: translateX(-50%);
+    gap: calc(9.678 * var(--u));
+    padding: calc(5.956 * var(--u));
+    border-radius: calc(11.912 * var(--u));
+  }
+
+  .hero-info-icon {
+    width: calc(74 * var(--u));
+    max-width: none;
+    height: calc(77 * var(--u));
+    aspect-ratio: auto;
+    border-radius: calc(10.423 * var(--u));
+  }
+
+  .hero-info-text {
+    gap: calc(5.956 * var(--u));
+    padding: 0;
+    font-size: calc(10.423 * var(--u));
+  }
+
+  .hero-info-text strong {
+    font-size: calc(17.867 * var(--u));
+    line-height: 0.85;
+    letter-spacing: calc(-0.357 * var(--u));
+    white-space: nowrap;
+  }
+
+  .hero-info-text strong br {
+    display: none;
+  }
+
+  .hero-info-text p {
+    width: calc(196 * var(--u));
+    color: #000000;
+  }
+
+  .hero-info-sub {
+    width: calc(196 * var(--u));
+  }
+
+  .hero-right-footer {
+    left: calc(53 * var(--u));
+    top: calc(896 * var(--u));
+    font-size: calc(12 * var(--u));
+    color: #ffffff;
+  }
+
+  .hero-link {
+    left: calc(263 * var(--u));
+    top: calc(904 * var(--u));
+    font-size: calc(12 * var(--u));
+    color: #ffffff;
+    display: block;
+  }
+
+  .hero-cert-badge {
+    left: auto;
+    right: 0;
+    top: calc(383 * var(--u));
+    width: calc(54 * var(--u));
+  }
+}

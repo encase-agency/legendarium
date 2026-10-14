@@ -1,0 +1,37 @@
+/* Sized in design px via --u, which the enclosing section defines. */
+.arrow-icon {
+  position: relative;
+  flex: none;
+  display: block;
+  width: calc(20 * var(--u));
+  height: calc(20 * var(--u));
+  transform: rotate(180deg);
+}
+
+.arrow-icon-pos {
+  position: absolute;
+  left: calc(-0.87 * var(--u));
+  top: calc(-0.87 * var(--u));
+  width: calc(20.867 * var(--u));
+  height: calc(20.867 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-icon-rot {
+  position: relative;
+  flex: none;
+  width: calc(14.755 * var(--u));
+  height: calc(14.755 * var(--u));
+  transform: rotate(-45deg);
+}
+
+.arrow-icon-rot img {
+  position: absolute;
+  max-width: none;
+  left: 0;
+  top: -9.58%;
+  width: 106.76%;
+  height: 119.17%;
+}

@@ -1,0 +1,79 @@
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.loader-bg {
+  position: absolute;
+  inset: 0;
+  background: #1b1d20;
+  clip-path: inset(0 0 0 0);
+}
+
+/* Figma "Шаг 1-3": 32px Alumni Sans SC, white, -0.64px tracking; neighbours
+   sit one 26px step above/below and fade out through the mask. */
+.loader-counter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120px;
+  height: 104px;
+  transform: translate(-50%, -50%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 38%, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 38%, #000 62%, transparent 100%);
+}
+
+.loader-strip {
+  position: absolute;
+  inset: 0;
+}
+
+.loader-digit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-size: 32px;
+  line-height: 1.3;
+  letter-spacing: -0.64px;
+  color: #ffffff;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Figma "Шаг 4": the shield crop is 35x41.829px, same image crop as the topbar logo. */
+.loader-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 35px;
+  height: 41.829px;
+  margin: -20.9px 0 0 -17.5px;
+  overflow: hidden;
+}
+
+.loader-logo-img {
+  position: absolute;
+  left: -24.39%;
+  top: -30.61%;
+  width: 382.93%;
+  max-width: none;
+  height: 160.2%;
+}
+
+.loader-logo-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 38%, rgba(255, 244, 214, 0.95) 50%, transparent 62%);
+  background-size: 300% 100%;
+  -webkit-mask: url('/assets/hero/figma-logo.png') -8.54px -12.8px / 134.03px 67.01px no-repeat;
+  mask: url('/assets/hero/figma-logo.png') -8.54px -12.8px / 134.03px 67.01px no-repeat;
+}
+
+.hero--intro *,
+.hero--intro *::before,
+.hero--intro *::after {
+  transition: none !important;
+}

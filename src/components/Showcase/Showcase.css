@@ -1,0 +1,385 @@
+/* Figma 512:1766 / 512:1837: 1512x742 frame, everything absolutely placed.
+   --u is one design pixel, so the whole frame scales with the viewport width. */
+.showcase {
+  --u: calc(100vw / 1512);
+  position: relative;
+  z-index: 3;
+  height: calc(742 * var(--u));
+  overflow: hidden;
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.pin-spacer {
+  background: #1b1d20;
+}
+
+.sc-stats {
+  position: absolute;
+  left: calc(50 * var(--u));
+  top: calc(170 * var(--u));
+  width: calc(144 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(62 * var(--u));
+}
+
+.sc-stat {
+  display: flex;
+  flex-direction: column;
+  gap: calc(6 * var(--u));
+  white-space: nowrap;
+}
+
+.sc-num {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(72 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.44 * var(--u));
+  text-transform: uppercase;
+}
+
+.sc-label {
+  margin: 0;
+  font-family: 'SF Pro Text', -apple-system, 'Inter Tight', sans-serif;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  letter-spacing: calc(-0.32 * var(--u));
+  color: #b6b6b6;
+}
+
+.sc-card {
+  position: absolute;
+  will-change: transform;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sc-card--first {
+  will-change: transform;
+  left: calc(480 * var(--u));
+  top: calc(122 * var(--u));
+  width: calc(420.485 * var(--u));
+  height: calc(386.066 * var(--u));
+}
+
+.sc-card--first .sc-card-inner {
+  transform: rotate(-2.46deg);
+}
+
+.sc-card--second {
+  left: calc(541.24 * var(--u));
+  top: calc(220.03 * var(--u));
+  width: calc(418.661 * var(--u));
+  height: calc(401.32 * var(--u));
+}
+
+.sc-card--second .sc-card-inner {
+  transform: rotate(2.06deg);
+}
+
+.sc-card-inner {
+  flex: none;
+  width: calc(405 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(12 * var(--u));
+}
+
+.sc-video {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  flex: none;
+  width: calc(405 * var(--u));
+  height: calc(319 * var(--u));
+  border-radius: calc(20 * var(--u));
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.sc-poster-b {
+  position: absolute;
+  max-width: none;
+  width: 175.69%;
+  height: 484.64%;
+  left: -26.58%;
+  top: -190.05%;
+}
+
+.sc-poster-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sc-video:hover .sc-play {
+  transform: scale(1.1);
+}
+
+.sc-video:focus-visible {
+  outline: 2px solid #b07f30;
+  outline-offset: calc(3 * var(--u));
+}
+
+.sc-play {
+  transition: transform 0.25s ease;
+  position: absolute;
+  left: calc(172.5 * var(--u));
+  top: calc(129.5 * var(--u));
+  width: calc(60 * var(--u));
+  height: calc(60 * var(--u));
+}
+
+.sc-text {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(10 * var(--u));
+  line-height: normal;
+}
+
+.sc-title {
+  width: 100%;
+  margin: 0;
+  font-size: calc(18 * var(--u));
+  color: #ffffff;
+}
+
+.sc-sub {
+  width: 100%;
+  margin: 0;
+  font-size: calc(12 * var(--u));
+  color: #fdfdfd;
+}
+
+.sc-license {
+  position: absolute;
+  left: calc(1124 * var(--u));
+  top: calc(172 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--u));
+}
+
+.sc-license-text {
+  width: calc(330 * var(--u));
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  letter-spacing: calc(-0.28 * var(--u));
+  color: #b6b6b6;
+}
+
+.sc-license-link {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+  font-weight: 500;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  letter-spacing: calc(-0.32 * var(--u));
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sc-mbr {
+  display: none;
+}
+
+.sc-nowrap {
+  white-space: nowrap;
+}
+
+.sc-button {
+  display: none;
+  position: absolute;
+  left: calc(1124 * var(--u));
+  top: calc(640 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(24 * var(--u));
+  border-radius: calc(14 * var(--u));
+  background: #313131;
+  font-weight: 600;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.sc-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #b07f30;
+}
+
+/* Phone / tablet layout (Figma 622:2935 = first video, 530:4739 = second video on top; 390x800).
+   Like on desktop the block is pinned and the second video flies up over the first one while scrolling. */
+@media (max-width: 1100px) {
+  .showcase {
+    --u: var(--mu);
+    height: calc(800 * var(--u));
+  }
+
+  .sc-stats {
+    left: 0;
+    right: 0;
+    top: calc(56 * var(--u));
+    width: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: calc(24 * var(--u));
+    padding: 0 calc(28 * var(--u));
+  }
+
+  .sc-stat {
+    align-items: center;
+    gap: calc(6 * var(--u));
+  }
+
+  .sc-stat:nth-child(-n + 2) {
+    width: calc(122 * var(--u));
+  }
+
+  .sc-num {
+    font-size: calc(43.594 * var(--u));
+    letter-spacing: calc(-0.8719 * var(--u));
+  }
+
+  .sc-label {
+    font-size: calc(12 * var(--u));
+    letter-spacing: calc(-0.24 * var(--u));
+    text-align: center;
+  }
+
+  /* first video: centred in the first state, it slides 20px to the left when the second one lands */
+  .sc-card--first {
+    left: calc(54.97 * var(--u));
+    top: calc(257.4 * var(--u));
+    width: calc(280.05 * var(--u));
+    height: calc(238.553 * var(--u));
+  }
+
+  .sc-card--second {
+    z-index: 2;
+    left: calc(75.54 * var(--u));
+    top: calc(322.87 * var(--u));
+    width: calc(279.9 * var(--u));
+    height: calc(274.646 * var(--u));
+  }
+
+  .sc-card-inner {
+    width: calc(270.538 * var(--u));
+    gap: calc(8.016 * var(--u));
+  }
+
+  .sc-video {
+    width: calc(270.538 * var(--u));
+    height: calc(184.104 * var(--u));
+    border-radius: calc(13.36 * var(--u));
+  }
+
+  /* the posters are cropped exactly as in the frames: the picture is taller than the window */
+  .sc-poster-b {
+    width: calc(475.3 * var(--u));
+    height: calc(1032.7 * var(--u));
+    left: calc(-71.9 * var(--u));
+    top: calc(-422 * var(--u));
+  }
+
+  .sc-poster-cover {
+    inset: auto;
+    left: calc(0.14 * var(--u));
+    top: calc(-14.44 * var(--u));
+    width: calc(270.538 * var(--u));
+    height: calc(213.091 * var(--u));
+  }
+
+  .sc-mbr {
+    display: inline;
+  }
+
+  .sc-play {
+    left: calc(115.23 * var(--u));
+    top: calc(72.26 * var(--u));
+    width: calc(40.08 * var(--u));
+    height: calc(40.08 * var(--u));
+  }
+
+  .sc-text {
+    gap: calc(2 * var(--u));
+  }
+
+  .sc-card--second .sc-text {
+    gap: calc(3 * var(--u));
+  }
+
+  .sc-title {
+    font-family: 'Inter Tight', system-ui, sans-serif;
+    font-size: calc(15 * var(--u));
+    line-height: normal;
+    text-align: left;
+    text-transform: none;
+  }
+
+  .sc-title-muted {
+    color: inherit;
+  }
+
+  .sc-sub {
+    display: block;
+    font-size: calc(12 * var(--u));
+    color: #b6b6b6;
+  }
+
+  .sc-license {
+    z-index: 1;
+    left: calc(53 * var(--u));
+    top: calc(651 * var(--u));
+    width: calc(284 * var(--u));
+    align-items: center;
+    gap: calc(10.3 * var(--u));
+  }
+
+  .sc-license-text {
+    width: 100%;
+    font-size: calc(12.05 * var(--u));
+    letter-spacing: calc(-0.241 * var(--u));
+    text-align: center;
+  }
+
+  .sc-license-link {
+    gap: calc(6.9 * var(--u));
+    font-size: calc(13.77 * var(--u));
+    letter-spacing: calc(-0.2754 * var(--u));
+  }
+
+  .sc-license-link .arrow-icon {
+    --u: calc(0.86 * var(--mu));
+  }
+
+  .sc-button {
+    display: none;
+  }
+}

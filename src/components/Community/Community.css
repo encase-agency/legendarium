@@ -1,0 +1,455 @@
+/* Figma 529:2648 + 529:2681 (1512px frame, #1b1d20); --u is one design pixel. */
+.community {
+  --u: calc(100vw / 1512);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: calc(99 * var(--u)) 0 calc(194 * var(--u)) calc(348 * var(--u));
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.cm-pin {
+  position: sticky;
+  top: calc(99 * var(--u));
+  flex: none;
+  width: calc(355 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(12 * var(--u));
+}
+
+.cm-heading {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cm-sub {
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #b6b6b6;
+  white-space: nowrap;
+}
+
+.cm-col {
+  flex: none;
+  width: calc(565 * var(--u));
+  margin-left: calc(53 * var(--u));
+  display: flex;
+  flex-direction: column;
+}
+
+.cm-label {
+  margin: 0 0 calc(24 * var(--u));
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 500;
+  font-size: calc(20 * var(--u));
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.cm-checks,
+.cm-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #303134;
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--u));
+}
+
+.cm-checks li {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  padding: calc(16 * var(--u)) calc(24 * var(--u));
+  border-bottom: 1px solid #1b1d20;
+  font-weight: 600;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+}
+
+.cm-checks li:first-child {
+  padding-top: calc(24 * var(--u));
+}
+
+.cm-checks li span {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.cm-checks li img {
+  flex: none;
+  width: calc(24 * var(--u));
+  height: calc(24 * var(--u));
+}
+
+.cm-rows {
+  margin-top: calc(40 * var(--u));
+}
+
+.cm-row {
+  display: flex;
+  align-items: center;
+  gap: calc(24 * var(--u));
+  padding: calc(4 * var(--u)) calc(24 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u));
+  border-bottom: 1px solid #1b1d20;
+}
+
+.cm-media {
+  position: relative;
+  flex: none;
+  width: calc(194 * var(--u));
+  height: calc(194 * var(--u));
+  overflow: hidden;
+  background: #d9d9d9;
+}
+
+.cm-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cm-crop {
+  position: absolute;
+  max-width: none;
+}
+
+.cm-text {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--u));
+  width: calc(235 * var(--u));
+  flex: none;
+  line-height: 1.3;
+}
+
+.cm-text.is-wide {
+  width: calc(339 * var(--u));
+}
+
+.cm-row-label {
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  color: #b6b6b6;
+}
+
+.cm-row-title {
+  margin: 0;
+  width: calc(325 * var(--u));
+  font-weight: 600;
+  font-size: calc(16 * var(--u));
+}
+
+.cm-text.is-wide .cm-row-title {
+  width: 100%;
+}
+
+/* The circle sits 36px left of the column, the note 40px right of it (as in the frame). */
+.cm-cta {
+  margin: calc(47 * var(--u)) 0 0 calc(-36 * var(--u));
+  display: flex;
+  align-items: center;
+  gap: calc(40 * var(--u));
+  color: inherit;
+  text-decoration: none;
+}
+
+.cm-circle {
+  position: relative;
+  flex: none;
+  width: calc(132 * var(--u));
+  height: calc(132 * var(--u));
+}
+
+.cm-circle img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cm-circle b {
+  position: absolute;
+  left: 50%;
+  top: calc(47 * var(--u));
+  transform: translateX(-50%);
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(20.8 * var(--u));
+  line-height: 0.92;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #1b1d20;
+}
+
+.cm-note {
+  font-size: calc(12 * var(--u));
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.cm-note em {
+  font-style: normal;
+  color: #e5a53e;
+}
+
+/* ---- iPhone 14 Pro mockup (design px, 133.586 x 275.036) ---- */
+.cm-media:has(.cm-phone) {
+  background: #232323;
+}
+
+.cm-phone {
+  position: absolute;
+  left: calc(30 * var(--u));
+  top: calc(18 * var(--u));
+  width: calc(133.586 * var(--u));
+  height: calc(275.036 * var(--u));
+}
+
+.cm-phone > * {
+  position: absolute;
+  display: block;
+}
+
+.ph-screenbg {
+  inset: 0.09% 1.49% 0.77% 1.57%;
+  border: calc(1.533 * var(--u)) solid #989892;
+  border-radius: calc(19.527 * var(--u));
+  background: #000000;
+  box-shadow: inset 0 0 calc(0.118 * var(--u)) calc(1.651 * var(--u)) #3f3f3f;
+}
+
+.ph-strokeout {
+  inset: 0 1.22% 0.68% 1.31%;
+  border: calc(0.236 * var(--u)) solid #1b1c16;
+  border-radius: calc(20.285 * var(--u));
+  box-shadow: inset 0 0 calc(0.118 * var(--u)) calc(0.59 * var(--u)) #77796b;
+}
+
+.ph-stroke {
+  inset: 0.09% 1.49% 0.77% 1.57%;
+  width: 96.94%;
+  height: 99.14%;
+}
+
+.ph-screen {
+  left: calc(4.46 * var(--u));
+  top: calc(4.07 * var(--u));
+  width: calc(125.144 * var(--u));
+  height: calc(270.967 * var(--u));
+  -webkit-mask: url('/assets/community/phone-mask.svg') calc(2.289 * var(--u)) calc(1.029 * var(--u)) / calc(120.637 * var(--u)) calc(263.119 * var(--u)) no-repeat;
+  mask: url('/assets/community/phone-mask.svg') calc(2.289 * var(--u)) calc(1.029 * var(--u)) / calc(120.637 * var(--u)) calc(263.119 * var(--u)) no-repeat;
+}
+
+.ph-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ph-ant--bottom { inset: 98.65% 77.92% 0.66% 20.77%; background: rgba(154, 169, 177, 0.5); }
+.ph-ant--lb { inset: 89.4% 97.28% 10.04% 1.25%; background: rgba(154, 169, 177, 0.5); }
+.ph-ant--lt { inset: 10.08% 97.22% 89.11% 1.31%; background: rgba(228, 228, 227, 0.65); }
+.ph-ant--rb { inset: 89.4% 1.17% 10.04% 97.36%; background: rgba(154, 169, 177, 0.5); }
+.ph-ant--r { inset: 10.12% 1.17% 89.11% 97.36%; background: rgba(228, 228, 227, 0.65); }
+.ph-ant--top { inset: 0 20.44% 99.32% 78.01%; background: rgba(228, 228, 227, 0.65); }
+
+.ph-speaker {
+  inset: 0.89% 42.93% 98.43% 42.83%;
+  border: calc(0.114 * var(--u)) solid #0e0e0e;
+  border-radius: calc(3.417 * var(--u));
+  background: #141414;
+  box-shadow:
+    inset calc(-0.342 * var(--u)) 0 0 0 #2a2a2a,
+    inset calc(0.342 * var(--u)) 0 0 0 #2a2a2a,
+    inset 0 0 calc(0.569 * var(--u)) calc(0.114 * var(--u)) #000;
+}
+
+.ph-btn {
+  background: #c8c9c4;
+  border: calc(0.087 * var(--u)) solid #7d7e79;
+  border-radius: calc(0.45 * var(--u));
+}
+
+.ph-btn--minus { inset: 36.7% 98.52% 55.49% 0.5%; }
+.ph-btn--plus { inset: 27.14% 98.52% 64.96% 0.5%; }
+.ph-btn--silence { inset: 19.78% 98.6% 75.97% 0.42%; }
+.ph-btn--power { inset: 29.77% 0.57% 58.33% 98.69%; box-shadow: 0 calc(0.485 * var(--u)) calc(0.485 * var(--u)) rgba(0, 0, 0, 0.25); }
+
+.ph-cam {
+  left: calc(50.9 * var(--u));
+  top: calc(9.29 * var(--u));
+  width: calc(32.728 * var(--u));
+  height: calc(8.957 * var(--u));
+  border-radius: calc(4.251 * var(--u));
+  background: #0a0a0a;
+}
+
+.ph-lens1 {
+  left: calc(74.53 * var(--u));
+  top: calc(9.29 * var(--u));
+  width: calc(9.099 * var(--u));
+  height: calc(8.957 * var(--u));
+}
+
+.ph-lens {
+  inset: 4.14% 38.97% 94.08% 57.37%;
+  opacity: 0.7;
+}
+
+.ph-lens img {
+  position: absolute;
+  left: -3.28%;
+  top: -3.27%;
+  width: 106.56%;
+  height: 106.54%;
+  max-width: none;
+}
+
+.cm-m {
+  display: none;
+}
+
+/* Phone / tablet layout (Figma 549:7687, 390px wide with 4px side padding): text, list, rows with 120px media. */
+@media (max-width: 1100px) {
+  .community {
+    --u: var(--mu);
+    flex-direction: column;
+    align-items: stretch;
+    padding: calc(56 * var(--u)) calc(4 * var(--u)) calc(24 * var(--u));
+    gap: calc(56 * var(--u));
+  }
+
+  .cm-pin {
+    position: static;
+    width: calc(354 * var(--u));
+    align-self: center;
+    gap: calc(12 * var(--u));
+  }
+
+  .cm-heading {
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+    white-space: normal;
+  }
+
+  .cm-sub {
+    font-size: calc(13 * var(--u));
+    white-space: normal;
+  }
+
+  .cm-d {
+    display: none;
+  }
+
+  .cm-m {
+    display: inline;
+  }
+
+  .cm-heading br,
+  .cm-sub br,
+  .cm-row-title br {
+    display: none;
+  }
+
+  .cm-heading .cm-m br,
+  .cm-sub .cm-m br,
+  .cm-row-title .cm-m br {
+    display: inline;
+  }
+
+  .cm-col {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .cm-label {
+    margin: 0 0 calc(8 * var(--u));
+    padding: 0 calc(16 * var(--u));
+  }
+
+  .cm-checks li {
+    padding: calc(16 * var(--u)) calc(20 * var(--u));
+  }
+
+  .cm-checks li:first-child {
+    padding-top: calc(16 * var(--u));
+  }
+
+  .cm-checks li span {
+    white-space: nowrap;
+  }
+
+  .cm-rows {
+    margin-top: calc(56 * var(--u));
+  }
+
+  .cm-row {
+    gap: calc(12 * var(--u));
+    padding: calc(4 * var(--u)) calc(24 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u));
+  }
+
+  .cm-media {
+    width: calc(120 * var(--u));
+    height: calc(120 * var(--u));
+  }
+
+  .cm-phone {
+    --u: calc(0.6186 * var(--mu));
+    left: calc(18.56 * var(--mu));
+    top: calc(11.13 * var(--mu));
+  }
+
+  .cm-text,
+  .cm-text.is-wide {
+    flex: 1;
+    width: auto;
+  }
+
+  .cm-row:nth-child(1) .cm-text {
+    width: calc(235 * var(--u));
+    flex: none;
+  }
+
+  .cm-row:nth-child(2) .cm-text {
+    width: calc(195 * var(--u));
+    flex: none;
+  }
+
+  .cm-row-label,
+  .cm-row-title,
+  .cm-text.is-wide .cm-row-title {
+    width: auto;
+    font-size: calc(14 * var(--u));
+  }
+
+  .cm-cta {
+    margin: calc(56 * var(--u)) 0 0;
+    flex-direction: column;
+    gap: calc(56 * var(--u));
+    text-align: center;
+  }
+
+  .cm-circle b {
+    font-size: calc(20.8 * var(--u));
+  }
+
+  .cm-note {
+    font-size: calc(12 * var(--u));
+  }
+}

@@ -1,0 +1,262 @@
+/* Figma 517:2205. Cards are 1463x429 design px (--u); on desktop the section
+   is one viewport tall and the stack is centred, so it can be pinned. */
+.platform {
+  --u: calc(100vw / 1512);
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.pf-stack {
+  position: relative;
+  width: calc(1463 * var(--u));
+  height: calc(457 * var(--u));
+}
+
+.pf-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(429 * var(--u));
+  display: flex;
+  align-items: center;
+  gap: calc(35 * var(--u));
+  background: #26282c;
+  overflow: hidden;
+  will-change: transform;
+}
+
+/* Card 2 lands 28 design px lower so a strip of card 1 stays visible above it. */
+.pf-card--2 {
+  top: calc(28 * var(--u));
+  box-shadow: 0 calc(-12 * var(--u)) calc(40 * var(--u)) rgba(0, 0, 0, 0.35);
+}
+
+.pf-shade {
+  position: absolute;
+  inset: 0;
+  background: #000000;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pf-photo {
+  flex: none;
+  width: calc(435 * var(--u));
+  height: calc(429 * var(--u));
+}
+
+.pf-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pf-text {
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+  padding: calc(24 * var(--u)) 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(10 * var(--u));
+}
+
+.pf-top {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(30 * var(--u));
+}
+
+.pf-heading {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pf-heading em {
+  font-weight: 400;
+  font-style: italic;
+}
+
+.pf-sub {
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #b6b6b6;
+}
+
+.pf-sub--dim {
+  color: #9f9f9f;
+  letter-spacing: calc(-0.28 * var(--u));
+}
+
+.pf-simple {
+  margin: 0;
+  font-weight: 700;
+  font-size: calc(20 * var(--u));
+  line-height: 1.3;
+  letter-spacing: calc(-0.4 * var(--u));
+}
+
+.pf-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(24 * var(--u));
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.pf-steps li {
+  display: flex;
+  align-items: center;
+  gap: calc(13 * var(--u));
+}
+
+.pf-n {
+  font-size: calc(14 * var(--u));
+  letter-spacing: calc(-0.28 * var(--u));
+  color: #9f9f9f;
+}
+
+.pf-t {
+  font-size: calc(20 * var(--u));
+  letter-spacing: calc(-0.4 * var(--u));
+}
+
+.pf-steps .is-strong .pf-t {
+  font-weight: 600;
+}
+
+@media (min-width: 1101px) {
+  /* Hidden below the fold until the scroll animation brings it up. */
+  .pf-card--2 {
+    transform: translateY(100vh);
+  }
+}
+
+.pf-m {
+  display: none;
+}
+
+/* Phone / tablet layout (Figma 549:7199): two 362px cards lying on top of each other; card 2 is 24px lower, so a strip of
+   card 1 stays visible above it. Pinned and animated like on desktop (see Platform.tsx). */
+@media (max-width: 1100px) {
+  .platform {
+    --u: var(--mu);
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .pf-stack {
+    width: calc(362 * var(--u));
+    height: auto;
+    display: grid;
+  }
+
+  .pf-card,
+  .pf-card--2 {
+    position: relative;
+    grid-area: 1 / 1;
+    top: auto;
+    height: auto;
+    align-self: start;
+    flex-direction: column;
+    align-items: stretch;
+    gap: calc(8 * var(--u));
+    border-radius: calc(16 * var(--u));
+    box-shadow: none;
+  }
+
+  .pf-card--2 {
+    margin-top: calc(24 * var(--u));
+    transform: translateY(100vh);
+    box-shadow: 0 calc(-12 * var(--u)) calc(40 * var(--u)) rgba(0, 0, 0, 0.35);
+  }
+
+  .pf-photo {
+    width: 100%;
+    height: calc(357 * var(--u));
+  }
+
+  .pf-text {
+    align-self: auto;
+    padding: calc(16 * var(--u)) calc(12 * var(--u)) calc(24 * var(--u));
+    gap: calc(16 * var(--u));
+  }
+
+  .pf-top {
+    flex: none;
+    gap: calc(8 * var(--u));
+  }
+
+  .pf-heading {
+    font-size: calc(28 * var(--u));
+    letter-spacing: calc(-0.56 * var(--u));
+    white-space: normal;
+  }
+
+  .pf-card--2 .pf-heading {
+    width: calc(249 * var(--u));
+  }
+
+  .pf-heading br {
+    display: none;
+  }
+
+  .pf-sub {
+    font-size: calc(13 * var(--u));
+    letter-spacing: calc(-0.26 * var(--u));
+    color: #9f9f9f;
+  }
+
+  .pf-simple {
+    font-size: calc(14 * var(--u));
+    letter-spacing: calc(-0.28 * var(--u));
+  }
+
+  .pf-steps {
+    gap: calc(8 * var(--u));
+    white-space: nowrap;
+  }
+
+  .pf-steps li {
+    align-items: center;
+  }
+
+  .pf-t {
+    font-size: calc(13 * var(--u));
+    letter-spacing: calc(-0.26 * var(--u));
+  }
+
+  .pf-d {
+    display: none;
+  }
+
+  .pf-m {
+    display: inline;
+  }
+}

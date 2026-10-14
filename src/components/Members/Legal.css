@@ -1,0 +1,162 @@
+/* Figma 530:5791: 1512x611 frame on #1b1d20; --u is one design pixel. */
+.lg {
+  --u: calc(100vw / 1512);
+  height: calc(611 * var(--u));
+  padding: calc(24 * var(--u)) calc(24 * var(--u)) calc(62 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: calc(60 * var(--u));
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.lg-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(24 * var(--u));
+  text-align: center;
+}
+
+.lg-heading {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.lg-heading em {
+  font-weight: 500;
+  font-style: italic;
+  color: #b07f30;
+}
+
+.lg-sub {
+  margin: 0;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #c1c1c1;
+  white-space: nowrap;
+}
+
+.lg-cards {
+  width: 100%;
+  height: calc(225 * var(--u));
+  display: flex;
+  gap: calc(8 * var(--u));
+}
+
+.lg-card {
+  flex: 1;
+  min-width: 0;
+  padding: calc(16 * var(--u));
+  border-radius: calc(16 * var(--u));
+  background: #303134;
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+}
+
+.lg-card h3 {
+  margin: 0;
+  font-weight: 700;
+  font-size: calc(18 * var(--u));
+  line-height: 1.03;
+  letter-spacing: calc(-0.36 * var(--u));
+}
+
+.lg-card p {
+  margin: 0;
+  font-size: calc(16 * var(--u));
+  line-height: 1.19;
+  letter-spacing: calc(-0.32 * var(--u));
+}
+
+.lg-card .lg-link {
+  line-height: 1.39;
+}
+
+.lg-card a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.lg-w206 {
+  width: calc(206 * var(--u));
+}
+
+.lg-w199 {
+  width: calc(199 * var(--u));
+}
+
+/* Phone / tablet layout (Figma 549:8961): centred text, then five stacked 4px-apart cards. */
+@media (max-width: 1100px) {
+  .lg {
+    --u: var(--mu);
+    height: auto;
+    justify-content: flex-start;
+    padding: calc(56 * var(--u)) calc(16 * var(--u));
+    gap: calc(24 * var(--u));
+  }
+
+  .lg-head {
+    gap: calc(16 * var(--u));
+  }
+
+  .lg-heading {
+    width: calc(310 * var(--u));
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+    white-space: normal;
+  }
+
+  .lg-sub {
+    width: calc(282 * var(--u));
+    font-size: calc(13 * var(--u));
+    color: #b6b6b6;
+    white-space: normal;
+  }
+
+  .lg-sub br,
+  .lg-card p br {
+    display: none;
+  }
+
+  .lg-card p.lg-lines br {
+    display: inline;
+  }
+
+  .lg-cards {
+    height: auto;
+    flex-direction: column;
+    gap: calc(4 * var(--u));
+  }
+
+  .lg-card {
+    flex: none;
+    min-height: calc(124 * var(--u));
+    justify-content: center;
+  }
+
+  .lg-card h3 {
+    font-size: calc(14 * var(--u));
+    letter-spacing: calc(-0.28 * var(--u));
+  }
+
+  .lg-card p {
+    font-size: calc(12 * var(--u));
+    letter-spacing: calc(-0.24 * var(--u));
+  }
+
+  .lg-w206,
+  .lg-w199 {
+    width: auto;
+  }
+}

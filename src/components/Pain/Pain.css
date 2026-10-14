@@ -1,0 +1,266 @@
+/* Figma 513:1876: 1512x900 frame, every element absolutely placed.
+   --u is one design pixel so the frame scales with the viewport width. */
+.pain {
+  --u: calc(100vw / 1512);
+  position: relative;
+  height: calc(900 * var(--u));
+  overflow: hidden;
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.pn-heading {
+  position: absolute;
+  left: calc(50 * var(--u));
+  top: calc(129 * var(--u));
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pn-sub {
+  position: absolute;
+  left: calc(50 * var(--u));
+  top: calc(179 * var(--u));
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #b6b6b6;
+  white-space: nowrap;
+}
+
+.pn-card {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(var(--y) * var(--u));
+  width: calc(343 * var(--u));
+  height: calc(300 * var(--u));
+  padding: calc(24 * var(--u));
+  border-radius: calc(16 * var(--u));
+  background: rgba(255, 255, 255, 0.09);
+  display: flex;
+}
+
+.pn-col {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(8 * var(--u));
+}
+
+.pn-top {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--u));
+}
+
+.pn-icon {
+  position: relative;
+  flex: none;
+  width: calc(var(--w) * var(--u));
+  height: calc(60 * var(--u));
+}
+
+.pn-icon--clip {
+  overflow: hidden;
+}
+
+.pn-icon img {
+  position: absolute;
+  max-width: none;
+}
+
+.pn-icon img.pn-fit-fill,
+.pn-icon img.pn-fit-cover {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pn-fit-cover {
+  object-fit: cover;
+}
+
+.pn-title {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(24 * var(--u));
+  line-height: 0.7689;
+  letter-spacing: calc(-0.48 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pn-body {
+  flex: none;
+  margin: 0;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #c1c1c1;
+  white-space: nowrap;
+}
+
+.pn-m {
+  display: none;
+}
+
+.pn-card--cta {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(16 * var(--u));
+  background: #ffffff;
+  color: #000000;
+  text-decoration: none;
+}
+
+.pn-cta-title {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(32 * var(--u));
+  line-height: 0.923;
+  letter-spacing: calc(-0.64 * var(--u));
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pn-cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #b07f30;
+}
+
+/* Phone / tablet layout (Figma 530:4840): heading, then a 2-column grid of cards, full-width white CTA at the end. */
+@media (max-width: 1100px) {
+  .pain {
+    --u: var(--mu);
+    height: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: calc(4 * var(--u));
+    row-gap: calc(4 * var(--u));
+    align-content: start;
+    padding: calc(56 * var(--u)) calc(16 * var(--u));
+  }
+
+  .pn-heading,
+  .pn-sub,
+  .pn-card {
+    position: static;
+  }
+
+  .pn-heading {
+    grid-column: 1 / -1;
+    justify-self: center;
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+    text-align: center;
+  }
+
+  .pn-sub {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(282 * var(--u));
+    margin: calc(12 * var(--u)) 0 calc(24 * var(--u));
+    font-size: calc(13 * var(--u));
+    text-align: center;
+    white-space: normal;
+  }
+
+  .pn-card {
+    width: auto;
+    height: auto;
+    padding: calc(16 * var(--u));
+    border-radius: calc(16 * var(--u));
+    align-items: flex-start;
+  }
+
+  .pn-card:nth-of-type(n + 3) {
+    height: calc(226 * var(--u));
+  }
+
+  .pn-col {
+    height: auto;
+    gap: calc(8 * var(--u));
+  }
+
+  .pn-top {
+    flex: none;
+  }
+
+  .pn-icon {
+    height: calc(40.6 * var(--u));
+    width: calc(var(--w) * 0.68 * var(--u));
+  }
+
+  .pn-title {
+    font-size: calc(20 * var(--u));
+    line-height: 0.923;
+    letter-spacing: calc(-0.4 * var(--u));
+    white-space: normal;
+  }
+
+  .pn-body {
+    font-size: calc(14 * var(--u));
+    white-space: normal;
+  }
+
+  .pn-title {
+    white-space: nowrap;
+  }
+
+  .pn-d {
+    display: none;
+  }
+
+  .pn-m {
+    display: inline;
+  }
+
+  .pn-body .pn-m {
+    white-space: nowrap;
+  }
+
+  .pn-card--cta {
+    grid-column: 1 / -1;
+    height: calc(126 * var(--u));
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(10 * var(--u));
+  }
+
+  .pn-cta-title {
+    font-size: calc(26 * var(--u));
+    letter-spacing: calc(-0.52 * var(--u));
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .pn-cta-icon {
+    flex: none;
+    padding: calc(9 * var(--u));
+    border-radius: calc(9.65 * var(--u));
+  }
+
+  .pn-cta-icon .arrow-icon {
+    --u: calc(0.8 * var(--mu));
+  }
+}

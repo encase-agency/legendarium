@@ -1,0 +1,57 @@
+:root {
+  color-scheme: dark;
+  /* One design pixel of the 390px mobile layout. Phones scale with the screen width; tablets (up to 1100px) show
+     the same layout, capped so it stays a comfortable column instead of stretching. */
+  --mu: min(calc(100vw / 390), 1.45px);
+  font: 16px/1.5 system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Nothing may widen the page: a decorative image sticking out by a few px made the whole screen shift sideways.
+   "clip" (unlike "hidden") does not break pinned / sticky blocks. */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: #0a0a0f;
+  color: #f3f4f6;
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+}
+
+/* Tablets (up to 1100px): the phone layout stays a centred column; each block's background is carried out to the
+   screen edges with a clipped shadow, so the side bands match the block they belong to. */
+@media (max-width: 1100px) {
+  #root > section,
+  #root > footer,
+  #root > .pin-spacer > section {
+    --edge: #1b1d20;
+    width: min(100%, calc(390 * var(--mu)));
+    margin-inline: auto;
+    box-shadow: 0 0 0 100vmax var(--edge);
+    clip-path: inset(0 -100vmax);
+  }
+
+  #root > #hero {
+    --edge: #ffffff;
+  }
+
+  #root > #future,
+  #root > #compare,
+  #root > #directions,
+  #root > #founder,
+  #root > #founder-path,
+  #root > #members,
+  #root > #footer {
+    --edge: #f4f4f4;
+  }
+}

@@ -1,0 +1,421 @@
+/* Figma 288:4609 and its states: 1512x900 frame on #1b1d20; --u is one design pixel. */
+.af {
+  --u: calc(100vw / 1512);
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  overflow-y: auto;
+  background: #1b1d20;
+  color: #ffffff;
+  cursor: auto;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  animation: af-in 0.4s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+}
+
+.af.is-closing {
+  animation: af-out 0.28s ease-in both;
+}
+
+@keyframes af-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes af-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+.af-stage {
+  min-height: max(100svh, calc(900 * var(--u)));
+  display: flex;
+  align-items: stretch;
+  gap: calc(144 * var(--u));
+  padding: calc(24 * var(--u)) calc(24 * var(--u)) calc(24 * var(--u)) calc(100 * var(--u));
+}
+
+.af-left {
+  flex: none;
+  width: calc(525 * var(--u));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(40 * var(--u));
+}
+
+.af-top {
+  display: flex;
+  flex-direction: column;
+  gap: calc(40 * var(--u));
+}
+
+.af-head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--u));
+}
+
+.af-head h3 {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+}
+
+.af-head p {
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #b6b6b6;
+}
+
+.af-fields {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--u));
+  margin-top: calc(-16 * var(--u)); /* 24px gap between text and inputs in the design */
+}
+
+.af-input {
+  width: 100%;
+  height: calc(56 * var(--u));
+  padding: calc(16 * var(--u)) calc(20 * var(--u));
+  border: 0;
+  border-radius: calc(20 * var(--u));
+  background: #272727;
+  color: #ffffff;
+  font-family: 'Onest', 'Inter Tight', system-ui, sans-serif;
+  font-size: calc(16 * var(--u));
+  line-height: 1.2;
+  outline: none;
+  caret-color: #ffffff;
+  transition: box-shadow 0.2s ease;
+}
+
+.af-input::placeholder {
+  color: #6e6e6e;
+  opacity: 1;
+}
+
+.af-input:focus-visible {
+  box-shadow: 0 0 0 1px #4a4a4a;
+}
+
+.af-actions {
+  display: flex;
+  align-items: center;
+  gap: calc(8 * var(--u));
+}
+
+.af-btn {
+  flex: none;
+  width: calc(202 * var(--u));
+  height: calc(52 * var(--u));
+  padding: calc(4 * var(--u)) calc(24 * var(--u));
+  border: 0;
+  border-radius: calc(14 * var(--u));
+  background: #313131;
+  color: #6e6e6e;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: not-allowed;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.15s ease;
+}
+
+.af-btn--on {
+  background: #ffffff;
+  color: #000000;
+  cursor: pointer;
+}
+
+.af-btn--on:hover {
+  transform: translateY(calc(-1 * var(--u)));
+}
+
+.af-btn--on:active {
+  transform: scale(0.98);
+}
+
+.af-btn--done {
+  width: calc(150 * var(--u));
+}
+
+.af-tg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(24 * var(--u));
+  border-radius: calc(14 * var(--u));
+  background: #313131;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.af-tg-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #b07f30;
+}
+
+.af-legal {
+  margin: 0;
+  font-family: 'Actor', 'Inter Tight', sans-serif;
+  font-size: calc(14 * var(--u));
+  line-height: 1.38;
+  letter-spacing: calc(-0.28 * var(--u));
+}
+
+.af-photo {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: calc(20 * var(--u));
+  background: #d9d9d9;
+}
+
+.af-photo > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.af-close {
+  position: absolute;
+  right: calc(50 * var(--u));
+  top: calc(50 * var(--u));
+  width: calc(20 * var(--u));
+  height: calc(20 * var(--u));
+  padding: 0;
+  border: 0;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.af-close img {
+  width: calc(12.91 * var(--u));
+  height: calc(12.91 * var(--u));
+  transform: rotate(45deg);
+  transition: transform 0.25s ease;
+}
+
+.af-close:hover img {
+  transform: rotate(135deg);
+}
+
+.af-close:focus-visible {
+  outline: 1px solid #ffffff;
+  outline-offset: calc(6 * var(--u));
+}
+
+/* Error toast: bottom of the photo, as in 585:2910 */
+.af-toast {
+  position: absolute;
+  right: calc(32 * var(--u));
+  bottom: calc(32 * var(--u));
+  width: calc(345 * var(--u));
+  padding: calc(12 * var(--u));
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+  border-radius: calc(16 * var(--u));
+  background: #ffffff;
+  filter: drop-shadow(1px 9px 4px rgba(0, 0, 0, 0.14));
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.af-toast.is-on {
+  opacity: 1;
+  transform: none;
+}
+
+.af-toast-icon {
+  flex: none;
+  width: calc(46 * var(--u));
+  height: calc(46 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(12 * var(--u));
+  background: #fff3f3;
+}
+
+.af-toast-icon img {
+  width: calc(20 * var(--u));
+  height: calc(20 * var(--u));
+}
+
+.af-toast-text {
+  min-width: 0;
+}
+
+.af-toast-title {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: calc(22 * var(--u));
+  line-height: 1.12;
+  letter-spacing: calc(-0.66 * var(--u));
+  text-transform: uppercase;
+  color: #331700;
+}
+
+.af-toast-sub {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Inter Tight', sans-serif;
+  font-size: calc(14 * var(--u));
+  line-height: 1.5;
+  letter-spacing: calc(-0.7 * var(--u));
+  color: #6a7a7c;
+  white-space: nowrap;
+}
+
+/* Success screen: 290:4702 */
+.af-success {
+  min-height: max(100svh, calc(900 * var(--u)));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(24 * var(--u)) calc(100 * var(--u));
+}
+
+.af-ok {
+  width: calc(525 * var(--u));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(40 * var(--u));
+  text-align: center;
+}
+
+.af-ok > img {
+  width: calc(40 * var(--u));
+  height: calc(40 * var(--u));
+}
+
+.af-ok-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(16 * var(--u));
+}
+
+.af-ok-text h3 {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.af-ok-text p {
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #b6b6b6;
+}
+
+@media (max-width: 1100px) {
+  .af {
+    --u: 1px;
+  }
+
+  .af-stage {
+    flex-direction: column;
+    gap: 24px;
+    padding: 64px 16px 24px;
+    min-height: 100svh;
+  }
+
+  .af-left {
+    width: auto;
+  }
+
+  .af-head h3 {
+    font-size: 38px;
+  }
+
+  .af-head h3 br {
+    display: none;
+  }
+
+  .af-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .af-btn {
+    width: 100%;
+  }
+
+  .af-photo {
+    flex: none;
+    height: 360px;
+  }
+
+  .af-toast {
+    width: calc(100% - 24px);
+    bottom: 12px;
+  }
+
+  .af-close {
+    right: 20px;
+    top: 20px;
+  }
+
+  .af-success {
+    padding: 24px 16px;
+  }
+
+  .af-ok {
+    width: 100%;
+  }
+
+  .af-ok-text h3 {
+    white-space: normal;
+    font-size: 38px;
+  }
+}

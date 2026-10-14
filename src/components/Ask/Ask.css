@@ -1,0 +1,228 @@
+/* Figma 540:6301: 1512x815 frame on #1b1d20; --u is one design pixel.
+   Photos (146.75 x 133.6) are dropped along the pointer path by Ask.tsx. */
+.ask {
+  --u: calc(100vw / 1512);
+  position: relative;
+  height: calc(815 * var(--u));
+  overflow: hidden;
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  touch-action: pan-y;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ask {
+    cursor: none;
+  }
+
+  .ask-cta {
+    cursor: pointer;
+  }
+}
+
+.ask-layer,
+.ask-trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ask-layer {
+  z-index: 1;
+}
+
+.ask-trail {
+  z-index: 2;
+}
+
+.ask-photo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(146.75 * var(--u));
+  height: calc(133.616 * var(--u));
+  background: #303134;
+  box-shadow: 0 calc(10 * var(--u)) calc(30 * var(--u)) rgba(0, 0, 0, 0.35);
+  will-change: transform, opacity;
+}
+
+.ask-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.ask-sub {
+  position: absolute;
+  left: 50%;
+  top: calc(233 * var(--u));
+  transform: translateX(-50%);
+  width: calc(320 * var(--u));
+  margin: 0;
+  z-index: 3;
+  text-align: center;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  letter-spacing: calc(-0.28 * var(--u));
+  pointer-events: none;
+}
+
+.ask-heading {
+  position: absolute;
+  left: calc(50% + 0.4 * var(--u));
+  top: calc(303 * var(--u));
+  transform: translateX(-50%);
+  width: calc(862.791 * var(--u));
+  margin: 0;
+  z-index: 3;
+  text-align: center;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(123.83 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-2.4766 * var(--u));
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.ask-cta {
+  position: absolute;
+  left: calc(690 * var(--u));
+  top: calc(562 * var(--u));
+  width: calc(132 * var(--u));
+  height: calc(132 * var(--u));
+  z-index: 3;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: #1b1d20;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.ask-cta:hover {
+  transform: scale(1.07);
+}
+
+.ask-disc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ask-cta-text {
+  position: absolute;
+  left: 50%;
+  top: calc(47 * var(--u));
+  transform: translateX(-50%);
+  text-align: center;
+  white-space: pre;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: calc(20.8 * var(--u));
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.ask-cta:focus-visible {
+  outline: 2px solid #b07f30;
+  outline-offset: calc(4 * var(--u));
+}
+
+/* The pointer: a white ring with a dark dot in the middle (18px / 4px in the design). */
+.ask-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: scale 0.2s ease;
+}
+
+.ask-ring,
+.ask-dot {
+  position: absolute;
+  display: block;
+}
+
+.ask-ring {
+  left: -9px;
+  top: -9px;
+  width: 18px;
+  height: 18px;
+}
+
+.ask-dot {
+  left: -2px;
+  top: -2px;
+  width: 4px;
+  height: 4px;
+}
+
+.ask.is-cta .ask-cursor {
+  opacity: 0 !important;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .ask-cursor {
+    display: none;
+  }
+}
+
+/* Phone / tablet layout (Figma 549:9324, 390x844): no pointer; a virtual swipe runs by itself (Ask.tsx): photos drop along it,
+   first across the top, a second later across the bottom. Text and the disc stay where the frame has them. */
+@media (max-width: 1100px) {
+  .ask {
+    --u: var(--mu);
+    height: calc(844 * var(--u));
+    cursor: auto;
+  }
+
+  .ask-photo {
+    width: calc(84 * var(--mu));
+    height: calc(76.5 * var(--mu));
+    box-shadow: 0 calc(6 * var(--mu)) calc(16 * var(--mu)) rgba(0, 0, 0, 0.35);
+  }
+
+  .ask-cursor {
+    display: block;
+  }
+
+  .ask-heading br {
+    display: none;
+  }
+
+  .ask-sub {
+    top: calc(265.7 * var(--u));
+    width: calc(320 * var(--u));
+    font-size: calc(13 * var(--u));
+    letter-spacing: calc(-0.26 * var(--u));
+  }
+
+  .ask-heading {
+    left: 50%;
+    top: calc(323.5 * var(--u));
+    width: calc(336 * var(--u));
+    font-size: calc(58 * var(--u));
+    letter-spacing: calc(-1.16 * var(--u));
+  }
+
+  .ask-cta {
+    left: calc(50% - 66 * var(--u));
+    top: calc(446.1 * var(--u));
+  }
+}

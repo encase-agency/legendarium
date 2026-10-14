@@ -1,0 +1,270 @@
+/* Figma 516:2104: 1512x782 frame on #f4f4f4; --u is one design pixel. */
+.compare {
+  --u: calc(100vw / 1512);
+  position: relative;
+  height: calc(782 * var(--u));
+  overflow: hidden;
+  background: #f4f4f4;
+  color: #000000;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.cp-photo {
+  position: absolute;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cp-photo img {
+  position: absolute;
+  max-width: none;
+}
+
+.cp-photo--helmet {
+  left: calc(1126 * var(--u));
+  top: calc(-39 * var(--u));
+  width: calc(391 * var(--u));
+  height: calc(847 * var(--u));
+}
+
+.cp-photo--helmet img {
+  left: 0;
+  top: -0.05%;
+  width: 100%;
+  height: 100.09%;
+}
+
+.cp-photo--face {
+  left: calc(-89 * var(--u));
+  top: calc(84 * var(--u));
+  width: calc(519 * var(--u));
+  height: calc(733 * var(--u));
+}
+
+.cp-photo--face img {
+  left: -28.5%;
+  top: 0.07%;
+  width: 132.24%;
+  height: 99.93%;
+}
+
+.cp-title {
+  position: absolute;
+  left: 50%;
+  top: calc(244.5 * var(--u));
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(24 * var(--u));
+  white-space: nowrap;
+}
+
+.cp-heading {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+}
+
+.cp-heading em {
+  font-weight: 500;
+  font-style: italic;
+}
+
+.cp-sub {
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #7e7e7e;
+}
+
+/* Two 349px columns overflow the 707px box, exactly as in the file. */
+.cp-columns {
+  position: absolute;
+  left: calc(755.5 * var(--u));
+  top: calc(439 * var(--u));
+  width: calc(707 * var(--u));
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: flex-start;
+  gap: calc(30 * var(--u));
+}
+
+.cp-col {
+  flex: none;
+  width: calc(349 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(20 * var(--u));
+}
+
+.cp-col-title {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: calc(40 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-0.8 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cp-col--ours .cp-col-title {
+  font-weight: 500;
+  font-style: italic;
+  color: #b07f30;
+}
+
+.cp-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(20 * var(--u));
+}
+
+.cp-list li {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  font-size: calc(18 * var(--u));
+  line-height: 1.32;
+  color: #4d4d4d;
+  white-space: nowrap;
+}
+
+.cp-col--ours .cp-list li {
+  font-weight: 700;
+  color: #313131;
+}
+
+.cp-list li img {
+  flex: none;
+  width: calc(18 * var(--u));
+  height: calc(18 * var(--u));
+}
+
+.cp-route {
+  position: absolute;
+  left: 50%;
+  top: calc(593 * var(--u));
+  width: calc(132 * var(--u));
+  height: calc(132 * var(--u));
+  transform: translateX(-50%);
+  color: #1b1d20;
+  text-decoration: none;
+}
+
+.cp-route img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cp-route span {
+  position: absolute;
+  left: 50%;
+  top: calc(47 * var(--u));
+  transform: translateX(-50%);
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: calc(20.8 * var(--u));
+  line-height: 0.92;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Phone / tablet layout (Figma 530:5681, 390x883; the photos run off the bottom edge and are clipped). */
+@media (max-width: 1100px) {
+  .compare {
+    --u: var(--mu);
+    height: calc(883 * var(--u));
+  }
+
+  .cp-photo--helmet {
+    left: calc(249 * var(--u));
+    top: calc(496 * var(--u));
+    width: calc(181 * var(--u));
+    height: calc(393 * var(--u));
+  }
+
+  .cp-photo--face {
+    left: calc(-74 * var(--u));
+    top: calc(561.7 * var(--u));
+    width: calc(241 * var(--u));
+    height: calc(341 * var(--u));
+  }
+
+  .cp-title {
+    left: calc(39 * var(--u));
+    top: calc(56 * var(--u));
+    width: calc(312 * var(--u));
+    transform: none;
+    align-items: flex-start;
+    gap: calc(16 * var(--u));
+    white-space: normal;
+  }
+
+  .cp-heading {
+    width: calc(234 * var(--u));
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+  }
+
+  .cp-sub {
+    width: calc(268 * var(--u));
+    font-size: calc(13 * var(--u));
+  }
+
+  .cp-columns {
+    left: calc(38.5 * var(--u));
+    top: calc(196 * var(--u));
+    width: calc(313 * var(--u));
+    transform: none;
+    flex-direction: column;
+    gap: calc(30 * var(--u));
+  }
+
+  .cp-col {
+    width: 100%;
+    gap: calc(16 * var(--u));
+  }
+
+  .cp-col-title {
+    font-size: calc(24 * var(--u));
+    letter-spacing: calc(-0.48 * var(--u));
+  }
+
+  .cp-list {
+    gap: calc(12 * var(--u));
+  }
+
+  .cp-list li {
+    font-size: calc(14 * var(--u));
+    line-height: 1.32;
+  }
+
+  .cp-list li img {
+    width: calc(18 * var(--u));
+    height: calc(18 * var(--u));
+  }
+
+  .cp-route {
+    left: 50%;
+    top: calc(705 * var(--u));
+    width: calc(113.38 * var(--u));
+    height: calc(113.38 * var(--u));
+  }
+
+  .cp-route span {
+    top: calc(40.37 * var(--u));
+    font-size: calc(17.866 * var(--u));
+  }
+}

@@ -1,0 +1,187 @@
+/* Figma 530:2749: 1512x918 frame on #f4f4f4; --u is one design pixel. */
+.fq {
+  --u: calc(100vw / 1512);
+  position: relative;
+  height: calc(918 * var(--u));
+  overflow: hidden;
+  background: #f4f4f4;
+  color: #000000;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.fq-wave {
+  position: absolute;
+  left: calc(50% - 7.5 * var(--u));
+  top: calc(-11 * var(--u));
+  width: calc(1527 * var(--u));
+  height: calc(108 * var(--u));
+  transform: translateX(-50%);
+}
+
+.fq-photo {
+  position: absolute;
+  left: calc(691 * var(--u));
+  top: 0;
+  width: calc(637 * var(--u));
+  height: calc(769 * var(--u));
+  overflow: hidden;
+}
+
+.fq-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fq-caption {
+  position: absolute;
+  left: calc(1009 * var(--u));
+  top: calc(787 * var(--u));
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: calc(20 * var(--u));
+  line-height: 0.93;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fq-text {
+  position: absolute;
+  left: calc(50 * var(--u));
+  top: calc(521 * var(--u));
+  width: calc(611 * var(--u));
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: calc(40 * var(--u));
+}
+
+.fq-head {
+  display: flex;
+  flex-direction: column;
+  gap: calc(20 * var(--u));
+}
+
+.fq-name {
+  margin: 0;
+  font-weight: 700;
+  font-size: calc(20 * var(--u));
+  line-height: 1.3;
+  color: #b07f30;
+}
+
+.fq-heading {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fq-heading em {
+  font-weight: 500;
+  font-style: italic;
+}
+
+.fq-body {
+  width: calc(588 * var(--u));
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+}
+
+.fq-body p {
+  margin: 0 0 1.3em;
+}
+
+.fq-body p:last-child {
+  margin-bottom: 0;
+}
+
+.fq-m,
+.fq-mbr {
+  display: none;
+}
+
+/* Phone / tablet layout (Figma 549:7740, 390x1101, absolutely placed). */
+@media (max-width: 1100px) {
+  .fq {
+    --u: var(--mu);
+    height: calc(1101 * var(--u));
+  }
+
+  .fq-wave {
+    left: 0;
+    top: calc(-4 * var(--u));
+    width: 100%;
+    height: calc(56 * var(--u));
+    transform: none;
+  }
+
+  .fq-photo {
+    left: 0;
+    top: calc(505.9 * var(--u));
+    width: 100%;
+    height: calc(470 * var(--u));
+  }
+
+  .fq-photo img {
+    position: absolute;
+    left: -10.35%;
+    top: -0.94%;
+    width: 120.7%;
+    height: 100.85%;
+    max-width: none;
+    object-fit: fill;
+  }
+
+  .fq-caption {
+    left: 50%;
+    top: calc(1008.5 * var(--u));
+    font-size: calc(20 * var(--u));
+  }
+
+  .fq-d {
+    display: none;
+  }
+
+  .fq-m {
+    display: inline;
+  }
+
+  .fq-text {
+    left: 50%;
+    top: calc(112 * var(--u));
+    width: calc(358 * var(--u));
+    transform: translateX(-50%);
+    gap: calc(24 * var(--u));
+  }
+
+  .fq-head {
+    gap: calc(24 * var(--u));
+  }
+
+  .fq-name {
+    font-size: calc(16 * var(--u));
+  }
+
+  .fq-heading {
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+  }
+
+  .fq-mbr {
+    display: inline;
+  }
+
+  .fq-body {
+    width: auto;
+    font-size: calc(13 * var(--u));
+  }
+}

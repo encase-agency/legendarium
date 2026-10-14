@@ -1,0 +1,283 @@
+/* Figma 527:2522: 100px top/bottom padding, content centred; --u is one design pixel. */
+.faculties {
+  --u: calc(100vw / 1512);
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  padding: calc(100 * var(--u)) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(60 * var(--u));
+}
+
+.fc-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(24 * var(--u));
+  text-align: center;
+}
+
+.fc-heading {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fc-sub {
+  width: calc(429 * var(--u));
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #7e7e7e;
+}
+
+.fc-list {
+  width: calc(1156 * var(--u));
+  margin-top: calc(-20 * var(--u));
+}
+
+.fc-grid {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(24 * var(--u));
+  align-items: flex-start;
+}
+
+.fc-card {
+  width: calc(368 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+  overflow: hidden;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fc-card:focus-visible .fc-poster {
+  box-shadow: 0 0 0 2px #b07f30;
+}
+
+.fc-card:hover .fc-play {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.fc-card:hover .fc-more,
+.fc-card:focus-visible .fc-more {
+  text-decoration: underline;
+}
+
+.fc-poster {
+  position: relative;
+  height: calc(207 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #303134;
+  overflow: hidden;
+}
+
+.fc-poster > img:not(.fc-play) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+.fc-poster > img.is-crop {
+  inset: auto;
+  object-fit: fill;
+}
+
+.fc-play {
+  transition: transform 0.25s ease;
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 0.5 * var(--u));
+  width: calc(60 * var(--u));
+  height: calc(60 * var(--u));
+  transform: translate(-50%, -50%);
+}
+
+.fc-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: calc(18 * var(--u));
+  line-height: normal;
+}
+
+.fc-body {
+  margin: 0;
+  font-size: calc(12 * var(--u));
+  line-height: normal;
+  color: #7f7f7f;
+}
+
+.fc-hi {
+  color: #ffffff;
+}
+
+.fc-more {
+  align-self: flex-start;
+  font-size: calc(14 * var(--u));
+  line-height: normal;
+  color: #e5a53e;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* "Все факультеты" reveals one more course; height animates via grid rows. */
+.fc-extra {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.55s cubic-bezier(0.22, 0.8, 0.2, 1),
+    opacity 0.4s ease;
+}
+
+.fc-extra.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.fc-extra-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.fc-extra-row {
+  display: flex;
+  padding-top: calc(40 * var(--u));
+}
+
+.fc-extra:not(.is-open) .fc-more {
+  visibility: hidden;
+}
+
+.fc-all {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(24 * var(--u));
+  border-radius: calc(14 * var(--u));
+  background: #313131;
+  font-weight: 600;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.fc-all[aria-expanded='true'] {
+  gap: calc(16 * var(--u));
+}
+
+.fc-all-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #b07f30;
+}
+
+.fc-mbr {
+  display: none;
+}
+
+/* Phone / tablet layout (Figma 549:7539): one column of 368px video cards. */
+@media (max-width: 1100px) {
+  .faculties {
+    --u: var(--mu);
+    padding: calc(56 * var(--u)) 0;
+    gap: calc(32 * var(--u));
+    /* rolls over the pinned "Одна проверенная система" block */
+    position: relative;
+    z-index: 5;
+    margin-top: -100svh;
+    box-shadow: 0 -24px 48px rgba(0, 0, 0, 0.25);
+  }
+
+  html[data-dir-list] .faculties {
+    margin-top: 0;
+    box-shadow: none;
+  }
+
+  .fc-head {
+    gap: calc(16 * var(--u));
+  }
+
+  .fc-heading {
+    width: calc(310 * var(--u));
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+    white-space: normal;
+  }
+
+  .fc-mbr {
+    display: inline;
+  }
+
+  .fc-sub {
+    width: auto;
+    font-size: calc(13 * var(--u));
+    color: #b6b6b6;
+    white-space: nowrap;
+  }
+
+  .fc-list {
+    width: calc(368 * var(--u));
+    margin-top: 0;
+  }
+
+  .fc-grid {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: calc(24 * var(--u));
+  }
+
+  .fc-extra-row {
+    flex-direction: column;
+    gap: calc(24 * var(--u));
+    padding-top: calc(24 * var(--u));
+  }
+
+  .fc-card {
+    width: 100%;
+  }
+
+  .fc-all {
+    gap: calc(12 * var(--u));
+    height: calc(42 * var(--u));
+    padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(18 * var(--u));
+    border-radius: calc(11.26 * var(--u));
+    font-size: calc(13 * var(--u));
+  }
+
+  .fc-all[aria-expanded='true'] {
+    gap: calc(12 * var(--u));
+  }
+
+  .fc-all-icon {
+    padding: calc(9 * var(--u));
+    border-radius: calc(9.65 * var(--u));
+  }
+
+  .fc-all-icon .arrow-icon {
+    --u: calc(0.8 * var(--mu));
+  }
+}

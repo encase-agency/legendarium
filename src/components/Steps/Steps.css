@@ -1,0 +1,241 @@
+/* Figma 517:2163: 1512x829 frame on #1b1d20; --u is one design pixel. */
+.steps {
+  --u: calc(100vw / 1512);
+  position: relative;
+  height: calc(829 * var(--u));
+  overflow: hidden;
+  background: #1b1d20;
+  color: #ffffff;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.sp-heading {
+  position: absolute;
+  left: calc(50 * var(--u));
+  top: calc(129 * var(--u));
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sp-side {
+  position: absolute;
+  left: calc(1064 * var(--u));
+  top: calc(147 * var(--u));
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #b6b6b6;
+  white-space: nowrap;
+}
+
+.sp-card {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(var(--y) * var(--u));
+  width: calc(var(--w) * var(--u));
+  height: calc(218 * var(--u));
+  padding: calc(24 * var(--u));
+  border-radius: calc(16 * var(--u));
+  background: rgba(255, 255, 255, 0.09);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(8 * var(--u));
+}
+
+.sp-top {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--u));
+}
+
+.sp-num {
+  margin: 0;
+  font-weight: 700;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  letter-spacing: calc(-0.28 * var(--u));
+  color: #b07f30;
+}
+
+.sp-title {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(24 * var(--u));
+  line-height: 0.7689;
+  letter-spacing: calc(-0.48 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sp-body {
+  flex: none;
+  margin: 0;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #c1c1c1;
+  white-space: nowrap;
+}
+
+.sp-card--cta {
+  align-items: center;
+  gap: calc(16 * var(--u));
+  background: #ffffff;
+  color: #000000;
+  text-align: center;
+  text-decoration: none;
+}
+
+.sp-cta-title {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(32 * var(--u));
+  line-height: 0.923;
+  letter-spacing: calc(-0.64 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sp-cta-text {
+  margin: 0;
+  font-size: calc(12 * var(--u));
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.sp-cta-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #b07f30;
+}
+
+.sp-m {
+  display: none;
+}
+
+/* Phone / tablet layout (Figma 549:7093): centred heading, then a single column of 343px cards. */
+@media (max-width: 1100px) {
+  .steps {
+    --u: var(--mu);
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(8 * var(--u));
+    padding: calc(56 * var(--u)) calc(16 * var(--u));
+  }
+
+  .sp-heading,
+  .sp-side,
+  .sp-card {
+    position: static;
+  }
+
+  .sp-heading {
+    width: calc(310 * var(--u));
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+    text-align: center;
+    white-space: normal;
+  }
+
+  .sp-heading br {
+    display: inline;
+  }
+
+  .sp-side {
+    margin: calc(8 * var(--u)) 0 calc(24 * var(--u));
+    font-size: calc(13 * var(--u));
+    text-align: center;
+  }
+
+  .sp-d {
+    display: none;
+  }
+
+  .sp-m {
+    display: inline;
+  }
+
+  .sp-card {
+    width: calc(343 * var(--u));
+    height: auto;
+    padding: calc(16 * var(--u));
+    border-radius: calc(16 * var(--u));
+    justify-content: flex-start;
+  }
+
+  .sp-top {
+    flex: none;
+  }
+
+  .sp-title {
+    font-size: calc(24 * var(--u));
+    letter-spacing: calc(-0.48 * var(--u));
+  }
+
+  .sp-body {
+    width: calc(242 * var(--u));
+    font-size: calc(14 * var(--u));
+    white-space: normal;
+  }
+
+  .sp-body br {
+    display: none;
+  }
+
+  .sp-body .sp-m br {
+    display: inline;
+  }
+
+  .sp-card--cta {
+    height: calc(126 * var(--u));
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    align-content: center;
+    align-items: start;
+    column-gap: calc(10 * var(--u));
+    row-gap: calc(10 * var(--u));
+    text-align: left;
+  }
+
+  .sp-cta-title {
+    font-size: calc(26 * var(--u));
+    letter-spacing: calc(-0.52 * var(--u));
+  }
+
+  .sp-cta-text {
+    width: calc(208 * var(--u));
+    white-space: normal;
+  }
+
+  .sp-cta-text br {
+    display: none;
+  }
+
+  .sp-cta-icon {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    padding: calc(9 * var(--u));
+    border-radius: calc(9.65 * var(--u));
+  }
+
+  .sp-cta-icon .arrow-icon {
+    --u: calc(0.8 * var(--mu));
+  }
+}

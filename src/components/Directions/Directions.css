@@ -1,0 +1,551 @@
+/* Figma 526:2504 frame (1512x832, #f4f4f4); --u is one design pixel. The
+   section is pinned on desktop and a scroll timeline turns the cards. */
+.directions {
+  --u: calc(100vw / 1512);
+  position: relative;
+  height: max(100svh, calc(832 * var(--u)));
+  overflow: hidden;
+  background: #f4f4f4;
+  color: #000000;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.dr-stage {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: calc(832 * var(--u));
+  transform: translateY(-50%);
+}
+
+.dr-head {
+  position: absolute;
+  left: 50%;
+  top: calc(163.5 * var(--u));
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(24 * var(--u));
+  text-align: center;
+}
+
+.dr-heading {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dr-sub {
+  width: calc(429 * var(--u));
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #7e7e7e;
+}
+
+.dr-scene {
+  position: absolute;
+  inset: 0;
+  perspective: calc(1911 * var(--u));
+  perspective-origin: 50% calc(500.5 * var(--u));
+}
+
+.dr-card {
+  position: absolute;
+  left: calc(581 * var(--u));
+  top: calc(287 * var(--u));
+  width: calc(349 * var(--u));
+  height: calc(427 * var(--u));
+  border-radius: calc(20 * var(--u));
+  overflow: hidden;
+  background: #1b1d20;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.dr-card--black {
+  background: #1b1d20;
+}
+
+.dr-base {
+  position: absolute;
+  inset: 0;
+}
+
+.dr-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+.dr-photo--crop {
+  inset: auto;
+  width: 100%;
+  object-fit: fill;
+}
+
+.dr-overlay {
+  position: absolute;
+  pointer-events: none;
+}
+
+.dr-text {
+  position: absolute;
+  bottom: calc(42 * var(--u));
+  left: calc(32 * var(--u));
+  width: calc(286 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+  color: #ffffff;
+}
+
+.dr-text--dark {
+  color: #000000;
+}
+
+.dr-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: calc(24 * var(--u));
+  line-height: 1.03;
+  letter-spacing: calc(-0.48 * var(--u));
+}
+
+.dr-body {
+  margin: 0;
+  font-family: 'Actor', 'Inter Tight', sans-serif;
+  font-weight: 400;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  letter-spacing: calc(-0.28 * var(--u));
+}
+
+.dr-list {
+  position: absolute;
+  left: calc(1287.5 * var(--u));
+  top: calc(752 * var(--u));
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(24 * var(--u));
+  border-radius: calc(14 * var(--u));
+  background: #313131;
+  font-weight: 600;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #ffffff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dr-list-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #b07f30;
+}
+
+.dr-nav {
+  display: none;
+}
+
+.dr-black {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  background: #1b1d20;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- List of all directions (Figma 642:3463 desktop / 642:3703 phone): opened by "Посмотреть списком", no scroll animation ---- */
+.directions.is-list {
+  height: auto;
+  overflow: visible;
+}
+
+.directions.is-list .dr-stage,
+.directions.is-list .dr-black {
+  display: none;
+}
+
+.dl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(60 * var(--u));
+  padding: calc(90 * var(--u)) calc(100 * var(--u)) calc(62 * var(--u));
+  background: #f4f4f4;
+}
+
+.dl-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(24 * var(--u));
+  text-align: center;
+}
+
+.dl-heading {
+  margin: 0;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(50.233 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-1.0047 * var(--u));
+  text-transform: uppercase;
+  color: #000000;
+}
+
+.dl-sub {
+  width: calc(429 * var(--u));
+  margin: 0;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  color: #7e7e7e;
+}
+
+.dl-grid {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: calc(12 * var(--u));
+}
+
+.dl-card {
+  position: relative;
+  height: calc(416 * var(--u));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  border-radius: calc(16 * var(--u));
+  background: #1b1d20;
+  color: #ffffff;
+}
+
+.dl-card--dark {
+  color: #000000;
+}
+
+.dl-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dl-thumb {
+  display: none;
+}
+
+.dl-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dl-text {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(10 * var(--u));
+  padding: calc(24 * var(--u));
+}
+
+.dl-title {
+  max-width: calc(221 * var(--u));
+  margin: 0;
+  font-weight: 600;
+  font-size: calc(24 * var(--u));
+  line-height: 1.03;
+  letter-spacing: calc(-0.48 * var(--u));
+}
+
+.dl-body {
+  max-width: calc(310 * var(--u));
+  margin: 0;
+  font-family: 'Actor', 'Inter Tight', sans-serif;
+  font-weight: 400;
+  font-size: calc(14 * var(--u));
+  line-height: 1.3;
+  letter-spacing: calc(-0.28 * var(--u));
+}
+
+.dl-close {
+  align-self: flex-end;
+}
+
+.dr-list {
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.dl .dr-list {
+  position: static;
+  transform: none;
+}
+
+/* Phone / tablet layout (Figma 629:3012): the same drum (card 275.5 x 337), turned by dragging or with the arrows below it.
+   The last face is the dark card; it grows with the page scroll and the next block opens from it (see Directions.tsx). */
+@media (max-width: 1100px) {
+  .directions {
+    --u: var(--mu);
+    height: auto;
+    padding: calc(56 * var(--u)) 0;
+  }
+
+  .dr-stage {
+    position: static;
+    height: auto;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(32 * var(--u));
+  }
+
+  .dr-head {
+    position: static;
+    transform: none;
+    gap: calc(16 * var(--u));
+  }
+
+  .dr-heading {
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+  }
+
+  .dr-sub {
+    width: calc(336 * var(--u));
+    font-size: calc(13 * var(--u));
+  }
+
+  .dr-scene {
+    --u: calc(0.7894 * var(--mu));
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: calc(338 * var(--mu));
+    perspective: calc(1911 * var(--u));
+    perspective-origin: 50% 50%;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .dr-card {
+    left: calc(50% - 174.5 * var(--u));
+    top: calc(50% - 213.5 * var(--u));
+    /* clean rounded edges while the card is turned: no dark backing showing through, edges anti-aliased */
+    background: transparent;
+    outline: 1px solid transparent;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
+    -webkit-backface-visibility: hidden;
+    transform-style: flat;
+  }
+
+  .dr-card--black {
+    background: #1b1d20;
+  }
+
+  /* text as in the frame: 18.267 / 10.656 px, 22.5px from the card edge, 24px from the bottom */
+  .dr-text {
+    left: calc(28.5 * var(--u));
+    bottom: calc(30.4 * var(--u));
+    width: calc(275.8 * var(--u));
+    gap: calc(9.6 * var(--u));
+  }
+
+  .dr-title {
+    font-size: calc(23.14 * var(--u));
+    letter-spacing: calc(-0.463 * var(--u));
+  }
+
+  .dr-body {
+    font-size: calc(13.5 * var(--u));
+    letter-spacing: calc(-0.27 * var(--u));
+  }
+
+  .dr-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(32 * var(--mu));
+    margin-top: calc(-16 * var(--mu));
+  }
+
+  /* arrows exactly as in the frame: a 34.082px box (9px padding) holding the 11.865px arrow 1.76px from the corner;
+     the right one is the same drawing turned by 180deg */
+  .dr-arrow {
+    position: relative;
+    width: calc(34.082 * var(--mu));
+    height: calc(34.082 * var(--mu));
+    padding: 0;
+    border: 0;
+    border-radius: calc(9.649 * var(--mu));
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .dr-arrow-ico {
+    position: absolute;
+    left: calc(10.76 * var(--mu));
+    top: calc(10.76 * var(--mu));
+    width: calc(11.865 * var(--mu));
+    height: calc(11.865 * var(--mu));
+  }
+
+  .dr-arrow-ico img {
+    position: absolute;
+    display: block;
+    max-width: none;
+    left: 0;
+    top: -9.6%;
+    width: 106.77%;
+    height: 119.17%;
+  }
+
+  .dr-arrow--next .dr-arrow-ico {
+    transform: rotate(180deg);
+  }
+
+  .dr-nav[data-start='1'] .dr-arrow--prev,
+  .dr-nav[data-end='1'] .dr-arrow--next {
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  .dr-list {
+    position: static;
+    transform: none;
+    gap: calc(12 * var(--mu));
+    height: calc(42 * var(--mu));
+    padding: calc(4 * var(--mu)) calc(4 * var(--mu)) calc(4 * var(--mu)) calc(18 * var(--mu));
+    border-radius: calc(11.26 * var(--mu));
+    font-size: calc(13 * var(--mu));
+  }
+
+  .dr-list-icon {
+    padding: calc(9 * var(--mu));
+    border-radius: calc(9.65 * var(--mu));
+  }
+
+  .dr-list-icon .arrow-icon {
+    --u: calc(0.8 * var(--mu));
+  }
+
+  .dr-black {
+    --u: var(--mu);
+  }
+
+  /* the section is pinned for one more screen and the next block rolls over it */
+  .directions {
+    min-height: 100svh;
+    background: #f4f4f4;
+  }
+
+  .directions.is-list {
+    min-height: 0;
+  }
+
+  .dl {
+    --u: var(--mu);
+    gap: calc(32 * var(--u));
+    padding: calc(56 * var(--u)) calc(16 * var(--u));
+  }
+
+  .dl-head {
+    gap: calc(16 * var(--u));
+  }
+
+  .dl-heading {
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
+  }
+
+  .dl-sub {
+    width: calc(336 * var(--u));
+    font-size: calc(13 * var(--u));
+  }
+
+  .dl-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: calc(8 * var(--u));
+  }
+
+  .dl-card {
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: calc(10 * var(--u));
+    padding: calc(8 * var(--u));
+    border-radius: calc(16 * var(--u));
+    background: #fdfcf8;
+    color: #000000;
+  }
+
+  .dl-photo,
+  .dl-fade {
+    display: none;
+  }
+
+  .dl-thumb {
+    display: block;
+    flex: none;
+    width: calc(90 * var(--u));
+    height: calc(90 * var(--u));
+    border-radius: calc(8 * var(--u));
+    object-fit: cover;
+  }
+
+  .dl-text {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+  }
+
+  .dl-title {
+    max-width: none;
+    font-size: calc(14 * var(--u));
+    letter-spacing: calc(-0.28 * var(--u));
+  }
+
+  .dl-body {
+    max-width: none;
+    font-size: calc(12 * var(--u));
+    letter-spacing: calc(-0.24 * var(--u));
+  }
+
+  /* "Криптовалюты и трейдинг" is one line in the phone list (Figma 642:3703) */
+  .dl-card--c09 .dl-title br {
+    display: none;
+  }
+
+  .dl-close {
+    align-self: center;
+  }
+}
