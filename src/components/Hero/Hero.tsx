@@ -1,13 +1,14 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { HeroScene } from './HeroScene'
-import { HeroDebugPanel } from './HeroDebugPanel'
+import { HeroPortrait } from './HeroPortrait'
 import { useIsDebug } from '../../lib/useIsDebug'
 import { ArrowUpRightIcon, CertifiedBadge, TargetIcon } from './icons'
 import { Loader } from './Loader'
 import { INTRO_SKIPPED } from '../../lib/intro'
 import './Hero.css'
+
+const HeroScene = lazy(() => import('./HeroScene').then((module) => ({ default: module.HeroScene })))
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -38,7 +39,7 @@ export function Hero() {
 
   return (
     <section className={introActive ? 'hero hero--intro' : 'hero'} id="hero" ref={sectionRef}>
-      <HeroScene isDebug={isDebug} />
+      <Suspense fallback={<HeroPortrait />}><HeroScene isDebug={isDebug} /></Suspense>
 
       <div className="hero-ui">
         <div className="hero-scrim" aria-hidden="true" />
@@ -59,7 +60,7 @@ export function Hero() {
           Ты здесь не случайно и ты это понимаешь!
         </p>
 
-        <a className="btn btn-dark hero-cta" href="#pricing">
+        <a className="btn btn-dark hero-cta" href="#pain">
           Выйти из матрицы
           <span className="hero-cta-icon">
             <ArrowUpRightIcon />
@@ -101,7 +102,6 @@ export function Hero() {
       </div>
 
       {introActive && <Loader onDone={() => setIntroActive(false)} />}
-      <HeroDebugPanel isDebug={isDebug} />
     </section>
   )
 }

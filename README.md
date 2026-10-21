@@ -1,32 +1,48 @@
-# React + TypeScript + Vite
+# Легендариум
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React 19 + TypeScript + Vite.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm ci
+npm run dev -- --host 127.0.0.1
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Проверки: `npm test`, `npm run lint`, `npm run build`. Просмотр сборки: `npm run preview -- --host 127.0.0.1`.
+
+## Настройки
+
+Скопируйте `.env.example` в `.env.local` и заполните утверждённые значения. После изменения настроек перезапустите сервер или пересоберите сайт. Значения `VITE_*` публичны: секреты и API-ключи в них не помещать.
+
+- Оплата: две разные опубликованные страницы GetCourse. Покупатель вводит данные в GetCourse; API-ключ на сайте не нужен.
+- Форма связи включается при наличии HTTPS endpoint, политики и отдельного согласия на обработку данных. Запрос: POST application/json, тело `{ "name": "...", "telegram": "...", "source": "ask-form" }`. Приёмник должен разрешать CORS с домена сайта и возвращать 2xx только при принятии заявки. Реальную доставку получателю проверяют отдельно.
+- Контакты, социальные ссылки, документы и запись лицензии задаются в конфигурации. Без значений сайт показывает недоступность и не имитирует отправку/оплату.
+- Google Analytics и Метрика загружаются после согласия и только с настроенными ID. Без ID баннер не показывается. Отзыв согласия отключает счётчики и перезагружает страницу для выгрузки сторонних обработчиков.
+- `VITE_BASE=/legendarium/` задаётся при сборке для размещения в подпапке.
+
+## Видео
+
+Проверенный локальный файл: `public/media/videos/case-danila-ai.mp4`. Каталог соответствий исходным именам: `src/components/Cases/preparedVideos.ts`. Остальные ролики пока используют Яндекс.Диск с явным сообщением об ошибке и ссылкой на источник.
+
+Подготовка надёжных локальных оригиналов (нужны системные ffmpeg/ffprobe):
+
+```sh
+python3 scripts/prepare-videos.py --source-dir /absolute/path/to/originals --jobs 2 --update-catalog
+```
+
+Исходные имена берутся из карточек сайта. Результат — MP4 H.264/AAC, yuv420p, до 1080p, 30 fps, faststart. Скрипт проверяет полную длительность и не регистрирует обрезанные файлы. ASCII-имена обходят различия нормализации кириллицы на macOS. При обновлении каталога обрабатывайте весь набор, чтобы сохранить полный список. `--public-disk` позволяет попробовать публичный источник; шесть загрузок не удалось завершить при проверке.
+
+Для отдельного хостинга: загрузите файлы из каталога в `VITE_MEDIA_BASE_URL`. Подготовленные файлы используют ASCII-имена из каталога, ещё не подготовленные — исходные. Нужны Content-Type video/mp4, Accept-Ranges bytes и HTTP 206. После размещения отдельно проверить Safari и перемотку.
+
+## Оптимизация и проверка
+
+`python3 scripts/optimize-hero.py` пересоздаёт WebP первого экрана (нужен cwebp). Оригинальные PNG сохранены. Панель `?debug=1` загружается отдельно. `?intro=0` и системное уменьшение движения пропускают заставку.
+
+Сверка нового списка: [docs/checklist-reconciliation.md](docs/checklist-reconciliation.md). Отчёт: [docs/verification.md](docs/verification.md). Недостающие данные: [docs/missing-inputs.md](docs/missing-inputs.md).
+
+## Ошибки сервера
+
+403.html и 500.html готовы. HTTP-статусы и маршрутизация 403/500/502/503/504 настраиваются на выбранном сервере. Статический preview не подтверждает эти серверные сценарии.
+
+Основания аналитики: [Google privacy controls](https://developers.google.com/tag-platform/security/guides/privacy), [управление Метрикой](https://www.yandex.ru/support/metrica/en/code/counter-spa-setup).
+
+Контакты из обновлённого списка уже встроены как публичные значения по умолчанию; пустые ENV не стирают их. Переменные VITE_TELEGRAM_URL (футер), VITE_TELEGRAM_DIRECT_URL (личная ссылка формы) и VITE_ANDREW_CONTACT_URL (бизнес-чат основной кнопки) независимы. Переход в Telegram не отправляет заявку автоматически.

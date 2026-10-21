@@ -26,6 +26,7 @@ import { Faq } from './components/Faq/Faq'
 import { Ask } from './components/Ask/Ask'
 import { Story } from './components/Story/Story'
 import { Footer } from './components/Footer/Footer'
+import { Consent } from './components/Consent/Consent'
 
 function App() {
   // In-page links (#pricing, #route, ...) jump straight to the block; sections pinned by ScrollTrigger are handled too.
@@ -70,6 +71,7 @@ function App() {
       <Ask />
       <Story />
       <Footer />
+      <Consent />
     </>
   )
 }

@@ -1,30 +1,15 @@
+import { sendLead } from './sendLead'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { scrollToSection } from '../../lib/scrollToSection'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import { createPortal } from 'react-dom'
 import './AskForm.css'
+import { siteConfig } from '../../lib/siteConfig'
+import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
 import { asset } from '../../lib/asset'
 
 const A = asset('/assets/ask-form')
-/** Where the "write directly" button leads. */
-const TELEGRAM_URL = 'https://t.me/'
-/** Set VITE_LEAD_ENDPOINT to a URL that accepts a JSON POST ({name, telegram}); without it the form only simulates a send. */
-const ENDPOINT = import.meta.env.VITE_LEAD_ENDPOINT as string | undefined
-
-async function sendLead(name: string, telegram: string) {
-  // ?formError=1 forces a failed send, to check the error toast
-  if (new URLSearchParams(window.location.search).has('formError')) throw new Error('forced')
-  if (!ENDPOINT) {
-    await new Promise((r) => setTimeout(r, 700))
-    return
-  }
-  const res = await fetch(ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, telegram, source: 'ask-form' }),
-  })
-  if (!res.ok) throw new Error(`lead ${res.status}`)
-}
+const ENDPOINT = siteConfig.leadEndpoint
 
 interface Props {
   closing: boolean
@@ -41,22 +26,15 @@ export function AskForm({ closing, onClose }: Props) {
   const [toast, setToast] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
   const toastTimer = useRef<number>(0)
-  const statusRef = useRef<Status>('idle')
-  statusRef.current = status
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const requestRef = useRef<AbortController | null>(null)
+  const doneRef = useRef<HTMLButtonElement>(null)
 
-  useEffect(() => {
-    nameRef.current?.focus()
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-        if (statusRef.current === 'success') window.setTimeout(() => scrollToSection('story'), 320)
-      }
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
-
-  useEffect(() => () => window.clearTimeout(toastTimer.current), [])
+  useEffect(() => () => {
+    window.clearTimeout(toastTimer.current)
+    requestRef.current?.abort()
+    requestRef.current = null
+  }, [])
 
   // After a successful send, closing the thank-you screen takes the visitor on to the next block.
   const close = () => {
@@ -64,27 +42,38 @@ export function AskForm({ closing, onClose }: Props) {
     if (status === 'success') window.setTimeout(() => scrollToSection('story'), 320)
   }
 
+  useDialogLifecycle(dialogRef, close, nameRef)
+  useEffect(() => { if (status === 'success') doneRef.current?.focus() }, [status])
+
   const valid = name.trim().length >= 2 && tg.trim().replace(/^@/, '').length >= 3
   const touched = name.length > 0 || tg.length > 0
+  const available = Boolean(ENDPOINT && siteConfig.documents.privacy && siteConfig.documents.personalData)
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
-    if (!valid || status === 'sending') return
+    if (!valid || requestRef.current || !ENDPOINT || !available) return
+    const controller = new AbortController()
+    requestRef.current = controller
+    const timeout = window.setTimeout(() => controller.abort(), 15000)
     setStatus('sending')
     try {
-      await sendLead(name.trim(), tg.trim())
+      await sendLead(ENDPOINT, name.trim(), tg.trim(), controller.signal)
       setStatus('success')
     } catch {
+      if (requestRef.current !== controller) return
       setStatus('idle')
       setToast(true)
       window.clearTimeout(toastTimer.current)
       toastTimer.current = window.setTimeout(() => setToast(false), 4200)
+    } finally {
+      window.clearTimeout(timeout)
+      if (requestRef.current === controller) requestRef.current = null
     }
   }
 
   // Rendered into <body>: a pinned (transformed) section would otherwise size and clip a fixed overlay and keep it under the header.
   return createPortal(
-    <div className={closing ? 'af is-closing' : 'af'} role="dialog" aria-modal="true" aria-label="Задать вопрос">
+    <div ref={dialogRef} className={closing ? 'af is-closing' : 'af'} role="dialog" aria-modal="true" aria-label="Задать вопрос">
       {status === 'success' ? (
         <div className="af-success">
           <div className="af-ok">
@@ -93,14 +82,14 @@ export function AskForm({ closing, onClose }: Props) {
               <h3>Заявка успешно принята</h3>
               <p>Свяжемся в течение рабочего дня</p>
             </div>
-            <button type="button" className="af-btn af-btn--on af-btn--done" onClick={close}>
+            <button type="button" ref={doneRef} className="af-btn af-btn--on af-btn--done" onClick={close}>
               Готово
             </button>
           </div>
         </div>
       ) : (
         <div className="af-stage">
-          <form className="af-left" onSubmit={submit} noValidate>
+          <form className="af-left" onSubmit={submit} aria-busy={status === 'sending'} noValidate>
             <div className="af-top">
               <div className="af-head">
                 <h3>
@@ -120,6 +109,7 @@ export function AskForm({ closing, onClose }: Props) {
                   className="af-input"
                   type="text"
                   name="name"
+                  aria-label="Имя"
                   placeholder="Имя"
                   autoComplete="given-name"
                   value={name}
@@ -129,6 +119,7 @@ export function AskForm({ closing, onClose }: Props) {
                   className="af-input"
                   type="text"
                   name="telegram"
+                  aria-label="Telegram"
                   placeholder="Telegram"
                   autoComplete="off"
                   autoCapitalize="none"
@@ -137,27 +128,25 @@ export function AskForm({ closing, onClose }: Props) {
                 />
               </div>
               <div className="af-actions">
-                <button type="submit" className={valid ? 'af-btn af-btn--on' : 'af-btn'} disabled={!valid || status === 'sending'}>
+                <button type="submit" className={valid && available ? 'af-btn af-btn--on' : 'af-btn'} disabled={!valid || status === 'sending' || !available}>
                   {status === 'sending' ? 'Отправляем…' : 'Отправить заявку'}
                 </button>
-                <a className="af-tg" href={TELEGRAM_URL} target="_blank" rel="noreferrer">
+                {siteConfig.socials.directTelegram && <a className="af-tg" href={siteConfig.socials.directTelegram} target="_blank" rel="noreferrer">
                   {touched ? 'Написать в Telegram' : 'Написать напрямую в Telegram'}
                   <span className="af-tg-icon">
                     <ArrowIcon src={`${A}/arrow.svg`} />
                   </span>
-                </a>
+                </a>}
               </div>
             </div>
             <p className="af-legal">
-              Нажимая кнопку, ты соглашаешься с политикой{' '}
-              <br />
-              конфиденциальности и обработкой персональных данных.
+              {!available ? 'Приём заявок временно недоступен. Настраиваем форму связи.' : <>Нажимая кнопку, ты соглашаешься с <a href={siteConfig.documents.privacy} target="_blank" rel="noreferrer">политикой конфиденциальности</a> и <a href={siteConfig.documents.personalData} target="_blank" rel="noreferrer">обработкой персональных данных</a>.</>}
             </p>
           </form>
 
           <div className="af-photo">
             <img src={`${A}/photo.jpg`} alt="" />
-            <div className={toast ? 'af-toast is-on' : 'af-toast'} role="alert" aria-live="assertive">
+            <div className={toast ? 'af-toast is-on' : 'af-toast'} role={toast ? 'alert' : undefined} aria-live="assertive" aria-hidden={!toast}>
               <span className="af-toast-icon">
                 <img src={`${A}/cross.svg`} alt="" />
               </span>

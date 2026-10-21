@@ -147,3 +147,27 @@
   font-size: 12px;
   opacity: 0.55;
 }
+
+/* Keep the caption and close control reachable on short landscape screens. */
+.vm {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-block: 80px 24px;
+}
+
+.vm-box {
+  width: min(92vw, calc(max(160px, 100dvh - 180px) * 16 / 9));
+  flex-shrink: 0;
+  margin-block: auto;
+}
+
+.vm-status {
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.vm-close { position: fixed; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vm, .vm.is-closing { animation-duration: 0.01ms; }
+}

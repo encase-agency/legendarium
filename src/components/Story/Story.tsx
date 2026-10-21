@@ -213,7 +213,7 @@ export function Story() {
                   </li>
                 ))}
               </ol>
-              <a className="sy-go" href="#join">
+              <a className="sy-go" href="#pricing">
                 <img src={`${A}/disc.svg`} alt="" />
                 <span>
                   Оставить{' '}

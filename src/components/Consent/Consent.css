@@ -1,0 +1,6 @@
+.consent { position: fixed; z-index: 10000; bottom: 52px; left: 16px; width: min(480px, calc(100vw - 32px)); padding: 20px; border: 1px solid #bbb; border-radius: 16px; color: #171717; background: #fff; font: 15px/1.4 system-ui, sans-serif; box-sizing: border-box; }
+.consent p { margin: 0 0 12px; }
+.consent div { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.consent button, .consent-settings { cursor: pointer; font: inherit; border: 1px solid #777; border-radius: 8px; background: #fff; color: #171717; padding: 10px; }
+.consent-settings { position: fixed; bottom: 10px; left: 16px; z-index: 9999; font: 12px system-ui, sans-serif; }
+.consent a { color: inherit; }

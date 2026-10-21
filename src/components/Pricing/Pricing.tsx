@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { BasicModal } from './BasicModal'
+import { siteConfig } from '../../lib/siteConfig'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
+const BasicModal = lazy(() => import('./BasicModal').then(module => ({ default: module.BasicModal })))
 import './Pricing.css'
 import { asset } from '../../lib/asset'
 
@@ -59,11 +60,11 @@ export function Pricing() {
 
   return (
     <section className="pr" id="pricing">
-      <a className="pr-pay" href="#join">
+      <a className="pr-pay" href={siteConfig.checkout.legend} aria-disabled={!siteConfig.checkout.legend} onClick={(event) => { if (!siteConfig.checkout.legend) event.preventDefault() }}>
         <span className="pr-gold" aria-hidden="true">
           <img src={`${A}/gold.jpg`} alt="" className="pr-gold-btn" />
         </span>
-        <span className="pr-pay-text">Оплатить сейчас</span>
+        <span className="pr-pay-text">{siteConfig.checkout.legend ? 'Оплатить сейчас' : 'Оплата недоступна'}</span>
       </a>
 
       <h2 className="pr-heading">Выбери уровень участия</h2>
@@ -186,7 +187,7 @@ export function Pricing() {
         </button>
       </div>
 
-      {open && <BasicModal closing={closing} onClose={closeModal} />}
+      {open && <Suspense fallback={null}><BasicModal closing={closing} onClose={closeModal} /></Suspense>}
     </section>
   )
 }

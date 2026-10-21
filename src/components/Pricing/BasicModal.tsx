@@ -1,4 +1,6 @@
-import { useEffect, useRef } from 'react'
+import { siteConfig } from '../../lib/siteConfig'
+import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
+import { useRef } from 'react'
 import { createPortal } from 'react-dom'
 import './BasicModal.css'
 import { asset } from '../../lib/asset'
@@ -22,18 +24,13 @@ interface Props {
 export function BasicModal({ closing, onClose }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null)
 
-  useEffect(() => {
-    closeRef.current?.focus()
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useDialogLifecycle(dialogRef, onClose, closeRef)
 
   // Rendered into <body>: a pinned (transformed) section would otherwise size and clip a fixed overlay and keep it under the header.
   return createPortal(
     <div
+      ref={dialogRef}
       className={closing ? 'pm is-closing' : 'pm'}
       role="dialog"
       aria-modal="true"
@@ -62,9 +59,7 @@ export function BasicModal({ closing, onClose }: Props) {
           </div>
         </div>
 
-        <a className="pm-buy" href="#join" onClick={onClose}>
-          Купить Базовый тариф
-        </a>
+        {siteConfig.checkout.basic ? <a className="pm-buy" href={siteConfig.checkout.basic}>Купить Базовый тариф</a> : <button className="pm-buy" type="button" disabled>Оплата недоступна</button>}
 
         <button ref={closeRef} type="button" className="pm-close" onClick={onClose} aria-label="Закрыть">
           <img src={`${A}/close.svg`} alt="" />

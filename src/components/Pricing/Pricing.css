@@ -640,3 +640,6 @@
     width: auto;
   }
 }
+
+.pr-pay[aria-disabled="true"] { cursor: not-allowed; opacity: .7; }
+.pr-pay[aria-disabled="true"]:hover { filter: none; }

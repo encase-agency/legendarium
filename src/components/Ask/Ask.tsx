@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-import { AskForm } from '../AskForm/AskForm'
+const AskForm = lazy(() => import('../AskForm/AskForm').then(module => ({ default: module.AskForm })))
 import './Ask.css'
 import { asset } from '../../lib/asset'
+import { siteConfig } from '../../lib/siteConfig'
 
 const A = asset('/assets/ask')
 const PHOTOS = Array.from({ length: 19 }, (_, i) => `${A}/a${String(i + 1).padStart(2, '0')}.jpg`)
@@ -72,11 +73,13 @@ export function Ask() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Photos are decoded up front so the first drop is not an empty frame.
-    PHOTOS.forEach((src) => {
-      const img = new Image()
-      img.src = src
-    })
+    // Warm the decorative photos only shortly before this lower section is visible.
+    const preloadObserver = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      PHOTOS.forEach((src) => { const image = new Image(); image.src = src })
+      preloadObserver.disconnect()
+    }, { rootMargin: '400px' })
+    preloadObserver.observe(section)
 
     let queue = shuffled()
     let tiltIdx = 0
@@ -310,6 +313,7 @@ export function Ask() {
       cta?.removeEventListener('pointerleave', leaveCta)
       gsap.ticker.remove(tick)
       ro.disconnect()
+      preloadObserver.disconnect()
       alive.forEach((a) => a.tl.kill())
       layer.querySelectorAll('.ask-photo').forEach((el) => {
         gsap.killTweensOf(el)
@@ -330,19 +334,20 @@ export function Ask() {
         Андрею
       </h2>
 
-      <button type="button" className="ask-cta" onClick={openForm}>
+      <a className="ask-cta" href={siteConfig.contact.andrewUrl} target="_blank" rel="noreferrer">
         <img className="ask-disc" src={`${A}/disc.svg`} alt="" />
         <span className="ask-cta-text">
           Написать{' '}
           <br />в Легендариум
         </span>
-      </button>
+      </a>
+      <button type="button" className="ask-form-link" onClick={openForm}>Оставить заявку</button>
 
       <div className="ask-cursor" ref={cursorRef} aria-hidden="true">
         <img className="ask-ring" src={`${A}/ring.svg`} alt="" />
         <img className="ask-dot" src={`${A}/dot.svg`} alt="" />
       </div>
-      {formOpen && <AskForm closing={closing} onClose={closeForm} />}
+      {formOpen && <Suspense fallback={null}><AskForm closing={closing} onClose={closeForm} /></Suspense>}
     </section>
   )
 }

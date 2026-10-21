@@ -1,4 +1,5 @@
-import { useEffect, useRef, type CSSProperties } from 'react'
+import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
+import { useRef, type CSSProperties } from 'react'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import type { Block, Course, Line } from './courses'
 import { createPortal } from 'react-dom'
@@ -93,19 +94,13 @@ export function CourseModal({ course, closing, onClose }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null)
   const { modal, poster } = course
 
-  useEffect(() => {
-    closeRef.current?.focus()
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useDialogLifecycle(dialogRef, onClose, closeRef)
 
   const crop = poster.crop
   // Rendered into <body>: a pinned (transformed) section would otherwise size and clip a fixed overlay and keep it under the header.
   return createPortal(
-    <div className={closing ? 'md is-closing' : 'md'} role="dialog" aria-modal="true" aria-label={modal.title.join(' ')}>
+    <div ref={dialogRef} className={closing ? 'md is-closing' : 'md'} role="dialog" aria-modal="true" aria-label={modal.title.join(' ')}>
       <div className="md-inner">
         <div className="md-left">
           <div className="md-text">
@@ -126,7 +121,7 @@ export function CourseModal({ course, closing, onClose }: Props) {
               <BlockView block={b} key={i} />
             ))}
           </div>
-          <a className="md-cta" href="#join" onClick={onClose}>
+          <a className="md-cta" href="#pricing" onClick={onClose}>
             Начать сейчас
             <span className="md-cta-icon">
               <ArrowIcon src={`${A}/arrow.svg`} />

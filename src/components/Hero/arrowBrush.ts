@@ -321,6 +321,14 @@ export class ArrowBrush {
     return path
   }
 
+  /** Idle frames need no Canvas2D redraw or GPU texture upload. */
+  hasVisibleStroke() {
+    return (this.hasPos && this.strength > 0.02) || this.autos.some((a) => {
+      const progress = (this.autoTime - a.start) / a.dur
+      return progress > 0 && progress < 1
+    })
+  }
+
   draw(ctx: CanvasRenderingContext2D, f: ArrowFrame) {
     ctx.save()
     ctx.fillStyle = '#ffffff'

@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useRef } from 'react'
+import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
 import { createPortal } from 'react-dom'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import './MenuOverlay.css'
@@ -25,16 +26,12 @@ interface Props {
 
 // Figma 291:5241: a full-screen menu; the hovered item turns gold and gets an arrow badge.
 export function MenuOverlay({ closing, onClose, onPick }: Props) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
+  useDialogLifecycle(dialogRef, onClose, closeRef)
 
   return createPortal(
-    <div className={closing ? 'mn is-closing' : 'mn'} role="dialog" aria-modal="true" aria-label="Меню">
+    <div className={closing ? 'mn is-closing' : 'mn'} role="dialog" aria-modal="true" aria-label="Меню" ref={dialogRef} tabIndex={-1}>
       <nav className="mn-list">
         {ITEMS.map((it, i) => (
           <a
@@ -54,7 +51,7 @@ export function MenuOverlay({ closing, onClose, onPick }: Props) {
           </a>
         ))}
       </nav>
-      <button type="button" className="mn-close" onClick={onClose} aria-label="Закрыть меню" autoFocus>
+      <button type="button" className="mn-close" onClick={onClose} aria-label="Закрыть меню" ref={closeRef}>
         <img src={asset('/assets/menu/close.svg')} alt="" />
       </button>
     </div>,

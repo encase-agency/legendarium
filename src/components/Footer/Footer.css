@@ -131,3 +131,5 @@
     transform: none;
   }
 }
+
+.ft-unavailable { color: #787878; opacity: .65; }

@@ -156,14 +156,14 @@ export function Pain() {
       <a className="pn-card pn-card--cta" href="#pricing" style={{ '--x': 1118, '--y': 541 } as CSSProperties}>
         <p className="pn-cta-title">
           <span className="pn-d">
-            Выйти
+            Выбрать направление
             <br />
-            из матрицы и вступить
-            <br />в легендариум
+            и выйти
+            <br />из матрицы
           </span>
           <span className="pn-m">
-            Выйти из матрицы
-            <br />и вступить в легендариум
+            Выбрать направление
+            <br />и выйти из матрицы
           </span>
         </p>
         <span className="pn-cta-icon">

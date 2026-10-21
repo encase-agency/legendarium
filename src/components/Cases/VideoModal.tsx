@@ -1,14 +1,19 @@
-import { useCallback, useEffect, useRef, useState, type SyntheticEvent } from 'react'
+import { useEffect, useRef, useState, type SyntheticEvent } from 'react'
 import { DISK_FOLDER } from './caseData'
 import { createPortal } from 'react-dom'
 import './VideoModal.css'
 import { asset } from '../../lib/asset'
+import { siteConfig } from '../../lib/siteConfig'
+import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
+import { preparedVideos } from './preparedVideos'
 
 const API = 'https://cloud-api.yandex.net/v1/disk/public/resources/download'
 const cache = new Map<string, string>()
 
 // Public Yandex Disk files have no stable direct URL: ask the API for a fresh one when the video is opened.
 async function resolveVideo(file: string, signal: AbortSignal, fresh = false): Promise<string> {
+  if (siteConfig.mediaBaseUrl) return `${siteConfig.mediaBaseUrl.replace(/\/$/, '')}/${encodeURIComponent(preparedVideos[file] ?? file)}`
+  if (preparedVideos[file]) return asset(`/media/videos/${preparedVideos[file]}`)
   const hit = fresh ? undefined : cache.get(file)
   if (hit) return hit
   const url = new URL(API)
@@ -16,7 +21,8 @@ async function resolveVideo(file: string, signal: AbortSignal, fresh = false): P
   url.searchParams.set('path', `/${file}`)
   const res = await fetch(url, { signal })
   if (!res.ok) throw new Error(`Яндекс.Диск ответил ${res.status}`)
-  const { href } = (await res.json()) as { href: string }
+  const { href } = (await res.json()) as { href?: string }
+  if (!href || !href.startsWith('https://')) throw new Error('Сервис видео вернул некорректную ссылку')
   cache.set(file, href)
   return href
 }
@@ -40,53 +46,61 @@ export function VideoModal({ item, closing, onClose }: Props) {
   const [src, setSrc] = useState<string | null>(null)
   const [failed, setFailed] = useState(false)
   const [reason, setReason] = useState('')
-  const retries = useRef(0)
+  const [attempt, setAttempt] = useState(0)
   const closeRef = useRef<HTMLButtonElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const readyTimer = useRef<number>(0)
+  useDialogLifecycle(dialogRef, onClose, closeRef)
 
   useEffect(() => {
-    closeRef.current?.focus()
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
-
-  const load = useCallback(
-    (fresh: boolean, signal: AbortSignal) => {
-      resolveVideo(item.video.file, signal, fresh)
-        .then(setSrc)
-        .catch((e: Error) => {
-          if (e.name === 'AbortError') return
-          setReason(e.message)
-          setFailed(true)
-        })
-    },
-    [item],
-  )
-
-  useEffect(() => {
+    if (closing) return
     const ctrl = new AbortController()
-    retries.current = 0
     setSrc(null)
     setFailed(false)
     setReason('')
-    load(false, ctrl.signal)
-    return () => ctrl.abort()
-  }, [item, load])
+    const deadline = window.setTimeout(() => {
+      setReason('Сервис видео не ответил вовремя. Попробуйте открыть исходный файл.')
+      setFailed(true)
+      ctrl.abort()
+    }, 15_000)
+    // Both the delayed retry and the fetch belong to this opening of the dialog.
+    const retry = window.setTimeout(() => {
+      resolveVideo(item.video.file, ctrl.signal, attempt > 0)
+        .then(url => { if (!ctrl.signal.aborted) setSrc(url) })
+        .catch((error: Error) => {
+          if (ctrl.signal.aborted) return
+          setReason(error.message)
+          setFailed(true)
+        })
+        .finally(() => window.clearTimeout(deadline))
+    }, attempt * 500)
+    return () => {
+      ctrl.abort()
+      window.clearTimeout(retry)
+      window.clearTimeout(deadline)
+    }
+  }, [item.video.file, closing, attempt])
 
-  // Disk links are short-lived and sometimes refused on the first try: ask for a fresh one twice before giving up.
-  const onVideoError = (e: SyntheticEvent<HTMLVideoElement>) => {
-    const code = e.currentTarget.error?.code
-    if (retries.current < 2) {
-      retries.current += 1
+  useEffect(() => {
+    if (!src || closing) return
+    readyTimer.current = window.setTimeout(() => {
+      setReason('Видео не загрузилось вовремя. Проверьте соединение или откройте исходный файл.')
+      setFailed(true)
+    }, 25_000)
+    return () => window.clearTimeout(readyTimer.current)
+  }, [src, closing])
+
+  const onVideoError = (event: SyntheticEvent<HTMLVideoElement>) => {
+    window.clearTimeout(readyTimer.current)
+    if (closing || failed) return
+    const code = event.currentTarget.error?.code
+    // Refresh expiring Disk links. Hosted files have a stable URL and should report errors directly.
+    if (!siteConfig.mediaBaseUrl && attempt < 2) {
       setSrc(null)
-      window.setTimeout(() => load(true, new AbortController().signal), 500 * retries.current)
+      setAttempt(value => value + 1)
       return
     }
-    setReason(
-      code === 4 ? 'Яндекс.Диск не отдаёт этот файл (или браузер не поддерживает его формат)' : code === 2 ? 'ошибка сети при загрузке файла' : `код ошибки плеера ${code ?? '?'}`,
-    )
+    setReason(code === 4 ? 'Файл недоступен или его формат не поддерживается браузером' : 'Ошибка сети при загрузке видео')
     setFailed(true)
   }
 
@@ -94,11 +108,11 @@ export function VideoModal({ item, closing, onClose }: Props) {
 
   // Rendered into <body>: a pinned (transformed) section would otherwise size and clip a fixed overlay and keep it under the header.
   return createPortal(
-    <div className={closing ? 'vm is-closing' : 'vm'} role="dialog" aria-modal="true" aria-label={item.person}>
+    <div className={closing ? 'vm is-closing' : 'vm'} role="dialog" aria-modal="true" aria-label={item.person} ref={dialogRef} tabIndex={-1}>
       <button className="vm-backdrop" type="button" onClick={onClose} aria-label="Закрыть" tabIndex={-1} />
       <div className="vm-box">
         <div className="vm-screen">
-          {src && !failed && (
+          {src && !failed && !closing && (
             <video
               key={src}
               src={src}
@@ -108,16 +122,17 @@ export function VideoModal({ item, closing, onClose }: Props) {
               playsInline
               preload="metadata"
               onError={onVideoError}
+              onLoadedMetadata={() => window.clearTimeout(readyTimer.current)}
             />
           )}
           {!src && !failed && (
-            <div className="vm-status">
+            <div className="vm-status" role="status">
               <span className="vm-spinner" />
               Загружаем видео…
             </div>
           )}
           {failed && (
-            <div className="vm-status">
+            <div className="vm-status" role="status">
               Не удалось запустить видео здесь.
               {reason && <small>{reason}</small>}
               <a href={fallback} target="_blank" rel="noreferrer">
