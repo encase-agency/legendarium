@@ -1,3 +1,5 @@
+import { siteConfig } from '../../lib/siteConfig'
+import { openCookieSettings } from '../Consent/preferences'
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -10,14 +12,14 @@ const A = asset('/assets/footer')
 
 // Figma 545:6889: the footer's own frame is 1512x809, the top 121px of it show the end of the previous block,
 // which here is the real last card of the Story stack, so the footer starts right below it.
-const COLS: { title: string; w?: number; x: number; links: { label: string; href: string }[] }[] = [
+const COLS: { title: string; w?: number; x: number; links: { label: string; href?: string; action?: () => void }[] }[] = [
   {
     title: 'Информация',
     x: 50,
     links: [
-      { label: 'Dubai / ОАЭ', href: '#footer' },
-      { label: 'Legendarium@yandex.ru', href: 'mailto:Legendarium@yandex.ru' },
-      { label: '+467 874 747', href: 'tel:+467874747' },
+      { label: siteConfig.contact.location ?? 'Контакты уточняются' },
+      ...(siteConfig.contact.email ? [{ label: siteConfig.contact.email, href: `mailto:${siteConfig.contact.email}` }] : []),
+      ...(siteConfig.contact.phone ? [{ label: siteConfig.contact.phone, href: `tel:${siteConfig.contact.phone.replace(/[^+\d]/g, '')}` }] : []),
     ],
   },
   {
@@ -34,20 +36,22 @@ const COLS: { title: string; w?: number; x: number; links: { label: string; href
     title: 'Социальные сети',
     x: 482,
     links: [
-      { label: 'Instagram', href: '#' },
-      { label: 'Telegram', href: '#' },
-      { label: 'WhatsApp', href: '#' },
-      { label: 'YouTube', href: '#' },
+      { label: 'Instagram', href: siteConfig.socials.instagram },
+      { label: 'Telegram', href: siteConfig.socials.telegram },
+      { label: 'WhatsApp', href: siteConfig.socials.whatsapp },
+      { label: 'YouTube', href: siteConfig.socials.youtube },
     ],
   },
   {
     title: 'Документы',
     x: 691,
     links: [
-      { label: 'Политика конфиденциальности', href: '#' },
+      { label: 'Политика обработки ПДн', href: siteConfig.documents.privacy },
+      { label: 'Согласие на обработку ПДн', href: siteConfig.documents.personalData },
+      { label: 'Публичная оферта', href: siteConfig.documents.offer },
+      { label: 'Согласие на рассылку', href: siteConfig.documents.newsletter },
       { label: 'Правовые данные', href: '#legal' },
-      { label: 'Правила использования', href: '#' },
-      { label: 'Сookies', href: '#' },
+      { label: 'Настройки файлов cookie', action: openCookieSettings },
     ],
   },
 ]
@@ -145,7 +149,7 @@ export function Footer() {
           <ul>
             {c.links.map((l) => (
               <li key={l.label}>
-                <a href={l.href}>{l.label}</a>
+                <>{l.action ? <button type="button" onClick={l.action}>{l.label}</button> : l.href ? <a href={l.href}>{l.label}</a> : <span className="ft-unavailable" title="Информация пока недоступна">{l.label}</span>}</>
               </li>
             ))}
           </ul>

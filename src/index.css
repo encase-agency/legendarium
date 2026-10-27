@@ -17,6 +17,14 @@ body {
   overflow-x: clip;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 body {
   margin: 0;
   background: #0a0a0f;
@@ -47,11 +55,30 @@ body {
 
   #root > #future,
   #root > #compare,
-  #root > #directions,
+  #root #directions,
   #root > #founder,
   #root > #founder-path,
   #root > #members,
   #root > #footer {
     --edge: #f4f4f4;
+  }
+}
+
+/* Tablet content remains centred, while section transitions span the viewport.
+   The section clip-path still prevents horizontal page overflow. */
+@media (max-width: 1100px) {
+  #root > #future,
+  #root > #founder,
+  #root > #founder-path {
+    overflow: visible;
+  }
+
+  #root .fu-wave,
+  #root .fq-wave,
+  #root .fp-wave {
+    left: 50%;
+    width: 100vw;
+    max-width: none;
+    transform: translateX(-50%);
   }
 }

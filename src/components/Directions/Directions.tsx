@@ -132,11 +132,16 @@ export function Directions() {
     let phone = false
 
 
-    const apply = () => {
+    let dimensions = { w: 0, h: 0, u: 1 }
+    const measure = () => {
       const w = section.clientWidth
       const h = section.clientHeight
       const first = cardRefs.current[0]
       const u = (first ? first.offsetWidth : (w / 1512) * 349) / 349
+      dimensions = { w, h, u }
+    }
+    const apply = () => {
+      const { w, h, u } = dimensions
       const { p, e } = state
 
       cardRefs.current.forEach((el, i) => {
@@ -186,7 +191,10 @@ export function Directions() {
     }
 
     const mm = gsap.matchMedia()
+    const refresh = () => { measure(); apply() }
     mm.add('(min-width: 1101px)', () => {
+      phone = false
+      measure()
       apply()
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -197,19 +205,20 @@ export function Directions() {
           scrub: 0.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onRefresh: apply,
+          onRefresh: refresh,
         },
       })
       tl.to(state, { p: LAST, duration: LAST, ease: 'none', onUpdate: apply })
       tl.to(state, { e: 1, duration: 1.5, ease: 'power2.inOut', onUpdate: apply })
-      window.addEventListener('resize', apply)
-      return () => window.removeEventListener('resize', apply)
+      window.addEventListener('resize', refresh)
+      return () => window.removeEventListener('resize', refresh)
     })
 
     mm.add('(max-width: 1100px)', () => {
       phone = true
       state.p = 0
       state.e = 0
+      measure()
       apply()
 
       const scene = sceneRef.current
@@ -227,6 +236,7 @@ export function Directions() {
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
+        onRefresh: refresh,
       })
 
       const MAX = LAST - 1
@@ -241,7 +251,7 @@ export function Directions() {
       }
       stepRef.current = (dir: 1 | -1) => snap(Math.round(state.p) + dir)
 
-      const cardW = () => cardRefs.current[0]?.offsetWidth ?? 1
+      const cardW = () => Math.max(1, dimensions.u * 349)
       const onDown = (ev: PointerEvent) => {
         if (ev.pointerType === 'mouse' && ev.button !== 0) return
         dragging = true
@@ -274,7 +284,7 @@ export function Directions() {
       scene.addEventListener('pointermove', onMove)
       scene.addEventListener('pointerup', onUp)
       scene.addEventListener('pointercancel', onUp)
-      window.addEventListener('resize', apply)
+      window.addEventListener('resize', refresh)
       return () => {
         phone = false
         stepRef.current = null
@@ -284,7 +294,7 @@ export function Directions() {
         scene.removeEventListener('pointermove', onMove)
         scene.removeEventListener('pointerup', onUp)
         scene.removeEventListener('pointercancel', onUp)
-        window.removeEventListener('resize', apply)
+        window.removeEventListener('resize', refresh)
       }
     })
 

@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { CASES, type CaseData } from './caseData'
-import { VideoModal } from './VideoModal'
 import './Cases.css'
 import { asset } from '../../lib/asset'
 
 const A = asset('/assets/cases')
+
+const VideoModal = lazy(() => import('./VideoModal').then(module => ({ default: module.VideoModal })))
 
 function CaseRow({ item, onOpen }: { item: CaseData; onOpen: () => void }) {
   const onKey = (e: KeyboardEvent) => {
@@ -124,7 +125,7 @@ export function Cases() {
         ))}
       </div>
 
-      {open !== null && <VideoModal item={CASES[open]} closing={closing} onClose={close} />}
+      {open !== null && <Suspense fallback={null}><VideoModal item={CASES[open]} closing={closing} onClose={close} /></Suspense>}
     </section>
   )
 }

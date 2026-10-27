@@ -134,7 +134,7 @@
   cursor: pointer;
 }
 
-/* "Все факультеты" reveals one more course; height animates via grid rows. */
+/* Extra courses share the main grid spacing; height animates via grid rows. */
 .fc-extra {
   display: grid;
   grid-template-rows: 0fr;
@@ -156,6 +156,9 @@
 
 .fc-extra-row {
   display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: calc(24 * var(--u));
   padding-top: calc(40 * var(--u));
 }
 

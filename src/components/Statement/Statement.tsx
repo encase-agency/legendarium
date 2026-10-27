@@ -1,15 +1,22 @@
+import { useEffect, useRef } from 'react'
+import { revealOnEnter } from '../../lib/revealOnEnter'
 import './Statement.css'
 import { asset } from '../../lib/asset'
 
 // Figma 514:1923. Accent (gold italic) runs are marked with <em>; every line
 // break is explicit so the wrapping matches the design at any width.
 export function Statement() {
+  const textRef = useRef<HTMLParagraphElement>(null)
+  useEffect(() => {
+    const text = textRef.current
+    if (text) return revealOnEnter(text)
+  }, [])
   return (
     <section className="statement" id="statement">
       <img className="st-logo" src={asset('/assets/statement/logo.svg')} alt="" />
       <p className="st-caption">Легендариум</p>
 
-      <p className="st-text">
+      <p className="st-text" ref={textRef}>
         <span className="st-d">
         Дело не в тебе. <em>Дело в системе,</em>{' '}
         <br />в которой ты живёшь.{' '}

@@ -174,7 +174,7 @@ export function Community() {
           ))}
         </ul>
 
-        <a className="cm-cta" href="#join">
+        <a className="cm-cta" href="#pricing">
           <span className="cm-circle">
             <img src={`${A}/circle.svg`} alt="" />
             <b>

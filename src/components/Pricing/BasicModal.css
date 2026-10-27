@@ -265,3 +265,5 @@
     white-space: normal;
   }
 }
+
+.pm-buy:disabled { border: 0; opacity: .65; cursor: not-allowed; }

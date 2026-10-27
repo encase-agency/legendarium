@@ -1,15 +1,22 @@
+import { useEffect, useRef } from 'react'
+import { revealOnEnter } from '../../lib/revealOnEnter'
 import './Mission.css'
 import { asset } from '../../lib/asset'
 
 // Figma 530:2760: 1512x956 frame. Weights follow the spans in the file: semibold runs,
 // regular punctuation and gold medium-italic runs.
 export function Mission() {
+  const textRef = useRef<HTMLParagraphElement>(null)
+  useEffect(() => {
+    const text = textRef.current
+    if (text) return revealOnEnter(text)
+  }, [])
   return (
     <section className="ms" id="mission">
       <img className="ms-logo" src={asset('/assets/statement/logo.svg')} alt="" />
       <p className="ms-caption">Легендариум</p>
 
-      <p className="ms-text">
+      <p className="ms-text" ref={textRef}>
         <span className="ms-d">
         <b>Здесь учат тому,</b> <em className="g1">за что реально платят</em>.{' '}
         <br />

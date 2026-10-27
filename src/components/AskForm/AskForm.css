@@ -419,3 +419,5 @@
     font-size: 38px;
   }
 }
+
+.af-legal a { color: inherit; text-decoration: underline; }

@@ -1,7 +1,5 @@
+import { siteConfig } from '../../lib/siteConfig'
 import './Legal.css'
-
-const REGISTRY =
-  'https://obrnadzor.gov.ru/gosudarstvennye-uslugi-i-funkczii/gosudarstvennye-uslugi/liczenzirovanie-obrazovatelnoj-deyatelnosti/svodnyj-reestr-liczenzij/'
 
 // Figma 530:5791.
 export function Legal() {
@@ -12,10 +10,10 @@ export function Legal() {
           Легендариум работает <em>официально</em>
         </h2>
         <p className="lg-sub">
-          У проекта есть бессрочная образовательная лицензия, публичная оферта{' '}
+          Правовые документы и реквизиты проекта.{' '}
           <br />
-          и официальные реквизиты. Программа, срок доступа, порядок оплаты{' '}
-          <br />и гарантии закреплены документами.
+          Программа, срок доступа, порядок оплаты{' '}
+          <br />и гарантии необходимо проверить до оплаты.
         </p>
       </div>
 
@@ -34,14 +32,14 @@ export function Legal() {
         <article className="lg-card">
           <h3>Образовательная лицензия</h3>
           <p>
-            № Л035-01252-46/01391373. Выдана Министерством образования и науки Курской области. Бессрочная.
+            {siteConfig.license.text ?? 'Реквизиты образовательной лицензии уточняются.'}
           </p>
-          <p className="lg-link">
-            <a href={REGISTRY} target="_blank" rel="noreferrer">
+          {siteConfig.license.url && <p className="lg-link">
+            <a href={siteConfig.license.url} target="_blank" rel="noreferrer">
               Открыть официальный реестр Рособрнадзора
             </a>
             .
-          </p>
+          </p>}
         </article>
 
         <article className="lg-card">
@@ -51,6 +49,7 @@ export function Legal() {
             <br />и гарантии прописаны{' '}
             <br />в договоре. Его можно прочитать до оплаты.
           </p>
+          <p className="lg-link">{siteConfig.documents.offer ? <a href={siteConfig.documents.offer} target="_blank" rel="noreferrer">Прочитать оферту</a> : 'Оферта пока недоступна.'}</p>
         </article>
 
         <article className="lg-card">

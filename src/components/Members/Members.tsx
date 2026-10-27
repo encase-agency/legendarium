@@ -82,7 +82,7 @@ export function Members() {
         </p>
       </div>
 
-      <a className="mb-cta" href="#join">
+      <a className="mb-cta" href="#ask">
         Обсудить мою ситуацию
         <span className="mb-cta-icon">
           <ArrowIcon src={`${A}/arrow.svg`} />

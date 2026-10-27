@@ -1,8 +1,10 @@
-import { useEffect, useRef, type CSSProperties } from 'react'
+import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
+import { useRef, type CSSProperties } from 'react'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import type { Block, Course, Line } from './courses'
 import { createPortal } from 'react-dom'
 import './CourseModal.css'
+import { kinescopeEmbedUrl } from '../Cases/kinescopeVideos'
 import { asset } from '../../lib/asset'
 
 const A = asset('/assets/faculties')
@@ -93,19 +95,13 @@ export function CourseModal({ course, closing, onClose }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null)
   const { modal, poster } = course
 
-  useEffect(() => {
-    closeRef.current?.focus()
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useDialogLifecycle(dialogRef, onClose, closeRef)
 
   const crop = poster.crop
   // Rendered into <body>: a pinned (transformed) section would otherwise size and clip a fixed overlay and keep it under the header.
   return createPortal(
-    <div className={closing ? 'md is-closing' : 'md'} role="dialog" aria-modal="true" aria-label={modal.title.join(' ')}>
+    <div ref={dialogRef} className={closing ? 'md is-closing' : 'md'} role="dialog" aria-modal="true" aria-label={modal.title.join(' ')}>
       <div className="md-inner">
         <div className="md-left">
           <div className="md-text">
@@ -126,7 +122,7 @@ export function CourseModal({ course, closing, onClose }: Props) {
               <BlockView block={b} key={i} />
             ))}
           </div>
-          <a className="md-cta" href="#join" onClick={onClose}>
+          <a className="md-cta" href="#pricing" onClick={onClose}>
             Начать сейчас
             <span className="md-cta-icon">
               <ArrowIcon src={`${A}/arrow.svg`} />
@@ -136,8 +132,13 @@ export function CourseModal({ course, closing, onClose }: Props) {
 
         <div className="md-right">
           <div className={poster.black ? 'md-poster is-black' : 'md-poster'}>
-            <img
-              src={`${A}/${poster.src}`}
+            {course.video && !closing ? <iframe
+              src={kinescopeEmbedUrl(course.video.id)}
+              title={`Видео: ${modal.title.join(' ')}`}
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+              allowFullScreen
+            /> : <img
+              src={poster.src.startsWith('https://') ? poster.src : `${A}/${poster.src}`}
               alt=""
               className={crop ? 'is-crop' : undefined}
               style={
@@ -145,9 +146,9 @@ export function CourseModal({ course, closing, onClose }: Props) {
                   ? { width: `${crop.w}%`, height: `${crop.h}%`, left: `${crop.left}%`, top: `${crop.top}%` }
                   : undefined
               }
-            />
-            <img className="md-play" src={`${A}/play.svg`} alt="" />
+            />}
           </div>
+          {course.video && <a className="md-video-source" href={course.video.shareUrl} target="_blank" rel="noreferrer">Открыть видео на Kinescope</a>}
           <div className="md-mentor">
             <p className="md-mentor-name">{modal.mentor.name}</p>
             <p className="md-mentor-role">

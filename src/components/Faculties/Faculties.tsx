@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import { COURSES, type Course } from './courses'
-import { CourseModal } from './CourseModal'
 import './Faculties.css'
 import { asset } from '../../lib/asset'
+
+const CourseModal = lazy(() => import('./CourseModal').then(module => ({ default: module.CourseModal })))
 
 const A = asset('/assets/faculties')
 const VISIBLE = 6
@@ -23,13 +24,13 @@ function CourseCard({ course, onOpen, focusable = true }: { course: Course; onOp
       className="fc-card"
       role="button"
       tabIndex={focusable ? 0 : -1}
-      aria-label={`Подробнее: ${card.title}`}
+      aria-label={`Подробнее: ${course.modal.title.join(' ')}`}
       onClick={onOpen}
       onKeyDown={onKey}
     >
       <div className="fc-poster">
         <img
-          src={`${A}/${poster.src}`}
+          src={poster.src.startsWith('https://') ? poster.src : `${A}/${poster.src}`}
           alt=""
           loading="lazy"
           className={crop ? 'is-crop' : undefined}
@@ -39,7 +40,6 @@ function CourseCard({ course, onOpen, focusable = true }: { course: Course; onOp
               : undefined
           }
         />
-        <img className="fc-play" src={`${A}/play.svg`} alt="" />
       </div>
       <h3 className="fc-title" style={card.titleWeight ? { fontWeight: card.titleWeight } : undefined}>
         {card.title}
@@ -87,7 +87,7 @@ export function Faculties() {
     <section className="faculties" id="faculties">
       <div className="fc-head">
         <h2 className="fc-heading">Наши наставники</h2>
-        <p className="fc-sub">Презентационные видео наших направлений</p>
+        <p className="fc-sub">Направления обучения и наставники</p>
       </div>
 
       <div className="fc-list">
@@ -114,7 +114,7 @@ export function Faculties() {
         </span>
       </button>
 
-      {open !== null && <CourseModal course={COURSES[open]} closing={closing} onClose={closeModal} />}
+      {open !== null && <Suspense fallback={null}><CourseModal course={COURSES[open]} closing={closing} onClose={closeModal} /></Suspense>}
     </section>
   )
 }

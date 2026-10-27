@@ -112,7 +112,7 @@ export const HERO_CONFIG = {
   // aligned with the photo. openingOffsetX/Y/Scale exist only as a
   // calibration escape hatch and default to identity; never animated.
   knightHelmet: {
-    openingMaskUrl: asset('/assets/hero/new-knight-opening-mask.png'),
+    openingMaskUrl: asset('/assets/hero/optimized/new-knight-opening-mask.webp'),
     openingOffsetX: 0,
     openingOffsetY: 0,
     openingScale: 1,

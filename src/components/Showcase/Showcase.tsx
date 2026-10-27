@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowIcon } from '../shared/ArrowIcon'
-import { VideoModal, type VideoItem } from '../Cases/VideoModal'
+import type { VideoItem } from '../Cases/VideoModal'
 import './Showcase.css'
 import { asset } from '../../lib/asset'
+import { siteConfig } from '../../lib/siteConfig'
+
+const VideoModal = lazy(() => import('../Cases/VideoModal').then(module => ({ default: module.VideoModal })))
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -171,19 +174,17 @@ export function Showcase() {
 
       <div className="sc-license">
         <p className="sc-license-text">
-          Образовательная лицензия №{' '}
-          <span className="sc-nowrap">Л035-01252-46/01391373.</span> Выдана Министерством образования и науки
-          Курской области. Бессрочная.
+          {siteConfig.license.text ?? 'Реквизиты образовательной лицензии уточняются.'}
         </p>
-        <a
+        {siteConfig.license.url && <a
           className="sc-license-link"
-          href="https://obrnadzor.gov.ru/gosudarstvennye-uslugi-i-funkczii/gosudarstvennye-uslugi/liczenzirovanie-obrazovatelnoj-deyatelnosti/svodnyj-reestr-liczenzij/"
+          href={siteConfig.license.url}
           target="_blank"
           rel="noreferrer"
         >
           Проверить в реестре Рособрнадзора
           <ArrowIcon src={`${ASSETS}/arrow-license.svg`} />
-        </a>
+        </a>}
       </div>
       <a className="sc-button" href="#route">
         Как всё устроено
@@ -191,7 +192,7 @@ export function Showcase() {
           <ArrowIcon src={`${ASSETS}/arrow-button.svg`} />
         </span>
       </a>
-      {open !== null && <VideoModal item={VIDEOS[open]} closing={closing} onClose={closeVideo} />}
+      {open !== null && <Suspense fallback={null}><VideoModal item={VIDEOS[open]} closing={closing} onClose={closeVideo} /></Suspense>}
     </section>
   )
 }

@@ -1,14 +1,19 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import gsap from 'gsap'
-import { button, useControls } from 'leva'
-import { computeCoverUV } from '../../lib/coverUV'
+import type { HeroControls } from './heroControls'
+import { createMaskTexture, resizeMaskTexture } from './maskTexture'
+import { DEFAULT_HERO_CONTROLS } from './heroControls'
+
+const HeroDebugControls = lazy(() => import('./HeroDebugControls'))
+import { computePersonCoverUV } from '../../lib/personCoverUV'
 import { HERO_CONFIG } from '../../lib/heroConfig'
 import { backgroundFragmentShader, backgroundVertexShader } from './backgroundShader'
 import { intro } from '../../lib/intro'
 import { personFragmentShader, personVertexShader } from './personShader'
 import { ArrowBrush } from './arrowBrush'
 import { asset } from '../../lib/asset'
+import { HeroPortrait } from './HeroPortrait'
 
 // RGBA cutouts: person (+ headwear) opaque, background fully transparent,
 // the source JPGs' baked-in decorative background lines removed. See
@@ -16,17 +21,17 @@ import { asset } from '../../lib/asset'
 // deterministically (flat background color + connected-component
 // segmentation) without touching a single pixel of the man himself.
 const HERO_IMAGES = {
-  base: asset('/assets/hero/new-base-cutout.png'),
-  blueprint: asset('/assets/hero/new-blueprint-cutout.png'),
-  knight: asset('/assets/hero/new-knight-cutout.png'),
+  base: asset('/assets/hero/optimized/new-base-cutout.webp'),
+  blueprint: asset('/assets/hero/optimized/new-blueprint-cutout.webp'),
+  knight: asset('/assets/hero/optimized/new-knight-cutout.webp'),
 } as const
 
 /** Phone / tablet: the same cutouts, extended downwards (the whole sweater with the zipper pull from the mobile frame)
  *  and scaled to 60%: 4536x3720 -> 2722x2232. */
 const HERO_IMAGES_PHONE: Record<keyof typeof HERO_IMAGES, string> = {
-  base: asset('/assets/hero/new-base-cutout-phone.png'),
-  blueprint: asset('/assets/hero/new-blueprint-cutout-phone.png'),
-  knight: asset('/assets/hero/new-knight-cutout-phone.png'),
+  base: asset('/assets/hero/optimized/new-base-cutout-phone.webp'),
+  blueprint: asset('/assets/hero/optimized/new-blueprint-cutout-phone.webp'),
+  knight: asset('/assets/hero/optimized/new-knight-cutout-phone.webp'),
 }
 
 type HeroImageKey = keyof typeof HERO_IMAGES
@@ -119,20 +124,16 @@ const REDUCED_MOTION_TIME_SCALE = 0.03
 /** Phone / tablet layout (<= 1100px): no pointer or touch effects, the man is placed exactly as in the mobile frame. */
 const isPhoneLayout = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 1100px)').matches
 
-/**
- * Computes the single shared UV transform used for base/blueprint/knight alike.
- * Desktop: plain cover. Phone (Figma 530:4507): the 4536x2700 cutout is shown at 0.1671 of its size (eyes 88px apart,
- * centred at x=192, y=168 of the 390x594 photo area, as measured on the frame); the shoulders run into the dark strip.
- * The frame is 1.317 image heights tall, the part below the cutout is the clamped (black sweater) bottom row.
- */
-function computePersonCoverUV(imageAspect: number, containerAspect: number, phone: boolean) {
-  if (!phone) return computeCoverUV(imageAspect, containerAspect)
-  // extended phone texture (4536x3720): the same window as below, expressed in its own height
-  if (imageAspect < 1.5) return { repeatX: 0.5145, repeatY: 0.9556, offsetX: 0.2504, offsetY: 0.00215 }
-  return { repeatX: 0.5145, repeatY: 1.3167, offsetX: 0.2504, offsetY: -0.3748 }
-}
-
 export function HeroScene({ isDebug }: HeroSceneProps) {
+  const [phoneLayout, setPhoneLayout] = useState(isPhoneLayout)
+  const [failed, setFailed] = useState(false)
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 1100px)')
+    const change = () => { setReady(false); setPhoneLayout(query.matches) }
+    query.addEventListener('change', change)
+    return () => query.removeEventListener('change', change)
+  }, [])
   const mountRef = useRef<HTMLDivElement>(null)
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
   const sceneRef = useRef<THREE.Scene | null>(null)
@@ -210,107 +211,11 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     showOcclusionMask: false,
   })
 
-  const [{ image, opacity, alignmentMode, translateX, translateY, scale }, setAlignment] =
-    useControls(() => ({
-      image: {
-        value: HERO_CONFIG.alignment.image as HeroImageKey,
-        options: { Base: 'base', Blueprint: 'blueprint', Knight: 'knight' },
-      },
-      opacity: { value: HERO_CONFIG.alignment.opacity, min: 0, max: 1, step: 0.01 },
-      alignmentMode: false,
-      translateX: { value: HERO_CONFIG.alignment.translateX, min: -400, max: 400, step: 1 },
-      translateY: { value: HERO_CONFIG.alignment.translateY, min: -400, max: 400, step: 1 },
-      scale: { value: HERO_CONFIG.alignment.scale, min: 0.5, max: 1.5, step: 0.001 },
-      reset: button(() => {
-        setAlignment({ translateX: 0, translateY: 0, scale: 1, opacity: 1 })
-      }),
-    }))
-
-  const [brush] = useControls('Brush', () => ({
-    sizeVw: { value: HERO_CONFIG.brush.sizeVw, min: 4, max: 40, step: 0.5 },
-    minSizePx: { value: HERO_CONFIG.brush.minSizePx, min: 40, max: 400, step: 1 },
-    maxSizePx: { value: HERO_CONFIG.brush.maxSizePx, min: 40, max: 600, step: 1 },
-    coreFraction: { value: HERO_CONFIG.brush.coreFraction, min: 0.1, max: 0.9, step: 0.01 },
-    coreOpacity: { value: HERO_CONFIG.brush.coreOpacity, min: 0.1, max: 1, step: 0.01 },
-    featherFraction: { value: HERO_CONFIG.brush.featherFraction, min: 0, max: 0.6, step: 0.01 },
-    fadeDurationMs: { value: HERO_CONFIG.brush.fadeDurationMs, min: 200, max: 6000, step: 50 },
-    inertiaTauMs: { value: HERO_CONFIG.brush.inertiaTauMs, min: 0, max: 400, step: 5 },
-    stepSpacingPx: { value: HERO_CONFIG.brush.stepSpacingPx, min: 1, max: 40, step: 1 },
-    maxDevicePixelRatio: { value: HERO_CONFIG.brush.maxDevicePixelRatio, min: 1, max: 3, step: 0.1 },
-    maskMin: { value: HERO_CONFIG.brush.maskMin, min: 0, max: 0.9, step: 0.01 },
-    maskMax: { value: HERO_CONFIG.brush.maskMax, min: 0.1, max: 1, step: 0.01 },
-    alternateBackgroundColor: { value: HERO_CONFIG.brush.alternateBackgroundColor, label: 'Alternate background color' },
-  }))
-
-  const [autoValues] = useControls('Auto Brush', () => ({
-    autoStrokeY1: { value: HERO_CONFIG.brush.autoStrokeY[0], min: 0, max: 1, step: 0.01, label: 'Auto stroke Y 1' },
-    autoStrokeY2: { value: HERO_CONFIG.brush.autoStrokeY[1], min: 0, max: 1, step: 0.01, label: 'Auto stroke Y 2' },
-    autoStrokeY3: { value: HERO_CONFIG.brush.autoStrokeY[2], min: 0, max: 1, step: 0.01, label: 'Auto stroke Y 3' },
-    autoStrokeY4: { value: HERO_CONFIG.brush.autoStrokeY[3], min: 0, max: 1, step: 0.01, label: 'Auto stroke Y 4' },
-    autoRadiusMultiplier: { value: HERO_CONFIG.brush.autoRadiusMultiplier, min: 1, max: 2, step: 0.01 },
-    autoWobbleAmplitudePercent: { value: HERO_CONFIG.brush.autoWobbleAmplitudePercent, min: 0, max: 15, step: 0.5 },
-    autoWobbleFrequency: { value: HERO_CONFIG.brush.autoWobbleFrequency, min: 0.2, max: 5, step: 0.1 },
-    autoEdgeOvershootRadii: { value: HERO_CONFIG.brush.autoEdgeOvershootRadii, min: 0.5, max: 3, step: 0.05 },
-  }))
-
-  const [background] = useControls('Background', () => ({
-    enabled: { value: true, label: 'Show dynamic background' },
-    paused: { value: false, label: 'Freeze dynamic background' },
-    testColor: { value: false, label: 'Background test color' },
-    shapeScale: {
-      value: HERO_CONFIG.dynamicBackground.shapeScale,
-      min: 0.2,
-      max: 3,
-      step: 0.05,
-      label: 'Shape scale',
-    },
-    speed: { value: HERO_CONFIG.dynamicBackground.speed, min: 0, max: 0.3, step: 0.005, label: 'Shape speed' },
-    fillColor: { value: HERO_CONFIG.dynamicBackground.fillColor, label: 'Background fill color' },
-    fillOpacity: {
-      value: HERO_CONFIG.dynamicBackground.fillOpacity,
-      min: 0,
-      max: 1,
-      step: 0.005,
-      label: 'Background fill opacity',
-    },
-    outlineColor: { value: HERO_CONFIG.dynamicBackground.outlineColor, label: 'Background outline color' },
-    outlineOpacity: {
-      value: HERO_CONFIG.dynamicBackground.outlineOpacity,
-      min: 0,
-      max: 1,
-      step: 0.005,
-      label: 'Background outline opacity',
-    },
-    outlineThickness: {
-      value: HERO_CONFIG.dynamicBackground.outlineThickness,
-      min: 0.3,
-      max: 4,
-      step: 0.05,
-      label: 'Background outline thickness',
-    },
-    lineFrequency: {
-      value: HERO_CONFIG.dynamicBackground.lineFrequency,
-      min: 1,
-      max: 16,
-      step: 0.5,
-      label: 'Background line frequency',
-    },
-    showFillMask: { value: false, label: 'Show fill mask' },
-    showEdgeMask: { value: false, label: 'Show edge mask' },
-    distortion: { value: HERO_CONFIG.dynamicBackground.distortion, min: 0, max: 1.5, step: 0.01 },
-    cursorInfluence: { value: HERO_CONFIG.dynamicBackground.cursorInfluence, min: 0, max: 1, step: 0.01 },
-  }))
-
-  // Knight helmet: the metal mask is baked once from the real photo via
-  // edge-detection + flood-fill, calibrated here and frozen in
-  // heroConfig.ts - never animated.
-  const [knightHelmet] = useControls('Knight Helmet', () => ({
-    showHelmetMask: { value: false, label: 'Alignment mode (metal @ 50%)' },
-    showOcclusionMask: { value: false, label: 'Show person occlusion mask' },
-    openingOffsetX: { value: HERO_CONFIG.knightHelmet.openingOffsetX, min: -0.1, max: 0.1, step: 0.001 },
-    openingOffsetY: { value: HERO_CONFIG.knightHelmet.openingOffsetY, min: -0.1, max: 0.1, step: 0.001 },
-    openingScale: { value: HERO_CONFIG.knightHelmet.openingScale, min: 0.8, max: 1.2, step: 0.001 },
-  }))
+  const [controls, setControls] = useState(DEFAULT_HERO_CONTROLS)
+  const updateDebugControls = useCallback((next: HeroControls) => {
+    setControls((previous) => JSON.stringify(previous) === JSON.stringify(next) ? previous : next)
+  }, [])
+  const { image, opacity, alignmentMode, translateX, translateY, scale, brush, autoValues, background, knightHelmet } = controls
 
   // Clears path-continuity state (not the mask itself) so the next stroke
   // starts fresh instead of drawing a connecting line from wherever the
@@ -356,11 +261,6 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     autoBrushTimelineRef.current?.pause()
   }, [])
 
-  useControls('Auto Brush', () => ({
-    'Replay auto brush': button(() => handleAutoBrushReplay()),
-    'Pause auto brush': button(() => handleAutoBrushPause()),
-  }))
-
   const handleBlueprintPauseToggle = useCallback(() => {
     blueprintPausedRef.current = !blueprintPausedRef.current
     if (blueprintPausedRef.current) blueprintTweenRef.current?.pause()
@@ -370,11 +270,6 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
   const handleBlueprintShowPermanently = useCallback(() => {
     forceBlueprintRef.current = !forceBlueprintRef.current
   }, [])
-
-  useControls('Blueprint', () => ({
-    'Pause / resume blueprint loop': button(() => handleBlueprintPauseToggle()),
-    'Toggle show blueprint permanently': button(() => handleBlueprintShowPermanently()),
-  }))
 
   const getOrLoadTexture = useCallback((key: HeroImageKey): THREE.Texture | undefined => {
     const cached = texturesRef.current[key]
@@ -421,17 +316,45 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
       topMesh.position.set(align.translateX, -align.translateY, 2)
     }
 
-    renderer.render(scene, camera)
+    try {
+      renderer.render(scene, camera)
+    } catch (error) {
+      console.error('Hero rendering failed; showing the static image.', error)
+      setFailed(true)
+    }
   }, [getOrLoadTexture])
 
-  // Mount: create renderer/scene/camera/meshes and the pointer-driven mask once.
+  // Rebuild GPU resources when switching between the two calibrated layouts.
   useEffect(() => {
     const mount = mountRef.current
-    if (!mount) return
+    if (!mount || failed) return
 
     const width = mount.clientWidth
     const height = mount.clientHeight
 
+    let disposed = false
+    const fail = (error: unknown) => {
+      if (disposed) return
+      console.error('Hero graphics unavailable; showing the static image.', error)
+      setFailed(true)
+    }
+    let renderer: THREE.WebGLRenderer
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true })
+    } catch (error) {
+      fail(error)
+      return
+    }
+    renderer.debug.onShaderError = (gl, program, vertexShader, fragmentShader) => {
+      console.error('Hero shader diagnostics', {
+        program: gl.getProgramInfoLog(program),
+        vertex: gl.getShaderInfoLog(vertexShader),
+        fragment: gl.getShaderInfoLog(fragmentShader),
+      })
+      fail('Hero shader compilation failed')
+    }
+    const handleContextLost = (event: Event) => { event.preventDefault(); fail('WebGL context lost') }
+    renderer.domElement.addEventListener('webglcontextlost', handleContextLost)
     const scene = new THREE.Scene()
     const camera = new THREE.OrthographicCamera(
       -width / 2,
@@ -443,18 +366,13 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     )
     camera.position.z = 10
 
-    // preserveDrawingBuffer: the layers below only re-render on demand in
-    // principle, but the brush loop redraws every frame anyway; keeping this
-    // on avoids a blank canvas if a browser reclaims the buffer between
-    // presented frames.
-    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, alpha: isPhoneLayout() })
     renderer.setSize(width, height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.outputColorSpace = THREE.SRGBColorSpace
     // Layer 1: clean flat background, painted by the GL clear itself — no
     // mesh needed, and nothing can ever render "under" it by accident.
     // Phone: a transparent canvas on the white page, so the black strip under the jacket stays visible behind the man.
-    renderer.setClearColor(isPhoneLayout() ? 0xffffff : BACKGROUND_COLOR, isPhoneLayout() ? 0 : 1)
+    renderer.setClearColor(phoneLayout ? 0xffffff : BACKGROUND_COLOR, phoneLayout ? 0 : 1)
     mount.appendChild(renderer.domElement)
 
     const geometry = new THREE.PlaneGeometry(1, 1)
@@ -497,16 +415,18 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     maskCanvas.width = 1
     maskCanvas.height = 1
     const maskCtx = maskCanvas.getContext('2d')
-    if (!maskCtx) return
+    if (!maskCtx) {
+      fail('Canvas2D unavailable')
+      renderer.dispose()
+      renderer.domElement.remove()
+      geometry.dispose()
+      backgroundMaterial.dispose()
+      return
+    }
     maskCanvasRef.current = maskCanvas
     maskCtxRef.current = maskCtx
 
-    const maskTexture = new THREE.CanvasTexture(maskCanvas)
-    maskTexture.minFilter = THREE.LinearFilter
-    maskTexture.magFilter = THREE.LinearFilter
-    maskTexture.generateMipmaps = false
-    maskTexture.wrapS = THREE.ClampToEdgeWrapping
-    maskTexture.wrapT = THREE.ClampToEdgeWrapping
+    let maskTexture = createMaskTexture(maskCanvas)
     maskTextureRef.current = maskTexture
 
     // Layer 3-5: base / blueprint-sweep / knight-reveal, combined into one
@@ -574,8 +494,11 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     // guarded against duplicate creation. Two fully independent GSAP
     // objects - neither ever pauses, restarts, or resets the other.
     let loadedCount = 0
+    let maskLoaded = false
+    const markReady = () => { if (!disposed && loadedCount === 3 && maskLoaded) setReady(true) }
     const maybeStartLoops = () => {
       loadedCount += 1
+      markReady()
       if (loadedCount < 3) return
       if (blueprintTweenRef.current || autoBrushTimelineRef.current) return // never build twice
       // React StrictMode double-invokes this mount effect in dev: the first
@@ -625,16 +548,14 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     }
 
     const loadPersonTexture = (key: HeroImageKey) => {
-      const texture = loaderRef.current!.load((isPhoneLayout() ? HERO_IMAGES_PHONE : HERO_IMAGES)[key], () => {
+      const texture = loaderRef.current!.load((phoneLayout ? HERO_IMAGES_PHONE : HERO_IMAGES)[key], () => {
+        if (disposed) { texture.dispose(); return }
         texture.colorSpace = THREE.SRGBColorSpace
         // Defensive: this is already THREE's default, but pinned explicitly
         // so repeat/offset can never tile/duplicate the photo.
         texture.wrapS = THREE.ClampToEdgeWrapping
         texture.wrapT = THREE.ClampToEdgeWrapping
-        // No mipmaps: these large NPOT cover-fit photos are rarely minified
-        // enough to need them, and mipmap generation on a 4500px+ texture is
-        // what triggers Chromium's "offset overflows texture dimensions"
-        // copy-texture warning on some GPUs.
+        // Linear sampling preserves the cover-fit portrait without allocating a mip chain.
         texture.minFilter = THREE.LinearFilter
         texture.magFilter = THREE.LinearFilter
         texture.generateMipmaps = false
@@ -643,7 +564,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
           const { repeatX, repeatY, offsetX, offsetY } = computePersonCoverUV(
             (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height,
             currentMount.clientWidth / currentMount.clientHeight,
-            isPhoneLayout(),
+            phoneLayout,
           )
           texture.repeat.set(repeatX, repeatY)
           texture.offset.set(offsetX, offsetY)
@@ -655,7 +576,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
         const uniformKey = key === 'base' ? 'uBaseMap' : key === 'blueprint' ? 'uBlueprintMap' : 'uKnightMap'
         personMaterial.uniforms[uniformKey].value = texture
         maybeStartLoops()
-      })
+      }, undefined, fail)
       texturesRef.current[key] = texture
     }
     loadPersonTexture('base')
@@ -667,8 +588,11 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     // needed beyond the identity calibration uniforms above. Intentionally
     // not sRGB-decoded: it's a raw intensity mask, not a color photo.
     const openingMaskTexture = loaderRef.current!.load(
-      isPhoneLayout() ? asset('/assets/hero/new-knight-opening-mask-phone.png') : HERO_CONFIG.knightHelmet.openingMaskUrl,
+      phoneLayout ? asset('/assets/hero/optimized/new-knight-opening-mask-phone.webp') : HERO_CONFIG.knightHelmet.openingMaskUrl,
       () => {
+      if (disposed) { openingMaskTexture.dispose(); return }
+      maskLoaded = true
+      markReady()
       openingMaskTexture.wrapS = THREE.ClampToEdgeWrapping
       openingMaskTexture.wrapT = THREE.ClampToEdgeWrapping
       // No mipmaps: this is a hard-edged 0/255 mask sampled at 1:1-ish
@@ -677,15 +601,19 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
       openingMaskTexture.minFilter = THREE.LinearFilter
       openingMaskTexture.magFilter = THREE.LinearFilter
       openingMaskTexture.generateMipmaps = false
-      },
+      }, undefined, fail,
     )
     personMaterial.uniforms.uOpeningMask.value = openingMaskTexture
 
     const resizeMask = (w: number, h: number) => {
       const dpr = Math.min(window.devicePixelRatio, brushConfigRef.current.maxDevicePixelRatio)
       maskDprRef.current = dpr
-      maskCanvas.width = Math.max(1, Math.round(w * dpr))
-      maskCanvas.height = Math.max(1, Math.round(h * dpr))
+      const nextWidth = Math.max(1, Math.round(w * dpr))
+      const nextHeight = Math.max(1, Math.round(h * dpr))
+      if (maskCanvas.width === nextWidth && maskCanvas.height === nextHeight) return
+      maskTexture = resizeMaskTexture(maskTexture, nextWidth, nextHeight)
+      maskTextureRef.current = maskTexture
+      personMaterial.uniforms.uMaskMap.value = maskTexture
       // Resizing a canvas clears it; reset the trail state to match.
       pointerQueueRef.current = []
       lastRawPointRef.current = null
@@ -719,7 +647,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
         const { repeatX, repeatY, offsetX, offsetY } = computePersonCoverUV(
           (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height,
           aspect,
-          isPhoneLayout(),
+          phoneLayout,
         )
         texture.repeat.set(repeatX, repeatY)
         texture.offset.set(offsetX, offsetY)
@@ -730,7 +658,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
         personMaterial.uniforms.uPersonOffset.value.copy(baseTexture.offset)
       }
 
-      const overscan = isPhoneLayout() ? 1 : PERSON_OVERSCAN
+      const overscan = phoneLayout ? 1 : PERSON_OVERSCAN
       personMesh.scale.set(w * overscan, h * overscan, 1)
       backgroundMesh.scale.set(w, h, 1)
       backgroundMaterial.uniforms.uResolution.value.set(w, h)
@@ -758,7 +686,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
       const currentMount = mountRef.current
       if (!currentMount) return
       // Phones and tablets: no pointer / touch effects at all, only the arrows that fly on their own.
-      if (isPhoneLayout()) return
+      if (phoneLayout) return
 
       // Real input always wins: pause the auto-brush timeline (no jump —
       // it just freezes wherever it was) and let it re-arm after the
@@ -782,6 +710,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     }
     window.addEventListener('pointermove', handlePointerMove, { passive: true })
 
+    let maskHadStroke = false
     const animate = (time: number) => {
       rafIdRef.current = requestAnimationFrame(animate)
 
@@ -840,7 +769,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
         if (!liquidRef.current) liquidRef.current = new ArrowBrush()
         const dprNow = maskDprRef.current
         // Phone: the arrows start and end outside the screen and are a bit bigger, so they cross the whole man.
-        const phoneNow = isPhoneLayout()
+        const phoneNow = phoneLayout
         const frame = {
           w: canvas.width,
           h: canvas.height,
@@ -857,10 +786,14 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
           frame,
           !reducedMotionRef.current && intro.person >= 0.5 && !debugAutoBrushPausedRef.current,
         )
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        liquidRef.current.draw(ctx, frame)
+        const maskHasStroke = liquidRef.current.hasVisibleStroke()
+        if (maskHasStroke || maskHadStroke) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height)
+          liquidRef.current.draw(ctx, frame)
+          texture.needsUpdate = true
+        }
+        maskHadStroke = maskHasStroke
         personMaterial.uniforms.uMaskTexel.value.set(1 / Math.max(1, canvas.width), 1 / Math.max(1, canvas.height))
-        texture.needsUpdate = true
       }
 
       const backgroundCfg = backgroundConfigRef.current
@@ -871,7 +804,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
           : 1
       backgroundTimeRef.current += (dt / 1000) * motionScale
       // Phone: a calm flat backdrop, as in the mobile frame.
-      backgroundMesh.visible = backgroundCfg.enabled && !isPhoneLayout()
+      backgroundMesh.visible = backgroundCfg.enabled && !phoneLayout
       personMaterial.uniforms.uIntroAlpha.value = Math.min(1, intro.person * 1.4)
       // Parallax: the man (and, less, the backdrop) drift a few pixels against the pointer, so he seems to float in depth.
       const par = parallaxRef.current
@@ -879,7 +812,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
       const pp = lastRawPointRef.current
       let ptx = 0
       let pty = 0
-      if (!isPhoneLayout() && pp && pm && pm.clientWidth > 0 && pm.clientHeight > 0) {
+      if (!phoneLayout && pp && pm && pm.clientWidth > 0 && pm.clientHeight > 0) {
         const nx = Math.min(1, Math.max(0, pp.x / (pm.clientWidth * maskDprRef.current))) - 0.5
         const ny = Math.min(1, Math.max(0, pp.y / (pm.clientHeight * maskDprRef.current))) - 0.5
         ptx = -nx * 2 * PARALLAX_X
@@ -972,6 +905,10 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
+      disposed = true
+      renderer.domElement.removeEventListener('webglcontextlost', handleContextLost)
+      liquidRef.current = null
+      lastFrameTimeRef.current = null
       if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       visibilityObserver.disconnect()
@@ -996,7 +933,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [phoneLayout, failed])
 
   // Keep the debug flag in sync; the animation loop picks it up on the next tick.
   useEffect(() => {
@@ -1074,22 +1011,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
   // Push the latest background-shape values into the ref the animation loop reads.
   useEffect(() => {
     backgroundConfigRef.current = { ...background }
-  }, [
-    background.enabled,
-    background.paused,
-    background.testColor,
-    background.fillColor,
-    background.outlineColor,
-    background.shapeScale,
-    background.speed,
-    background.fillOpacity,
-    background.outlineOpacity,
-    background.outlineThickness,
-    background.showFillMask,
-    background.showEdgeMask,
-    background.distortion,
-    background.cursorInfluence,
-  ])
+  }, [background])
 
   // Push the latest knight-helmet alignment values into the ref the
   // animation loop reads. These are calibrated once via Alignment mode and
@@ -1110,5 +1032,11 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     knightHelmet.showOcclusionMask,
   ])
 
-  return <div ref={mountRef} className="hero-scene" />
+  return <>
+    <HeroPortrait />
+    <div ref={mountRef} className="hero-scene" style={{ opacity: ready && !failed ? 1 : 0 }} />
+    {isDebug && <Suspense fallback={null}><HeroDebugControls onChange={updateDebugControls}
+      replayBrush={handleAutoBrushReplay} pauseBrush={handleAutoBrushPause}
+      toggleBlueprint={handleBlueprintPauseToggle} showBlueprint={handleBlueprintShowPermanently} /></Suspense>}
+  </>
 }

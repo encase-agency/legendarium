@@ -4,11 +4,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import './FounderPath.css'
 import { asset } from '../../lib/asset'
+import { founderPhotoTransform } from '../../lib/founderGeometry'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const A = asset('/assets/founder')
-const FLOAT_W = 150
 const DOCK_AT = 0.995
 
 // Figma 530:2905 (1512x918). Scroll sequence: a small photo appears mid-screen right after the
@@ -44,22 +44,18 @@ export function FounderPath() {
         .to(sign, { clipPath: 'inset(0 0% 0 0)', duration: 1.7, ease: 'power1.inOut' }, '>-0.25')
 
       let docked = false
+      // This section follows normal document flow. Cache geometry after refresh,
+      // so scroll updates only write transforms and never force layout reads.
+      let target = { left: 0, documentTop: 0, width: 1, height: 1 }
+      const measure = () => {
+        const rect = slot.getBoundingClientRect()
+        target = { left: rect.left, documentTop: rect.top + window.scrollY, width: Math.max(1, rect.width), height: rect.height }
+        flt.style.width = `${target.width}px`
+        flt.style.height = `${target.height}px`
+      }
       const place = (p: number) => {
-        const vw = window.innerWidth
-        const vh = window.innerHeight
-        const target = slot.getBoundingClientRect()
-        const sw = FLOAT_W
-        const sh = (FLOAT_W * target.height) / target.width
-        // Fast growth: most of the size change happens early, then it settles into the slot.
-        const e = 1 - Math.pow(1 - p, 3)
-        const w = sw + (target.width - sw) * e
-        const h = sh + (target.height - sh) * e
-        const cx = vw / 2 + (target.left + target.width / 2 - vw / 2) * e
-        const cy = vh / 2 + (target.top + target.height / 2 - vh / 2) * e
-        flt.style.width = `${w}px`
-        flt.style.height = `${h}px`
-        flt.style.left = `${cx - w / 2}px`
-        flt.style.top = `${cy - h / 2}px`
+        const { x, y, scale } = founderPhotoTransform(p, target, { width: window.innerWidth, height: window.innerHeight, scrollY: window.scrollY })
+        flt.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`
         flt.style.opacity = String(Math.min(1, p / 0.08))
         const done = p >= DOCK_AT
         flt.style.visibility = done || p <= 0 ? 'hidden' : 'visible'
@@ -73,6 +69,7 @@ export function FounderPath() {
         }
       }
 
+      measure()
       const st = ScrollTrigger.create({
         trigger: section,
         start: 'top bottom',
@@ -80,12 +77,15 @@ export function FounderPath() {
         scrub: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => place(self.progress),
-        onRefresh: (self) => place(self.progress),
+        onRefresh: (self) => { measure(); place(self.progress) },
       })
       place(st.progress)
 
       return () => {
+        st.kill()
+        reveal.kill()
         flt.style.visibility = 'hidden'
+        flt.style.transform = ''
         photo.style.opacity = ''
       }
     })

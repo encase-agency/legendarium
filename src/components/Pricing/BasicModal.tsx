@@ -1,4 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { siteConfig } from '../../lib/siteConfig'
+import { trackAnalyticsGoal } from '../Consent/analytics'
+import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
+import { useRef } from 'react'
 import { createPortal } from 'react-dom'
 import './BasicModal.css'
 import { asset } from '../../lib/asset'
@@ -6,8 +9,8 @@ import { asset } from '../../lib/asset'
 const A = asset('/assets/pricing')
 
 const ITEMS = [
-  { on: true, text: 'Все 12+ направлений и материалы платформы' },
-  { on: true, text: 'Самостоятельное обучение' },
+  { on: true, text: 'Все 12 направлений и материалы платформы' },
+  { on: true, text: 'Доступ на месяц без обратной связи. Автопродление — по отдельному согласию' },
   { on: false, text: 'Без личных разборов с Андреем' },
   { on: false, text: 'Без дополнительных мужских программ' },
   { on: false, text: 'Без офлайн-встреч и процессной гарантии тарифа «Легенда»' },
@@ -22,18 +25,13 @@ interface Props {
 export function BasicModal({ closing, onClose }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null)
 
-  useEffect(() => {
-    closeRef.current?.focus()
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  const dialogRef = useRef<HTMLDivElement>(null)
+  useDialogLifecycle(dialogRef, onClose, closeRef)
 
   // Rendered into <body>: a pinned (transformed) section would otherwise size and clip a fixed overlay and keep it under the header.
   return createPortal(
     <div
+      ref={dialogRef}
       className={closing ? 'pm is-closing' : 'pm'}
       role="dialog"
       aria-modal="true"
@@ -46,10 +44,6 @@ export function BasicModal({ closing, onClose }: Props) {
           <div className="pm-card-in">
             <div className="pm-head">
               <p className="pm-name">Базовая подписка</p>
-              <p className="pm-price">
-                <span>5 900 ₽/ </span>
-                <small>мес</small>
-              </p>
             </div>
             <ul className="pm-list">
               {ITEMS.map((it) => (
@@ -62,9 +56,7 @@ export function BasicModal({ closing, onClose }: Props) {
           </div>
         </div>
 
-        <a className="pm-buy" href="#join" onClick={onClose}>
-          Купить Базовый тариф
-        </a>
+        <a className="pm-buy" href={siteConfig.enrollment.basic} target="_blank" rel="noreferrer" onClick={() => trackAnalyticsGoal('tariff_basic_click')}>Получить доступ</a>
 
         <button ref={closeRef} type="button" className="pm-close" onClick={onClose} aria-label="Закрыть">
           <img src={`${A}/close.svg`} alt="" />

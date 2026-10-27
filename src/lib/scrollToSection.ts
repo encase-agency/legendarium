@@ -2,7 +2,7 @@
  *  in the viewport instead of being glued to its top edge (so their content is never cut off or hidden by the header). */
 const CENTERED = new Set(['pricing'])
 
-/** Jumps straight to a section by id (no scrolling through the blocks in between). Sections pinned by ScrollTrigger
+/** Scrolls to a section by id. Sections pinned by ScrollTrigger
  *  live inside a ".pin-spacer": its natural top is used. */
 function targetTop(id: string, offset: number): number | null {
   const el = document.getElementById(id)
@@ -18,29 +18,47 @@ function targetTop(id: string, offset: number): number | null {
   return Math.max(0, Math.round(top))
 }
 
+let cancelPending: (() => void) | undefined
+
 export function scrollToSection(id: string, offset = 0) {
+  cancelPending?.()
   const top = targetTop(id, offset)
   if (top === null) return
-  window.scrollTo({ top, behavior: 'instant' })
-  // Lazy images and ScrollTrigger refreshes right after a long jump can move the layout a little: settle exactly,
-  // unless the visitor starts scrolling meanwhile.
-  let cancelled = false
+  const viewport = window
+  const behavior: ScrollBehavior = viewport.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+  let idleTimer = 0
+  let deadline = 0
+  let corrections = 0
   const cancel = () => {
-    cancelled = true
+    viewport.clearTimeout(idleTimer)
+    viewport.clearTimeout(deadline)
+    viewport.removeEventListener('scroll', scheduleSettle)
+    viewport.removeEventListener('wheel', cancel)
+    viewport.removeEventListener('touchstart', cancel)
+    viewport.removeEventListener('keydown', cancel)
+    viewport.removeEventListener('pointerdown', cancel)
+    if (cancelPending === cancel) cancelPending = undefined
   }
-  window.addEventListener('wheel', cancel, { once: true, passive: true })
-  window.addEventListener('touchstart', cancel, { once: true, passive: true })
-  window.addEventListener('keydown', cancel, { once: true })
-  for (const delay of [120, 400, 900]) {
-    window.setTimeout(() => {
-      if (cancelled) return
+  // Wait until native smooth scrolling settles. Fixed 120/400/900 ms jumps
+  // would interrupt that animation and race ScrollTrigger/lazy layout changes.
+  const scheduleSettle = () => {
+    viewport.clearTimeout(idleTimer)
+    idleTimer = viewport.setTimeout(() => {
       const again = targetTop(id, offset)
-      if (again !== null && Math.abs(again - window.scrollY) > 1) window.scrollTo({ top: again, behavior: 'instant' })
-    }, delay)
+      if (again !== null && corrections < 2 && Math.abs(again - viewport.scrollY) > 1) {
+        corrections++
+        viewport.scrollTo({ top: again, behavior })
+        scheduleSettle()
+      } else cancel()
+    }, 180)
   }
-  window.setTimeout(() => {
-    window.removeEventListener('wheel', cancel)
-    window.removeEventListener('touchstart', cancel)
-    window.removeEventListener('keydown', cancel)
-  }, 1000)
+  cancelPending = cancel
+  viewport.addEventListener('scroll', scheduleSettle, { passive: true })
+  viewport.addEventListener('wheel', cancel, { passive: true })
+  viewport.addEventListener('touchstart', cancel, { passive: true })
+  viewport.addEventListener('keydown', cancel)
+  viewport.addEventListener('pointerdown', cancel, { passive: true })
+  deadline = viewport.setTimeout(cancel, 5000)
+  viewport.scrollTo({ top, behavior })
+  scheduleSettle()
 }

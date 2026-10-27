@@ -163,3 +163,15 @@
     top: 20px;
   }
 }
+
+.mn { overscroll-behavior: contain; }
+
+.mn-close {
+  position: fixed;
+  width: max(44px, calc(20 * var(--u)));
+  height: max(44px, calc(20 * var(--u)));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mn, .mn.is-closing, .mn-item { animation-duration: 0.01ms; animation-delay: 0s; }
+}
