@@ -249,18 +249,6 @@ function Widget() {
       </div>
       <div className="sy-w-head">
         <p className="sy-w-name">Легенда</p>
-        <div className="sy-w-prices">
-          <div className="sy-w-row">
-            <p className="sy-w-old">
-              70 800 ₽<span />
-            </p>
-            <p className="sy-w-price">
-              <span>49 900 ₽/</span>
-              <small>год</small>
-            </p>
-          </div>
-          <p className="sy-w-save">Выгода 20 900 ₽ - ты платишь на 30% меньше</p>
-        </div>
       </div>
       <div className="sy-w-boxes">
         <div className="sy-w-box sy-w-inst">
@@ -278,13 +266,6 @@ function Widget() {
                   <img src={`${G}/bank-c.png`} alt="Яндекс Сплит" />
                 </span>
               </div>
-            </div>
-            <div className="sy-w-inst-r">
-              <p className="sy-w-sum">
-                <span>4 158 ₽/</span>
-                <small>мес</small>
-              </p>
-              <p className="sy-w-s sy-w-s--95">без % и переплат 140 ₽/день</p>
             </div>
           </div>
           <div className="sy-w-first">

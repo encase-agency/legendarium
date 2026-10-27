@@ -40,3 +40,13 @@ test('new checklist contacts preserve the three distinct Telegram destinations',
   assert.equal(config.contact.andrewUrl, 'https://t.me/m/DvdHAA44NjMy')
   assert.ok(config.license.url.endsWith('/106e3d18-b623-7243-d9af-9a571df66c73/'))
 })
+
+test('October 27 enrollment chats and four supplied legal documents remain distinct', () => {
+  const config = createSiteConfig({})
+  assert.equal(config.enrollment.legend, 'https://t.me/m/4VlmAiy-NDUy')
+  assert.equal(config.enrollment.basic, 'https://t.me/m/DlFOK1NJYmRi')
+  assert.notEqual(config.enrollment.legend, config.enrollment.basic)
+  const urls = [config.documents.privacy, config.documents.personalData, config.documents.offer, config.documents.newsletter]
+  assert.equal(new Set(urls).size, 4)
+  assert.ok(urls.every(url => url.startsWith('https://docs.google.com/document/d/')))
+})

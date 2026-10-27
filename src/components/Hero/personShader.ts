@@ -55,6 +55,14 @@ export const personFragmentShader = /* glsl */ `
     vec4 baseColor = texture2D(uBaseMap, personUv);
     vec4 blueprintColor = texture2D(uBlueprintMap, personUv);
     vec4 knightColor = texture2D(uKnightMap, personUv);
+    // The mobile drawing surface extends beyond the original image: do not
+    // stretch ClampToEdge's top row into a vertical stripe above the helmet.
+    float imageBounds = step(0.0, personUv.x) * step(personUv.x, 1.0)
+      * step(0.0, personUv.y) * step(personUv.y, 1.0);
+    baseColor.a *= imageBounds;
+    blueprintColor.a *= imageBounds;
+    knightColor.a *= imageBounds;
+
 
     // Blueprint sweep: a soft horizontal band travelling top -> bottom.
     // Only uSweepY (a scalar) animates - the blueprint texture's own UV

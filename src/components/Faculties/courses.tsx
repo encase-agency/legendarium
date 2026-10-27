@@ -25,6 +25,7 @@ export type Block =
 export interface Course {
   id: string
   poster: Poster
+  video?: { id: string; shareUrl: string }
   card: { title: ReactNode; titleWeight?: number; body: ReactNode }
   modal: {
     title: string[]
@@ -42,7 +43,25 @@ const Hi = ({ children, weight }: { children: ReactNode; weight?: number }) => (
   </span>
 )
 
+// Mentor video assignment/order is provisional until the owner confirms VIZITKA / 0928(1).
 export const COURSES: Course[] = [
+  {
+    id: 'content-earnings',
+    poster: { src: 'https://kinescope.io/4140e1eb-6487-4b1e-8c0f-6d553739b038/poster/lg.jpg' },
+    video: {
+      id: '4140e1eb-6487-4b1e-8c0f-6d553739b038',
+      shareUrl: 'https://kinescope.io/sh/e5gaLhqjqsNLr7NdnsGNk4/v/4140e1eb-6487-4b1e-8c0f-6d553739b038',
+    },
+    card: {
+      title: 'Заработок на контенте',
+      body: 'Нарезки подкастов Андрея Лукина, нейросети и партнёрская программа Легендариума. Смотри представление направления от Яна.',
+    },
+    modal: {
+      title: ['Заработок на контенте'],
+      blocks: [{ t: 'text', lines: ['Нарезки подкастов Андрея Лукина, нейросети и партнёрская программа Легендариума. Подробнее о направлении — в видео.'] }],
+      mentor: { name: 'Ян', role: ['Представляет направление заработка на контенте'] },
+    },
+  },
   {
     id: 'ai',
     poster: { src: 'p0.jpg' },
@@ -327,6 +346,23 @@ export const COURSES: Course[] = [
         },
       ],
       mentor: { name: 'Руслан Зайнуллин', role: ['Наставник Факультета по партнёрскому бизнесу.', 'Предприниматель'] },
+    },
+  },
+  {
+    id: 'vk-advertising',
+    poster: { src: 'https://kinescope.io/798c7a08-4df8-410e-95dc-900543c6665c/poster/lg.jpg' },
+    video: {
+      id: '798c7a08-4df8-410e-95dc-900543c6665c',
+      shareUrl: 'https://kinescope.io/sh/e5gaLhqjqsNLr7NdnsGNk4/v/798c7a08-4df8-410e-95dc-900543c6665c',
+    },
+    card: {
+      title: 'Реклама ВК',
+      body: 'Видеознакомство с направлением: таргетированная реклама, лента новостей ВК и рекламный пост.',
+    },
+    modal: {
+      title: ['Реклама ВК'],
+      blocks: [{ t: 'text', lines: ['Посмотри видео о таргетированной рекламе, ленте новостей ВК и рекламном посте.'] }],
+      mentor: { name: 'Реклама ВК', role: ['Видеознакомство с направлением'] },
     },
   },
   {

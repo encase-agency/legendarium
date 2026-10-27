@@ -218,7 +218,7 @@
 @media (max-width: 1100px) {
   .future {
     --u: var(--mu);
-    height: calc(1275 * var(--u));
+    height: calc(1225 * var(--u));
   }
 
   .fu-wave {
@@ -300,7 +300,7 @@
   .fu-photo--b {
     z-index: 2;
     left: calc(184 * var(--u));
-    top: calc(1086 * var(--u));
+    top: calc(1018 * var(--u));
     width: calc(207 * var(--u));
     height: calc(148 * var(--u));
   }

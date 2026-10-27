@@ -286,11 +286,11 @@
     background: #ffffff;
   }
 
-  /* The man: a canvas under the text, from y=358 to the bottom of the block */
+  /* Extend the animated helmet to the CTA edge; person UV keeps the portrait fixed. */
   .hero-scene {
     touch-action: auto; /* a finger on the man must still scroll the page */
     inset: auto 0 0 0;
-    top: calc(358 * var(--u));
+    top: calc(299 * var(--u));
   }
 
   .hero-ui {

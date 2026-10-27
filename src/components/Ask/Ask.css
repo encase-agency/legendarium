@@ -140,22 +140,6 @@
   outline-offset: calc(4 * var(--u));
 }
 
-.ask-form-link {
-  position: absolute;
-  left: 50%;
-  top: calc(716 * var(--u));
-  transform: translateX(-50%);
-  z-index: 3;
-  border: 0;
-  padding: 8px;
-  background: none;
-  color: #fff;
-  font: inherit;
-  font-size: max(13px, calc(14 * var(--u)));
-  text-decoration: underline;
-  cursor: pointer;
-}
-
 /* The pointer: a white ring with a dark dot in the middle (18px / 4px in the design). */
 .ask-cursor {
   position: absolute;
@@ -241,5 +225,4 @@
     left: calc(50% - 66 * var(--u));
     top: calc(446.1 * var(--u));
   }
-  .ask-form-link { top: calc(600 * var(--u)); }
 }

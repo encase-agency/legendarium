@@ -30,7 +30,7 @@ function CourseCard({ course, onOpen, focusable = true }: { course: Course; onOp
     >
       <div className="fc-poster">
         <img
-          src={`${A}/${poster.src}`}
+          src={poster.src.startsWith('https://') ? poster.src : `${A}/${poster.src}`}
           alt=""
           loading="lazy"
           className={crop ? 'is-crop' : undefined}

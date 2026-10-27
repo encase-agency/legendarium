@@ -1,0 +1,9 @@
+.gc-overlay { position: fixed; inset: 0; z-index: 1000; overflow-y: auto; overscroll-behavior: contain; background: #000b; padding: 24px 12px; color: #1b1d20; font-family: 'Inter Tight', system-ui, sans-serif; }
+.gc-panel { width: min(100%, 720px); margin: 0 auto; background: #fff; border-radius: 16px; padding: 20px; }
+.gc-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.gc-header h2 { margin: 0; font-size: 24px; }
+.gc-header button { flex-shrink: 0; width: 44px; height: 44px; font-size: 32px; color: #1b1d20; border: 0; border-radius: 50%; background: #f0f0f0; cursor: pointer; }
+.gc-panel iframe { display: block; width: 100%; border: 0; }
+.gc-panel button:focus-visible { outline: 3px solid #b07f30; outline-offset: 3px; }
+.gc-bottom-close { color: #1b1d20; margin: 16px 0 0; padding: 12px; border: 1px solid #ccc; border-radius: 8px; background: white; cursor: pointer; }
+@media (max-width: 600px) { .gc-overlay { padding: 8px; } .gc-panel { padding: 12px; border-radius: 12px; } .gc-header h2 { font-size: 20px; } }

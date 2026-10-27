@@ -1,5 +1,6 @@
-import { siteConfig } from '../../lib/siteConfig'
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
+import { siteConfig } from '../../lib/siteConfig'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 const BasicModal = lazy(() => import('./BasicModal').then(module => ({ default: module.BasicModal })))
 import './Pricing.css'
 import { asset } from '../../lib/asset'
@@ -60,11 +61,11 @@ export function Pricing() {
 
   return (
     <section className="pr" id="pricing">
-      <a className="pr-pay" href={siteConfig.checkout.legend} aria-disabled={!siteConfig.checkout.legend} onClick={(event) => { if (!siteConfig.checkout.legend) event.preventDefault() }}>
+      <a className="pr-pay" href={siteConfig.enrollment.legend} target="_blank" rel="noreferrer" onClick={() => trackAnalyticsGoal('tariff_legend_click')}>
         <span className="pr-gold" aria-hidden="true">
           <img src={`${A}/gold.jpg`} alt="" className="pr-gold-btn" />
         </span>
-        <span className="pr-pay-text">{siteConfig.checkout.legend ? 'Оплатить сейчас' : 'Оплата недоступна'}</span>
+        <span className="pr-pay-text">Получить доступ</span>
       </a>
 
       <h2 className="pr-heading">Выбери уровень участия</h2>
@@ -79,30 +80,16 @@ export function Pricing() {
           <div className="pr-top">
             <div className="pr-row">
               <p className="pr-name">Легенда</p>
-              <div className="pr-prices">
-                <p className="pr-old">
-                  70 800 ₽<span className="pr-strike" />
-                </p>
-                <p className="pr-price">
-                  <span>49 900 ₽/ </span>
-                  <small>год</small>
-                </p>
-              </div>
             </div>
             <div className="pr-row pr-row--note">
               <p className="pr-for">На результат</p>
-              <p className="pr-save">
-                Выгода 20 900 ₽ - ты платишь{' '}
-                <br />
-                на 30% меньше
-              </p>
             </div>
           </div>
 
           <div className="pr-boxes">
             <div className="pr-box pr-features">
               <ul className="pr-col pr-col--l">
-                <Item title="Доступ ко всем 12 направлениям" sub="С первого дня на год" />
+                <Item title="Доступ ко всем 12 направлениям" sub="На год. Автопродление — по согласию" />
                 <Item title="Живые разборы с Дядей Андреем" sub="Каждую неделю" />
                 <Item title="Офлайн-встречи:" sub="МСК, СПБ, Пхукет, Дубай" />
                 <Item title="Поиск первых заказов" sub="Гарантированная помощь" />
@@ -138,17 +125,6 @@ export function Pricing() {
                 </div>
               </div>
               <div className="pr-inst-r">
-                <div className="pr-inst-price">
-                  <p className="pr-inst-sum">
-                    <span>4 158 ₽/</span>
-                    <small>мес</small>
-                  </p>
-                  <p className="pr-s pr-s--tight">
-                    без % и переплат{' '}
-                    <br className="pr-mbr" />
-                    140 ₽/день
-                  </p>
-                </div>
                 <div className="pr-banks">
                   <span className="pr-bank pr-bank--a">
                     <img src={`${A}/bank-a.png`} alt="Т-Банк" />
@@ -171,12 +147,12 @@ export function Pricing() {
           <p className="pr-more-1">
             Нужен только доступ к урокам?{' '}
             <br className="pr-mbr" />
-            Базовая подписка - 5 900 ₽/мес
+            Базовая подписка
           </p>
           <p className="pr-more-2">
             12 направлений, уроки без личных разборов,{' '}
             <br className="pr-mbr" />
-            оплата помесячно
+            оплата помесячно; автопродление — по отдельному согласию
           </p>
         </div>
         <button type="button" className="pr-access" onClick={openModal}>

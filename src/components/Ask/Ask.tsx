@@ -1,6 +1,5 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-const AskForm = lazy(() => import('../AskForm/AskForm').then(module => ({ default: module.AskForm })))
 import './Ask.css'
 import { asset } from '../../lib/asset'
 import { siteConfig } from '../../lib/siteConfig'
@@ -34,34 +33,6 @@ export function Ask() {
   const layerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const cursorRef = useRef<HTMLDivElement>(null)
-  const [formOpen, setFormOpen] = useState(false)
-  const [closing, setClosing] = useState(false)
-  const timer = useRef<number>(0)
-
-  const openForm = () => {
-    window.clearTimeout(timer.current)
-    setClosing(false)
-    setFormOpen(true)
-  }
-  const closeForm = useCallback(() => {
-    setClosing(true)
-    window.clearTimeout(timer.current)
-    timer.current = window.setTimeout(() => {
-      setFormOpen(false)
-      setClosing(false)
-    }, 280)
-  }, [])
-
-  useEffect(() => {
-    if (!formOpen) return
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = prev
-    }
-  }, [formOpen])
-  useEffect(() => () => window.clearTimeout(timer.current), [])
-
   useEffect(() => {
     const section = sectionRef.current
     const layer = layerRef.current
@@ -341,13 +312,11 @@ export function Ask() {
           <br />в Легендариум
         </span>
       </a>
-      <button type="button" className="ask-form-link" onClick={openForm}>Оставить заявку</button>
 
       <div className="ask-cursor" ref={cursorRef} aria-hidden="true">
         <img className="ask-ring" src={`${A}/ring.svg`} alt="" />
         <img className="ask-dot" src={`${A}/dot.svg`} alt="" />
       </div>
-      {formOpen && <Suspense fallback={null}><AskForm closing={closing} onClose={closeForm} /></Suspense>}
     </section>
   )
 }

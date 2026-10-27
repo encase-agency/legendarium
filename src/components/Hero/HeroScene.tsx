@@ -6,7 +6,7 @@ import { createMaskTexture, resizeMaskTexture } from './maskTexture'
 import { DEFAULT_HERO_CONTROLS } from './heroControls'
 
 const HeroDebugControls = lazy(() => import('./HeroDebugControls'))
-import { computeCoverUV } from '../../lib/coverUV'
+import { computePersonCoverUV } from '../../lib/personCoverUV'
 import { HERO_CONFIG } from '../../lib/heroConfig'
 import { backgroundFragmentShader, backgroundVertexShader } from './backgroundShader'
 import { intro } from '../../lib/intro'
@@ -123,19 +123,6 @@ const REDUCED_MOTION_TIME_SCALE = 0.03
 
 /** Phone / tablet layout (<= 1100px): no pointer or touch effects, the man is placed exactly as in the mobile frame. */
 const isPhoneLayout = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 1100px)').matches
-
-/**
- * Computes the single shared UV transform used for base/blueprint/knight alike.
- * Desktop: plain cover. Phone (Figma 530:4507): the 4536x2700 cutout is shown at 0.1671 of its size (eyes 88px apart,
- * centred at x=192, y=168 of the 390x594 photo area, as measured on the frame); the shoulders run into the dark strip.
- * The frame is 1.317 image heights tall, the part below the cutout is the clamped (black sweater) bottom row.
- */
-function computePersonCoverUV(imageAspect: number, containerAspect: number, phone: boolean) {
-  if (!phone) return computeCoverUV(imageAspect, containerAspect)
-  // extended phone texture (4536x3720): the same window as below, expressed in its own height
-  if (imageAspect < 1.5) return { repeatX: 0.5145, repeatY: 0.9556, offsetX: 0.2504, offsetY: 0.00215 }
-  return { repeatX: 0.5145, repeatY: 1.3167, offsetX: 0.2504, offsetY: -0.3748 }
-}
 
 export function HeroScene({ isDebug }: HeroSceneProps) {
   const [phoneLayout, setPhoneLayout] = useState(isPhoneLayout)

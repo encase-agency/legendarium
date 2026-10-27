@@ -1,4 +1,5 @@
 import { siteConfig } from '../../lib/siteConfig'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
 import { useRef } from 'react'
 import { createPortal } from 'react-dom'
@@ -8,8 +9,8 @@ import { asset } from '../../lib/asset'
 const A = asset('/assets/pricing')
 
 const ITEMS = [
-  { on: true, text: 'Все 12+ направлений и материалы платформы' },
-  { on: true, text: 'Самостоятельное обучение' },
+  { on: true, text: 'Все 12 направлений и материалы платформы' },
+  { on: true, text: 'Доступ на месяц без обратной связи. Автопродление — по отдельному согласию' },
   { on: false, text: 'Без личных разборов с Андреем' },
   { on: false, text: 'Без дополнительных мужских программ' },
   { on: false, text: 'Без офлайн-встреч и процессной гарантии тарифа «Легенда»' },
@@ -43,10 +44,6 @@ export function BasicModal({ closing, onClose }: Props) {
           <div className="pm-card-in">
             <div className="pm-head">
               <p className="pm-name">Базовая подписка</p>
-              <p className="pm-price">
-                <span>5 900 ₽/ </span>
-                <small>мес</small>
-              </p>
             </div>
             <ul className="pm-list">
               {ITEMS.map((it) => (
@@ -59,7 +56,7 @@ export function BasicModal({ closing, onClose }: Props) {
           </div>
         </div>
 
-        {siteConfig.checkout.basic ? <a className="pm-buy" href={siteConfig.checkout.basic}>Купить Базовый тариф</a> : <button className="pm-buy" type="button" disabled>Оплата недоступна</button>}
+        <a className="pm-buy" href={siteConfig.enrollment.basic} target="_blank" rel="noreferrer" onClick={() => trackAnalyticsGoal('tariff_basic_click')}>Получить доступ</a>
 
         <button ref={closeRef} type="button" className="pm-close" onClick={onClose} aria-label="Закрыть">
           <img src={`${A}/close.svg`} alt="" />

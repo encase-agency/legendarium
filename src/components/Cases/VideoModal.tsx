@@ -6,6 +6,7 @@ import { asset } from '../../lib/asset'
 import { siteConfig } from '../../lib/siteConfig'
 import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
 import { preparedVideos } from './preparedVideos'
+import { kinescopeEmbedUrl, kinescopeVideos } from './kinescopeVideos'
 
 const API = 'https://cloud-api.yandex.net/v1/disk/public/resources/download'
 const cache = new Map<string, string>()
@@ -43,6 +44,7 @@ interface Props {
 }
 
 export function VideoModal({ item, closing, onClose }: Props) {
+  const kinescope = kinescopeVideos[item.video.file]
   const [src, setSrc] = useState<string | null>(null)
   const [failed, setFailed] = useState(false)
   const [reason, setReason] = useState('')
@@ -53,7 +55,7 @@ export function VideoModal({ item, closing, onClose }: Props) {
   useDialogLifecycle(dialogRef, onClose, closeRef)
 
   useEffect(() => {
-    if (closing) return
+    if (closing || kinescope) return
     const ctrl = new AbortController()
     setSrc(null)
     setFailed(false)
@@ -79,7 +81,7 @@ export function VideoModal({ item, closing, onClose }: Props) {
       window.clearTimeout(retry)
       window.clearTimeout(deadline)
     }
-  }, [item.video.file, closing, attempt])
+  }, [item.video.file, closing, attempt, kinescope])
 
   useEffect(() => {
     if (!src || closing) return
@@ -104,7 +106,7 @@ export function VideoModal({ item, closing, onClose }: Props) {
     setFailed(true)
   }
 
-  const fallback = `${DISK_FOLDER}/${encodeURIComponent(item.video.file)}`
+  const fallback = kinescope?.shareUrl ?? `${DISK_FOLDER}/${encodeURIComponent(item.video.file)}`
 
   // Rendered into <body>: a pinned (transformed) section would otherwise size and clip a fixed overlay and keep it under the header.
   return createPortal(
@@ -112,7 +114,13 @@ export function VideoModal({ item, closing, onClose }: Props) {
       <button className="vm-backdrop" type="button" onClick={onClose} aria-label="Закрыть" tabIndex={-1} />
       <div className="vm-box">
         <div className="vm-screen">
-          {src && !failed && !closing && (
+          {kinescope && !closing && <iframe
+            src={kinescopeEmbedUrl(kinescope.id)}
+            title={`Видео: ${item.person}`}
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+            allowFullScreen
+          />}
+          {!kinescope && src && !failed && !closing && (
             <video
               key={src}
               src={src}
@@ -125,13 +133,13 @@ export function VideoModal({ item, closing, onClose }: Props) {
               onLoadedMetadata={() => window.clearTimeout(readyTimer.current)}
             />
           )}
-          {!src && !failed && (
+          {!kinescope && !src && !failed && (
             <div className="vm-status" role="status">
               <span className="vm-spinner" />
               Загружаем видео…
             </div>
           )}
-          {failed && (
+          {!kinescope && failed && (
             <div className="vm-status" role="status">
               Не удалось запустить видео здесь.
               {reason && <small>{reason}</small>}
@@ -144,6 +152,7 @@ export function VideoModal({ item, closing, onClose }: Props) {
         <p className="vm-caption">
           <b>{item.person}</b>
           <span>{item.summary}</span>
+          {kinescope && <a className="vm-source" href={fallback} target="_blank" rel="noreferrer">Открыть на Kinescope</a>}
         </p>
       </div>
       <button className="vm-close" type="button" onClick={onClose} aria-label="Закрыть" ref={closeRef}>
