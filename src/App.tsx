@@ -27,6 +27,7 @@ import { Ask } from './components/Ask/Ask'
 import { Story } from './components/Story/Story'
 import { Footer } from './components/Footer/Footer'
 import { Consent } from './components/Consent/Consent'
+import { SiteCursor } from './components/Cursor/SiteCursor'
 import { DocumentPage } from './components/Documents/DocumentPage'
 
 function App() {
@@ -74,6 +75,7 @@ function App() {
       <Footer />
       <Consent />
       <DocumentPage />
+      <SiteCursor />
     </>
   )
 }

@@ -1,0 +1,105 @@
+/* the site pointer: a dot in a ring, white blended by "difference" (white on dark, black on light) */
+.sc-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100000;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  transition: opacity 0.2s ease;
+}
+
+.sc-cursor.is-hidden {
+  opacity: 0;
+}
+
+.sc-cursor-ring,
+.sc-cursor-dot {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.sc-cursor-ring {
+  left: -18px;
+  top: -18px;
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition:
+    transform 0.25s cubic-bezier(0.22, 0.8, 0.2, 1),
+    background 0.25s ease;
+}
+
+.sc-cursor-progress {
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  overflow: visible;
+  transform: rotate(-90deg);
+  transition: transform 0.25s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.sc-cursor-progress circle {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.sc-cursor.is-link .sc-cursor-progress {
+  transform: rotate(-90deg) scale(1.5);
+}
+
+.sc-cursor.is-down .sc-cursor-progress {
+  transform: rotate(-90deg) scale(0.8);
+}
+
+.sc-cursor.is-link.is-down .sc-cursor-progress {
+  transform: rotate(-90deg) scale(1.2);
+}
+
+.sc-cursor-dot {
+  left: -3px;
+  top: -3px;
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.sc-cursor.is-link .sc-cursor-ring {
+  transform: scale(1.5);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.sc-cursor.is-link .sc-cursor-dot {
+  transform: scale(0.6);
+}
+
+.sc-cursor.is-down .sc-cursor-ring {
+  transform: scale(0.8);
+}
+
+.sc-cursor.is-link.is-down .sc-cursor-ring {
+  transform: scale(1.2);
+}
+
+/* the system pointer is hidden everywhere except where it is needed: text fields, video, the "Задай вопрос" block */
+html.has-site-cursor,
+html.has-site-cursor * {
+  cursor: none !important;
+}
+
+html.has-site-cursor input,
+html.has-site-cursor textarea,
+html.has-site-cursor select {
+  cursor: text !important;
+}
+
+html.has-site-cursor video {
+  cursor: auto !important;
+}

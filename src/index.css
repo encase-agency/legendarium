@@ -117,21 +117,18 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Buttons with the gold arrow tile: the arrow slides a little along its own direction on hover. */
-.arrow-icon-pos,
-.hero-cta-icon img {
-  transition: translate 0.25s cubic-bezier(0.22, 0.8, 0.2, 1);
-}
-
+/* Buttons with the gold arrow tile: on hover the whole button lifts a little, the arrow stays where it is. */
 @media (hover: hover) {
-  /* the arrow box is turned 180deg, so the shift is written in its own frame */
-  a:hover .arrow-icon-pos,
-  button:hover .arrow-icon-pos {
-    translate: calc(-3 * var(--u, 1px)) calc(3 * var(--u, 1px));
+  :is(a, button):has(.arrow-icon, .hero-cta-icon):not(.fx-card, .mn-item, .sc-license-link) {
+    transition: translate 0.25s cubic-bezier(0.22, 0.8, 0.2, 1), background 0.2s ease, opacity 0.15s ease;
   }
 
-  .hero-cta:hover .hero-cta-icon img {
-    translate: 3px -3px;
+  :is(a, button):has(.arrow-icon, .hero-cta-icon):not(.fx-card, .mn-item, .sc-license-link):hover {
+    translate: 0 -3px;
+  }
+
+  .hero-cta:hover {
+    transform: none;
   }
 
   /* white buttons grow */

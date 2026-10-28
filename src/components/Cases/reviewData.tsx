@@ -1,7 +1,7 @@
 import { Br, Pct, PctS, type CaseData } from './caseData'
 
-// Figma 659:4246: the "Смотреть больше" window, cases 8-18. Only the reviews that have a video in the Kinescope folder
-// are listed (cases 8 and 9 still play from the Yandex Disk folder); the last four are short entries (a name and a direction, no written story).
+// Figma 659:4246: the "Смотреть больше" window, cases 8-19. Only the reviews that have a video in the Kinescope folder
+// are listed (cases 8 and 9 still play from the Yandex Disk folder).
 export const REVIEWS: CaseData[] = [
   {
     id: 'r8',
@@ -477,52 +477,5 @@ export const REVIEWS: CaseData[] = [
     poster: 'r21.jpg',
     person: 'Паша, 32 года',
     summary: 'Нейросети и контент · около 30 000 ₽ за месяц',
-  },
-  {
-    id: 'r22',
-    label: 'Кейс 20',
-    title: '350 000 ₽ комиссии за два месяца',
-    facts: [
-      { label: 'Имя', value: 'Денис' },
-      { label: 'Направление', value: 'Партнёрский бизнес' },
-      { label: 'Срок результата', value: 'Около 2 месяцев' },
-    ],
-    wasLabel: 'Старт:',
-    was: (
-      <>
-        Работал в море по контрактам и не{' '}
-        <Br />
-        контролировал свою жизнь. Около{' '}
-        <Br />
-        полугода следил за Андреем Лукиным.
-      </>
-    ),
-    steps: [
-      <>
-        Пришёл на обучение после
-        <Br />
-        снижения цены.
-      </>,
-      <>
-        Учился и нашёл партнёра,
-        <Br />
-        который привёл клиента.
-      </>,
-      <>
-        Договорился примерно с 60
-        <Br />
-        партнёрами о передаче клиентов.
-      </>,
-    ],
-    result: (
-      <>
-        Комиссия 350 000 ₽
-        <em> за два месяца: 200 000 ₽ отдал партнёру, 150 000 ₽ оставил себе — по словам Дениса.</em>
-      </>
-    ),
-    video: { id: '9eeb72e9-4f6f-4c32-b854-eed003d6d2eb' },
-    poster: 'r22.jpg',
-    person: 'Денис',
-    summary: 'Партнёрский бизнес · комиссия 350 000 ₽',
   },
 ]
