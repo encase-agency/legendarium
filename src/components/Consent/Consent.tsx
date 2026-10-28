@@ -19,7 +19,7 @@ function Settings({ initial, onSave, onClose }: { initial: CookieCategories; onS
   return createPortal(
     <div className="consent-backdrop" onClick={event => { if (event.target === event.currentTarget) onClose() }}>
       <div className="consent consent-dialog" ref={dialog} role="dialog" aria-modal="true" aria-labelledby="cookie-settings-title">
-        <div className="consent-heading"><h2 id="cookie-settings-title">Настройки файлов cookie</h2><button ref={close} type="button" onClick={onClose} aria-label="Закрыть настройки cookie">×</button></div>
+        <div className="consent-heading"><h2 id="cookie-settings-title">Настройки файлов cookie</h2><button ref={close} type="button" onClick={onClose} aria-label="Закрыть настройки cookie"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg></button></div>
         <p>Выбор сохраняется на 12 месяцев. Его можно изменить в футере сайта.</p>
         <label className="consent-category"><input type="checkbox" checked disabled /><span><strong>Необходимые — всегда включены</strong><small>Обеспечивают работу сайта и сохраняют ваш выбор.</small></span></label>
         <label className="consent-category"><input type="checkbox" checked={draft.analytics} onChange={event => setDraft({ ...draft, analytics: event.target.checked })} /><span><strong>Аналитические</strong><small>Помогают анализировать посещения сайта. Яндекс Метрика и Google Analytics запускаются только с вашего согласия.</small></span></label>
