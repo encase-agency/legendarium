@@ -1,7 +1,7 @@
-import { useLayoutEffect, useRef, useSyncExternalStore } from 'react'
+import { useLayoutEffect, useRef, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Lines } from '../shared/Lines'
+import { useCardReveal } from '../../lib/motion'
 import './Results.css'
 import { asset } from '../../lib/asset'
 
@@ -58,16 +58,56 @@ const subscribePhone = (cb: () => void) => {
 }
 const isPhone = () => window.matchMedia(PHONE_QUERY).matches
 
-const CARDS: { x: number; w: number; title: string[]; mTitle?: string[]; body: string }[] = [
-  { x: 50, w: 337, title: ['Рядом наставники-практики'], body: 'Показывают, что делать, и правят твою работу.' },
-  { x: 409, w: 334, title: ['Идёшь по понятным шагам'], body: 'А не собираешь всё сам по кускам.' },
-  { x: 767, w: 335, title: ['Зарабатывать можно уже', 'с первых недель'], body: 'А не через 5 лет.' },
+// Figma 530:3736: the four cards. The gold icons are crops of one picture (box and crop in % of the 100x125 tile / box).
+interface Card {
+  title: string[]
+  body: ReactNode
+  /** title line-height as set per card in the design */
+  lead: number
+  /** the body keeps two lines of height even when it is one line (card 3), so the titles line up */
+  twoLines?: boolean
+  /** icon box inside the tile (design px) and the crop of the shared picture inside that box */
+  icon: { left: number; top: number; w: number; h: number; rot?: number; img: { w: number; h: number; left: number; top: number } }
+  wide?: boolean
+}
+
+const CARDS: Card[] = [
   {
-    x: 1123,
-    w: 337,
-    title: ['Ты не один. Рядом люди, которые помогут тебе сделать все правильно'],
-    mTitle: ['Ты не один. Рядом люди, которые', 'помогут тебе сделать все правильно'],
-    body: 'И быстрее получить результат.',
+    title: ['Рядом наставники-практики'],
+    body: (
+      <>
+        Показывают, что делать,{' '}
+        <br />и правят твою работу.
+      </>
+    ),
+    lead: 0.923,
+    icon: { left: 13, top: 36, w: 71.992, h: 51.622, rot: 1.4, img: { w: 394.02, h: 211.99, left: -5.28, top: -54.02 } },
+  },
+  {
+    title: ['Идёшь по понятным шагам'],
+    body: (
+      <>
+        А не собираешь всё{' '}
+        <br />
+        сам по кускам.
+      </>
+    ),
+    lead: 0.923,
+    icon: { left: 18, top: 26, w: 65, h: 70, img: { w: 432.23, h: 200.68, left: -115.53, top: -45.75 } },
+  },
+  {
+    title: ['Зарабатывать можно уже с первых недель'],
+    body: 'А не через 5 лет.',
+    lead: 0.923,
+    twoLines: true,
+    icon: { left: 18, top: 33, w: 68, h: 60, img: { w: 402.21, h: 227.92, left: -195.37, top: -63.33 } },
+  },
+  {
+    title: ['Ты не один. Рядом наставники'],
+    body: 'Помогут быстрее получить результат.',
+    lead: 0.923,
+    wide: true,
+    icon: { left: 9, top: 28, w: 83, h: 69, img: { w: 384.75, h: 207, left: -280.72, top: -51.61 } },
   },
 ]
 
@@ -99,6 +139,7 @@ export function Results() {
   const photos = phone ? PHONE_PHOTOS : PHOTOS
   const brushPath = phone ? PHONE_BRUSH_PATH : BRUSH_PATH
   const sectionRef = useRef<HTMLElement>(null)
+  useCardReveal(sectionRef, '.rs-card')
   const brushRef = useRef<SVGPathElement>(null)
   const trailRef = useRef<SVGPathElement>(null)
   const dotRef = useRef<SVGGElement>(null)
@@ -211,15 +252,45 @@ export function Results() {
       </div>
 
       <ul className="rs-cards">
-        {CARDS.map((c) => (
-          <li className="rs-card" key={c.x} style={{ left: `calc(${c.x} * var(--u))`, width: `calc(${c.w} * var(--u))` }}>
-            <h3 className="rs-card-title">
-              <Lines lines={c.title} className={c.mTitle ? 'rs-d' : undefined} />
-              {c.mTitle && <Lines lines={c.mTitle} className="rs-m" />}
-            </h3>
-            <p className="rs-card-body">{c.body}</p>
-          </li>
-        ))}
+        {CARDS.map((c) => {
+          const { icon } = c
+          const u = (n: number) => `calc(${n} * var(--t))`
+          return (
+            <li className="rs-card" key={c.title[0]}>
+              <div className="rs-tile" aria-hidden="true">
+                <div
+                  className="rs-icon"
+                  style={
+                    {
+                      left: u(icon.left),
+                      top: u(icon.top),
+                      width: u(icon.w),
+                      height: u(icon.h),
+                      transform: icon.rot ? `rotate(${icon.rot}deg)` : undefined,
+                    } as CSSProperties
+                  }
+                >
+                  <img
+                    src={`${A}/icons.png`}
+                    alt=""
+                    style={{
+                      width: `${icon.img.w}%`,
+                      height: `${icon.img.h}%`,
+                      left: `${icon.img.left}%`,
+                      top: `${icon.img.top}%`,
+                    }}
+                  />
+                </div>
+              </div>
+              <div className={c.wide ? 'rs-card-text is-wide' : 'rs-card-text'}>
+                <h3 className="rs-card-title" style={{ lineHeight: c.lead }}>
+                  {c.title[0]}
+                </h3>
+                <p className={c.twoLines ? 'rs-card-body is-two' : 'rs-card-body'}>{c.body}</p>
+              </div>
+            </li>
+          )
+        })}
       </ul>
     </section>
   )

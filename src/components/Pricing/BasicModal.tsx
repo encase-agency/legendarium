@@ -9,8 +9,8 @@ import { asset } from '../../lib/asset'
 const A = asset('/assets/pricing')
 
 const ITEMS = [
-  { on: true, text: 'Все 12 направлений и материалы платформы' },
-  { on: true, text: 'Доступ на месяц без обратной связи. Автопродление — по отдельному согласию' },
+  { on: true, text: 'Все 12+ направлений и материалы платформы' },
+  { on: true, text: 'Самостоятельное обучение' },
   { on: false, text: 'Без личных разборов с Андреем' },
   { on: false, text: 'Без дополнительных мужских программ' },
   { on: false, text: 'Без офлайн-встреч и процессной гарантии тарифа «Легенда»' },
@@ -21,7 +21,7 @@ interface Props {
   onClose: () => void
 }
 
-// Figma 291:5292 (redone): full-screen basic plan card.
+// Figma 742:3453 (desktop) and 742:3602 (phone): full-screen basic plan card.
 export function BasicModal({ closing, onClose }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null)
 
@@ -43,7 +43,10 @@ export function BasicModal({ closing, onClose }: Props) {
         <div className="pm-card">
           <div className="pm-card-in">
             <div className="pm-head">
-              <p className="pm-name">Базовая подписка</p>
+              <p className="pm-name">
+                <span className="pm-name-d">Базовый тариф</span>
+                <span className="pm-name-m">Базовая подписка</span>
+              </p>
             </div>
             <ul className="pm-list">
               {ITEMS.map((it) => (

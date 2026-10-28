@@ -17,8 +17,8 @@ const STEPS: { text: string; m?: string[] }[] = [
   },
   { text: 'Обсуждаешь задачу и цену, выполняешь заказ.' },
   {
-    text: 'Получаешь оплату. Мы учим всему пути — от первых навыков до работы с клиентами.',
-    m: ['Получаешь оплату. Мы учим всему', 'пути — от первых навыков до работы с', 'клиентами.'],
+    text: 'Получаешь оплату. Мы учим на всём пути — от первых навыков до работы с клиентами.',
+    m: ['Получаешь оплату. Мы учим на всём', 'пути — от первых навыков до работы с', 'клиентами.'],
   },
 ]
 
@@ -56,15 +56,16 @@ export function Platform() {
       tl.to(shade, { opacity: 0.6, ease: 'none', duration: 1 }, 0)
       tl.to({}, { duration: 0.2 })
     })
-    // Phone / tablet: the same mechanic. The block is pinned, card 2 slides up over card 1 (which narrows and dims),
-    // then the block stays pinned for one more screen while the next block ("Платформа / Наставники ...") rolls over it.
+    // Phone / tablet: the same mechanic. The block is pinned, card 2 slides up over card 1 (which narrows and dims).
+    // The next block no longer rolls over it, and on a short screen (the cards are taller than the window) the block
+    // is pinned by its bottom edge, so the end of the text is never cut off.
     mm.add('(max-width: 1100px)', () => {
       gsap.set(first, { transformOrigin: '50% 0%' })
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
-          start: 'top top',
-          end: () => `+=${Math.round(window.innerHeight * 2.1)}`,
+          start: () => (section.offsetHeight > window.innerHeight ? 'bottom bottom' : 'top top'),
+          end: () => `+=${Math.round(window.innerHeight * 1.15)}`,
           pin: true,
           scrub: 0.5,
           anticipatePin: 1,
@@ -74,7 +75,7 @@ export function Platform() {
       tl.fromTo(second, { y: () => window.innerHeight }, { y: 0, ease: 'none', duration: 1 }, 0)
       tl.to(first, { scale: 0.92, ease: 'none', duration: 1 }, 0)
       tl.to(shade, { opacity: 0.6, ease: 'none', duration: 1 }, 0)
-      tl.to({}, { duration: 1.29 })
+      tl.to({}, { duration: 0.15 })
     })
     return () => mm.revert()
   }, [])

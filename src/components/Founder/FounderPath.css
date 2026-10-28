@@ -124,19 +124,6 @@
   background: #b07f30;
 }
 
-/* The photo that flies in: fixed to the viewport, driven by scroll (hidden on phones). */
-.fp-float {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 60;
-  object-fit: cover;
-  visibility: hidden;
-  pointer-events: none;
-  transform-origin: top left;
-  will-change: transform, opacity;
-}
-
 .fp-m {
   display: none;
 }
@@ -146,15 +133,17 @@
   .fp {
     --u: var(--mu);
     height: calc(985 * var(--u));
-    overflow: hidden;
+    /* the curved top edge may reach past the column to the sides of the screen */
+    overflow-x: visible;
+    overflow-y: clip;
   }
 
   .fp-wave {
-    left: 0;
+    left: 50%;
     top: calc(-1.5 * var(--u));
-    width: 100%;
+    width: 100vw;
     height: calc(57 * var(--u));
-    transform: none;
+    transform: translateX(-50%);
   }
 
   .fp-slot {
@@ -225,9 +214,5 @@
 
   .fp-cta-icon .arrow-icon {
     --u: calc(0.8 * var(--mu));
-  }
-
-  .fp-float {
-    display: none;
   }
 }

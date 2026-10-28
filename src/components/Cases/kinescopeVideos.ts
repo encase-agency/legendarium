@@ -19,8 +19,8 @@ export const kinescopeVideos: Record<string, { id: string; shareUrl: string }> =
   },
 }
 
-export function kinescopeEmbedUrl(id: string): string {
+export function kinescopeEmbedUrl(id: string, autoplay = false): string {
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) throw new Error('Invalid Kinescope media ID')
   // Player and adaptive streaming load only after opening the modal, video bytes after pressing Play.
-  return `https://kinescope.io/embed/${id}?preload=0`
+  return `https://kinescope.io/embed/${id}?preload=0${autoplay ? '&autoplay=1' : ''}`
 }

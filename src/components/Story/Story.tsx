@@ -3,6 +3,8 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Story.css'
 import { asset } from '../../lib/asset'
+import { siteConfig } from '../../lib/siteConfig'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -65,7 +67,7 @@ export function Story() {
           }
         }
       }
-      // Settle: the stack narrows, the page goes light for the footer and the last card casts a shadow.
+      // Settle: the stack narrows and the page goes light for the footer.
       const end = steps * 1.15 + 0.15
       tl.to(section, { backgroundColor: '#f4f4f4', ease: 'none', duration: 1 }, end)
       cards.forEach((c, i) => tl.to(c, { scale: SETTLE[i], ease: 'none', duration: 1 }, end))
@@ -82,12 +84,8 @@ export function Story() {
         },
         end,
       )
-      tl.fromTo(
-        cards[cards.length - 1],
-        { boxShadow: '0 -12px 40px rgba(0,0,0,0.35)' },
-        { boxShadow: '0 34px 70px rgba(0,0,0,0.38)', ease: 'none', duration: 1 },
-        end,
-      )
+      // the shadow the cards cast on each other is gone once the page is light: no grey blur around the stack
+      cards.slice(1).forEach((c) => tl.to(c, { boxShadow: '0 0 0 rgba(0,0,0,0)', ease: 'none', duration: 0.6 }, end))
       tl.to({}, { duration: 0.2 })
     })
     return () => mm.revert()
@@ -118,11 +116,13 @@ export function Story() {
           <div className="sy-text">
             <div className="sy-top">
               <h2 className="sy-heading">
-                Через год ты в любом случае{' '}
+                Перемены не требуют уходить{' '}
                 <br />
-                будешь на год старше
+                в никуда
               </h2>
-              <p className="sy-lead">Вопрос только в том, будет ли твой доход целиком зависеть от одного места.</p>
+              <p className="sy-lead">
+                Осваивай новое дело параллельно с работой. Когда начнёшь зарабатывать в интернете, сам решишь, уходить или нет.
+              </p>
             </div>
             <div className="sy-steps">
               <div className="sy-step">
@@ -216,9 +216,9 @@ export function Story() {
               <a className="sy-go" href="#pricing">
                 <img src={`${A}/disc.svg`} alt="" />
                 <span>
-                  Оставить{' '}
+                  Выйти из{' '}
                   <br />
-                  заявку
+                  матрицы
                 </span>
               </a>
             </div>
@@ -240,50 +240,42 @@ function Badge({ n, text }: { n: number; text: string }) {
   )
 }
 
-// The mini "Легенда" plan card inside card 3.
+// The mini "Легенда" plan card inside card 3 (Figma 745:3657): the gold card with the proof line and the access button.
 function Widget() {
   return (
     <div className="sy-widget">
-      <div className="sy-gold" aria-hidden="true">
-        <img src={`${A}/widget-gold.jpg`} alt="" />
-      </div>
-      <div className="sy-w-head">
-        <p className="sy-w-name">Легенда</p>
-      </div>
-      <div className="sy-w-boxes">
-        <div className="sy-w-box sy-w-inst">
-          <div className="sy-w-inst-top">
-            <div className="sy-w-inst-l">
-              <p className="sy-w-title">Рассрочка</p>
-              <div className="sy-w-banks">
-                <span className="sy-bank sy-bank--a">
-                  <img src={`${G}/bank-a.png`} alt="Т-Банк" />
-                </span>
-                <span className="sy-bank sy-bank--b">
-                  <img src={`${G}/bank-b.png`} alt="Сбер" />
-                </span>
-                <span className="sy-bank sy-bank--c">
-                  <img src={`${G}/bank-c.png`} alt="Яндекс Сплит" />
-                </span>
-              </div>
+      <div className="sy-wcard">
+        <div className="sy-gold" aria-hidden="true">
+          <img src={`${A}/widget-gold.jpg`} alt="" />
+        </div>
+        <div className="sy-w-head">
+          <p className="sy-w-name">Легенда</p>
+        </div>
+        <div className="sy-w-boxes">
+          <div className="sy-w-box sy-w-proof">
+            <img src={`${A}/check.svg`} alt="" />
+            <div>
+              <p className="sy-w-m">
+                87% студентов находят первые заказы{' '}
+                <br />в первый месяц
+              </p>
+              <p className="sy-w-s">Оплачивают рассрочку с заработанных средств.</p>
             </div>
           </div>
-          <div className="sy-w-first">
-            <p className="sy-w-m">Первый платеж только через 30 дней</p>
-            <p className="sy-w-s">Есть время получить первые заказы и оплачивать рассрочку с заработанных денег.</p>
-          </div>
-        </div>
-        <div className="sy-w-box sy-w-proof">
-          <img src={`${A}/check.svg`} alt="" />
-          <div>
-            <p className="sy-w-m">
-              87% студентов находят первые заказы{' '}
-              <br />в первый месяц
-            </p>
-            <p className="sy-w-s">Оплачивают рассрочку с заработанных средств.</p>
-          </div>
         </div>
       </div>
+      <a
+        className="sy-wbtn"
+        href={siteConfig.enrollment.legend}
+        target="_blank"
+        rel="noreferrer"
+        onClick={() => trackAnalyticsGoal('tariff_legend_click')}
+      >
+        <span className="sy-gold" aria-hidden="true">
+          <img src={`${G}/gold.jpg`} alt="" className="sy-gold-btn" />
+        </span>
+        <span className="sy-wbtn-text">Получить доступ</span>
+      </a>
     </div>
   )
 }

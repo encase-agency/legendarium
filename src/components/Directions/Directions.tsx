@@ -1,10 +1,10 @@
 import { useLayoutEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { DIRECTION_CARDS, type DirectionCard, type Overlay } from './cards'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import { Lines } from '../shared/Lines'
-import { scrollToSection } from '../../lib/scrollToSection'
 import './Directions.css'
 import { asset } from '../../lib/asset'
 
@@ -105,14 +105,22 @@ export function Directions() {
   const [listOpen, setListOpen] = useState(false)
 
   // "Посмотреть списком" shows all directions at once, without any scroll animation; "Свернуть" brings the carousel back.
+  // Switching is done in one go, before the screen is painted: the list/carousel swap, the re-measure of the pins and
+  // the landing on the top of the block all happen in the same frame, so nothing is seen moving.
   const toggleList = (open: boolean) => {
-    setListOpen(open)
+    flushSync(() => setListOpen(open))
     if (open) document.documentElement.setAttribute('data-dir-list', '')
     else document.documentElement.removeAttribute('data-dir-list')
-    window.setTimeout(() => {
+    const land = () => {
       ScrollTrigger.refresh()
-      scrollToSection('directions')
-    }, 80)
+      const el = sectionRef.current
+      if (!el) return
+      const spacer = el.parentElement?.classList.contains('pin-spacer') ? el.parentElement : el
+      window.scrollTo({ top: Math.max(0, Math.round(spacer.getBoundingClientRect().top + window.scrollY)), behavior: 'instant' })
+    }
+    land()
+    // pins that finish measuring a frame later may move the block by a pixel or two: settle quietly, still unseen
+    requestAnimationFrame(land)
   }
   const sceneRef = useRef<HTMLDivElement>(null)
   const navRef = useRef<HTMLDivElement>(null)
@@ -306,7 +314,7 @@ export function Directions() {
       <div className="dr-stage">
         <div className="dr-head" ref={headRef}>
           <h2 className="dr-heading">
-            Направления в легендариуме{' '}
+            Направления в Легендариуме{' '}
             <br />
             для заработка онлайн
           </h2>
@@ -362,7 +370,7 @@ export function Directions() {
         <div className="dl">
           <div className="dl-head">
             <h2 className="dl-heading">
-              Направления в легендариуме{' '}
+              Направления в Легендариуме{' '}
               <br />
               для заработка онлайн
             </h2>

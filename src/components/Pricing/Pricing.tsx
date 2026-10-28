@@ -27,7 +27,7 @@ function Item({ title, sub, wide }: { title: string; sub: string; wide?: boolean
   )
 }
 
-// Figma 542:6449 (plans) and 291:5292 (basic plan modal, opened by "Получить доступ").
+// Figma 742:3501 (plans) and 742:3453 (basic plan modal, opened by "Смотреть тариф").
 export function Pricing() {
   const [open, setOpen] = useState(false)
   const [closing, setClosing] = useState(false)
@@ -89,7 +89,7 @@ export function Pricing() {
           <div className="pr-boxes">
             <div className="pr-box pr-features">
               <ul className="pr-col pr-col--l">
-                <Item title="Доступ ко всем 12 направлениям" sub="На год. Автопродление — по согласию" />
+                <Item title="Доступ ко всем 12 направлениям" sub="С первого дня на год" />
                 <Item title="Живые разборы с Дядей Андреем" sub="Каждую неделю" />
                 <Item title="Офлайн-встречи:" sub="МСК, СПБ, Пхукет, Дубай" />
                 <Item title="Поиск первых заказов" sub="Гарантированная помощь" />
@@ -113,31 +113,6 @@ export function Pricing() {
                 </li>
               </ul>
             </div>
-
-            <div className="pr-box pr-installment">
-              <div className="pr-inst-l">
-                <p className="pr-inst-title">Рассрочка</p>
-                <div className="pr-inst-text">
-                  <p className="pr-t">Первый платеж только через 30 дней</p>
-                  <p className="pr-s pr-s--319">
-                    Есть время получить первые заказы и оплачивать рассрочку с заработанных денег
-                  </p>
-                </div>
-              </div>
-              <div className="pr-inst-r">
-                <div className="pr-banks">
-                  <span className="pr-bank pr-bank--a">
-                    <img src={`${A}/bank-a.png`} alt="Т-Банк" />
-                  </span>
-                  <span className="pr-bank pr-bank--b">
-                    <img src={`${A}/bank-b.png`} alt="Сбер" />
-                  </span>
-                  <span className="pr-bank pr-bank--c">
-                    <img src={`${A}/bank-c.png`} alt="Яндекс Сплит" />
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </article>
@@ -147,16 +122,16 @@ export function Pricing() {
           <p className="pr-more-1">
             Нужен только доступ к урокам?{' '}
             <br className="pr-mbr" />
-            Базовая подписка
+            Базовая подписка - 5 900 ₽/мес
           </p>
           <p className="pr-more-2">
             12 направлений, уроки без личных разборов,{' '}
             <br className="pr-mbr" />
-            оплата помесячно; автопродление — по отдельному согласию
+            оплата помесячно
           </p>
         </div>
         <button type="button" className="pr-access" onClick={openModal}>
-          Получить доступ
+          Смотреть тариф
           <span className="pr-chev">
             <img src={`${A}/chevron.svg`} alt="" />
           </span>

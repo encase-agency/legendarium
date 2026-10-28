@@ -24,7 +24,7 @@ export function Compare() {
 
       <div className="cp-title">
         <h2 className="cp-heading">
-          Суть в том, что <em>Тебя оставили одного</em>
+          Суть в том, что <em>тебя оставили одного</em>
         </h2>
         <p className="cp-sub">Большинство курсов заканчивается ровно там, где начинается настоящая работа.</p>
       </div>

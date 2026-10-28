@@ -50,9 +50,14 @@
   transition: background 0.25s ease;
 }
 
-.cs-row:hover,
 .cs-row:focus-visible {
   background: #2b2e33;
+}
+
+@media (hover: hover) and (min-width: 1101px) {
+  .cs-row:hover {
+    background: #2b2e33;
+  }
 }
 
 .cs-row:focus-visible {
@@ -97,6 +102,10 @@
 
 .cs-title b {
   font-weight: 600;
+}
+
+.cs-title.is-wide {
+  width: auto;
 }
 
 .cs-pct {
@@ -145,6 +154,12 @@
   color: #ffffff;
 }
 
+/* Figma 574:2116: the "was" text and the steps are set smaller (17px) than the facts (20px) */
+.cs-v {
+  font-size: calc(17 * var(--u));
+  letter-spacing: calc(-0.34 * var(--u));
+}
+
 .cs-story {
   flex: none;
   width: calc(334 * var(--u));
@@ -160,15 +175,15 @@
 }
 
 .cs-was {
-  width: calc(278 * var(--u));
+  white-space: nowrap;
 }
 
 .cs-step {
   margin: 0;
   display: flex;
-  gap: calc(4 * var(--u));
-  font-size: calc(20 * var(--u));
-  letter-spacing: calc(-0.4 * var(--u));
+  gap: calc(8 * var(--u));
+  font-size: calc(17 * var(--u));
+  letter-spacing: calc(-0.34 * var(--u));
   white-space: nowrap;
 }
 
@@ -187,9 +202,10 @@
 }
 
 .cs-gold {
-  width: calc(255 * var(--u));
+  width: calc(294 * var(--u));
   margin: 0;
   font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 600;
   font-size: calc(29 * var(--u));
   line-height: 0.98;
   letter-spacing: calc(-0.58 * var(--u));
@@ -243,8 +259,10 @@
   transition: transform 0.5s cubic-bezier(0.22, 0.8, 0.2, 1);
 }
 
-.cs-row:hover .cs-poster {
-  transform: scale(1.04);
+@media (hover: hover) and (min-width: 1101px) {
+  .cs-row:hover .cs-poster {
+    transform: scale(1.04);
+  }
 }
 
 .cs-play {
@@ -257,8 +275,10 @@
   transition: transform 0.3s ease;
 }
 
-.cs-row:hover .cs-play {
-  transform: translate(-50%, -50%) scale(1.12);
+@media (hover: hover) and (min-width: 1101px) {
+  .cs-row:hover .cs-play {
+    transform: translate(-50%, -50%) scale(1.12);
+  }
 }
 
 .cs-who {
@@ -279,6 +299,34 @@
 .cs-who span {
   font-size: calc(15 * var(--u));
   color: #9f9f9f;
+}
+
+.cs-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(12 * var(--u));
+  margin: calc(40 * var(--u)) auto 0;
+  padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(24 * var(--u));
+  border: 0;
+  border-radius: calc(14 * var(--u));
+  background: #313131;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: calc(16 * var(--u));
+  line-height: 1.3;
+  color: #ffffff;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.cs-all-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(12 * var(--u));
+  border-radius: calc(12 * var(--u));
+  background: #b07f30;
 }
 
 /* Phone / tablet layout (Figma 549:8519): centred heading, then one 374px card per case with the video last. */
@@ -373,7 +421,11 @@
   }
 
   .cs-was {
-    width: auto;
+    white-space: normal;
+  }
+
+  .cs-was br {
+    display: none;
   }
 
   .cs-step {
@@ -426,5 +478,23 @@
 
   .cs-who span {
     font-size: calc(14 * var(--u));
+  }
+
+  .cs-all {
+    gap: calc(12 * var(--u));
+    height: calc(42 * var(--u));
+    margin-top: 0;
+    padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(18 * var(--u));
+    border-radius: calc(11.26 * var(--u));
+    font-size: calc(13 * var(--u));
+  }
+
+  .cs-all-icon {
+    padding: calc(9 * var(--u));
+    border-radius: calc(9.65 * var(--u));
+  }
+
+  .cs-all-icon .arrow-icon {
+    --u: calc(0.8 * var(--mu));
   }
 }

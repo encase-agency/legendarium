@@ -66,6 +66,7 @@
   background: #000000;
   object-fit: contain;
   border: 0;
+  transition: opacity 0.25s ease;
 }
 
 .vm-status {
@@ -174,4 +175,3 @@
   .vm, .vm.is-closing { animation-duration: 0.01ms; }
 }
 
-.vm-source { color: #e5a53e; font-size: 14px; }

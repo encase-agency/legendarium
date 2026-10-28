@@ -30,7 +30,8 @@ async function resolveVideo(file: string, signal: AbortSignal, fresh = false): P
 
 /** What the player needs: the file in the public Disk folder, a poster and the caption. Cases and the showcase cards both fit. */
 export interface VideoItem {
-  video: { file: string }
+  /** a Kinescope media id, or a file in the public Disk folder / the prepared local videos */
+  video: { file?: string; id?: string }
   /** a file in /assets/cases, or an absolute path starting with "/" */
   poster: string
   person: string
@@ -44,18 +45,21 @@ interface Props {
 }
 
 export function VideoModal({ item, closing, onClose }: Props) {
-  const kinescope = kinescopeVideos[item.video.file]
+  const file = item.video.file ?? ''
+  const kinescope = item.video.id ? { id: item.video.id } : kinescopeVideos[file]
+  const hosted = Boolean(kinescope)
   const [src, setSrc] = useState<string | null>(null)
   const [failed, setFailed] = useState(false)
   const [reason, setReason] = useState('')
   const [attempt, setAttempt] = useState(0)
+  const [frameReady, setFrameReady] = useState(false)
   const closeRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
   const readyTimer = useRef<number>(0)
   useDialogLifecycle(dialogRef, onClose, closeRef)
 
   useEffect(() => {
-    if (closing || kinescope) return
+    if (closing || hosted) return
     const ctrl = new AbortController()
     setSrc(null)
     setFailed(false)
@@ -67,7 +71,7 @@ export function VideoModal({ item, closing, onClose }: Props) {
     }, 15_000)
     // Both the delayed retry and the fetch belong to this opening of the dialog.
     const retry = window.setTimeout(() => {
-      resolveVideo(item.video.file, ctrl.signal, attempt > 0)
+      resolveVideo(file, ctrl.signal, attempt > 0)
         .then(url => { if (!ctrl.signal.aborted) setSrc(url) })
         .catch((error: Error) => {
           if (ctrl.signal.aborted) return
@@ -81,7 +85,7 @@ export function VideoModal({ item, closing, onClose }: Props) {
       window.clearTimeout(retry)
       window.clearTimeout(deadline)
     }
-  }, [item.video.file, closing, attempt, kinescope])
+  }, [file, closing, attempt, hosted])
 
   useEffect(() => {
     if (!src || closing) return
@@ -106,7 +110,7 @@ export function VideoModal({ item, closing, onClose }: Props) {
     setFailed(true)
   }
 
-  const fallback = kinescope?.shareUrl ?? `${DISK_FOLDER}/${encodeURIComponent(item.video.file)}`
+  const fallback = `${DISK_FOLDER}/${encodeURIComponent(file)}`
 
   // Rendered into <body>: a pinned (transformed) section would otherwise size and clip a fixed overlay and keep it under the header.
   return createPortal(
@@ -119,7 +123,15 @@ export function VideoModal({ item, closing, onClose }: Props) {
             title={`Видео: ${item.person}`}
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             allowFullScreen
+            onLoad={() => setFrameReady(true)}
+            style={{ opacity: frameReady ? 1 : 0 }}
           />}
+          {kinescope && !frameReady && !closing && (
+            <div className="vm-status" role="status">
+              <span className="vm-spinner" />
+              Загружаем видео…
+            </div>
+          )}
           {!kinescope && src && !failed && !closing && (
             <video
               key={src}
@@ -152,7 +164,6 @@ export function VideoModal({ item, closing, onClose }: Props) {
         <p className="vm-caption">
           <b>{item.person}</b>
           <span>{item.summary}</span>
-          {kinescope && <a className="vm-source" href={fallback} target="_blank" rel="noreferrer">Открыть на Kinescope</a>}
         </p>
       </div>
       <button className="vm-close" type="button" onClick={onClose} aria-label="Закрыть" ref={closeRef}>

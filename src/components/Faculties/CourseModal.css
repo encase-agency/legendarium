@@ -204,6 +204,31 @@
   transform: translate(-50%, -50%);
 }
 
+button.md-play {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+button.md-play img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.2s ease;
+}
+
+button.md-play:hover img,
+button.md-play:focus-visible img {
+  transform: scale(1.08);
+}
+
+button.md-play:focus-visible {
+  outline: 2px solid #b07f30;
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
 .md-mentor {
   width: calc(368 * var(--u));
   display: flex;
@@ -328,5 +353,4 @@
   }
 }
 
-.md-poster > iframe { display: block; width: 100%; height: 100%; border: 0; }
-.md-video-source { color: #e5a53e; font-size: max(14px, calc(16 * var(--u))); }
+.md-poster > iframe { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border: 0; transition: opacity 0.25s ease; }

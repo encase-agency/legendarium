@@ -19,16 +19,16 @@ const STATS = [
   { value: '12 месяцев', label: 'Доступа' },
 ]
 
-// Both cards open the player with a video from the public Yandex Disk folder (the same way as the cases).
+// Both cards open the player with a Kinescope video (the same way as the cases).
 const VIDEOS: VideoItem[] = [
   {
-    video: { file: 'Егор 1200$ (студент 20 лет).mp4' },
+    video: { id: '145fbcde-8216-498f-890c-27e533b9c87d' },
     poster: `${ASSETS}/poster-b.jpg`,
     person: 'Путь участника до первого заработка',
     summary: 'Егор. Монтаж и контент · около 1 200 $ за июнь',
   },
   {
-    video: { file: 'Алексей 4200$, трейдинг, кейс.mp4' },
+    video: { id: '56a22d6f-2ba6-47ec-9b27-349d47e65e6f' },
     poster: `${ASSETS}/poster-journey.jpg`,
     person: 'Путь участника: от первого шага до своего дела',
     summary: 'Алексей. Трейдинг · депозит 140 $ → 4200 $ за 7 недель',
@@ -186,12 +186,6 @@ export function Showcase() {
           <ArrowIcon src={`${ASSETS}/arrow-license.svg`} />
         </a>}
       </div>
-      <a className="sc-button" href="#route">
-        Как всё устроено
-        <span className="sc-button-icon">
-          <ArrowIcon src={`${ASSETS}/arrow-button.svg`} />
-        </span>
-      </a>
       {open !== null && <Suspense fallback={null}><VideoModal item={VIDEOS[open]} closing={closing} onClose={closeVideo} /></Suspense>}
     </section>
   )

@@ -177,11 +177,6 @@
     --u: var(--mu);
     height: auto;
     padding: calc(56 * var(--u)) calc(16 * var(--u));
-    /* rolls over the pinned "Образовательная платформа" block, which waits for one more screen */
-    position: relative;
-    z-index: 5;
-    margin-top: -100svh;
-    box-shadow: 0 -24px 48px rgba(0, 0, 0, 0.45);
   }
 
   .cw-row {

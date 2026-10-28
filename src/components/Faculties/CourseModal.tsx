@@ -1,5 +1,5 @@
 import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
-import { useRef, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import type { Block, Course, Line } from './courses'
 import { createPortal } from 'react-dom'
@@ -94,6 +94,14 @@ interface Props {
 export function CourseModal({ course, closing, onClose }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null)
   const { modal, poster } = course
+  const [playing, setPlaying] = useState(false)
+  const [frameReady, setFrameReady] = useState(false)
+  useEffect(() => {
+    if (closing) {
+      setPlaying(false)
+      setFrameReady(false)
+    }
+  }, [closing])
 
   const dialogRef = useRef<HTMLDivElement>(null)
   useDialogLifecycle(dialogRef, onClose, closeRef)
@@ -132,12 +140,7 @@ export function CourseModal({ course, closing, onClose }: Props) {
 
         <div className="md-right">
           <div className={poster.black ? 'md-poster is-black' : 'md-poster'}>
-            {course.video && !closing ? <iframe
-              src={kinescopeEmbedUrl(course.video.id)}
-              title={`Видео: ${modal.title.join(' ')}`}
-              allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-              allowFullScreen
-            /> : <img
+            <img
               src={poster.src.startsWith('https://') ? poster.src : `${A}/${poster.src}`}
               alt=""
               className={crop ? 'is-crop' : undefined}
@@ -146,9 +149,26 @@ export function CourseModal({ course, closing, onClose }: Props) {
                   ? { width: `${crop.w}%`, height: `${crop.h}%`, left: `${crop.left}%`, top: `${crop.top}%` }
                   : undefined
               }
-            />}
+            />
+            {course.video && playing && !closing && (
+              <iframe
+                src={kinescopeEmbedUrl(course.video.id, true)}
+                title={`Видео: ${modal.title.join(' ')}`}
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                allowFullScreen
+                onLoad={() => setFrameReady(true)}
+                style={{ opacity: frameReady ? 1 : 0 }}
+              />
+            )}
+            {!(playing && frameReady) &&
+              (course.video ? (
+                <button className="md-play" type="button" onClick={() => setPlaying(true)} aria-label="Смотреть видео">
+                  <img src={`${A}/play.svg`} alt="" />
+                </button>
+              ) : (
+                <img className="md-play" src={`${A}/play.svg`} alt="" />
+              ))}
           </div>
-          {course.video && <a className="md-video-source" href={course.video.shareUrl} target="_blank" rel="noreferrer">Открыть видео на Kinescope</a>}
           <div className="md-mentor">
             <p className="md-mentor-name">{modal.mentor.name}</p>
             <p className="md-mentor-role">

@@ -110,7 +110,7 @@
 }
 
 .sy-lead {
-  width: calc(362 * var(--u));
+  width: calc(567 * var(--u));
   margin: 0;
   font-size: calc(14 * var(--u));
   line-height: 1.3;
@@ -247,13 +247,19 @@
   text-transform: uppercase;
 }
 
-/* Mini plan card inside card 3 */
+/* Mini plan card inside card 3 (Figma 745:3657): gold card + access button, 373px wide, resting at the foot of the card */
 .sy-widget {
   position: absolute;
   right: 0;
-  top: calc(24 * var(--u));
+  bottom: calc(24 * var(--u));
   width: calc(373 * var(--u));
-  height: calc(381 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(4 * var(--u));
+}
+
+.sy-wcard {
+  position: relative;
   padding: calc(8 * var(--u));
   display: flex;
   flex-direction: column;
@@ -267,6 +273,7 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  border-radius: calc(14 * var(--u));
 }
 
 .sy-gold img {
@@ -277,105 +284,40 @@
   max-width: none;
 }
 
+.sy-gold .sy-gold-btn {
+  inset: auto;
+  width: 100%;
+  height: 2052.35%;
+  left: 0.01%;
+  top: -787.74%;
+}
+
 .sy-w-head,
 .sy-w-boxes {
   position: relative;
 }
 
 .sy-w-head {
-  flex: 1 1 0;
-  min-height: 0;
+  height: calc(60 * var(--u));
   display: flex;
-  gap: calc(4 * var(--u));
-  padding: calc(16 * var(--u)) calc(10 * var(--u));
+  align-items: flex-end;
+  padding: calc(12 * var(--u)) calc(10 * var(--u)) calc(8 * var(--u));
 }
 
 .sy-w-name {
-  flex: 1;
-  min-width: 0;
-  height: calc(48 * var(--u));
   margin: 0;
-  display: flex;
-  align-items: flex-end;
   font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
   font-weight: 700;
   font-size: calc(44 * var(--u));
-  line-height: 1.3;
+  line-height: 1;
   letter-spacing: calc(-0.88 * var(--u));
   text-transform: uppercase;
-}
-
-.sy-w-prices {
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  gap: calc(8 * var(--u));
-}
-
-.sy-w-row {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: calc(6 * var(--u));
-}
-
-.sy-w-old {
-  position: relative;
-  width: calc(60 * var(--u));
-  height: calc(18 * var(--u));
-  margin: 0;
-  color: #d3b17a;
-  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
-  font-weight: 700;
-  font-size: calc(24 * var(--u));
-  line-height: 0.85;
-  letter-spacing: calc(-0.48 * var(--u));
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.sy-w-old span {
-  position: absolute;
-  left: calc(-2 * var(--u));
-  top: calc(5.5 * var(--u));
-  width: calc(63.039 * var(--u));
-  height: calc(1.383 * var(--u));
-  background: #d3b17a;
-  transform: rotate(-5.14deg);
-}
-
-.sy-w-price {
-  margin: 0;
-  text-align: right;
-  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
-  font-weight: 700;
-  line-height: 0.85;
-  letter-spacing: calc(-0.64 * var(--u));
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.sy-w-price span {
-  font-size: calc(32 * var(--u));
-}
-
-.sy-w-price small {
-  font-size: calc(24 * var(--u));
-}
-
-.sy-w-save {
-  width: calc(161 * var(--u));
-  margin: 0;
-  font-size: calc(12 * var(--u));
-  line-height: 1.19;
-  letter-spacing: calc(-0.24 * var(--u));
+  color: #ffffff;
 }
 
 .sy-w-boxes {
-  width: calc(357 * var(--u));
   display: flex;
   flex-direction: column;
-  gap: calc(4 * var(--u));
 }
 
 .sy-w-box {
@@ -383,124 +325,6 @@
   border-radius: calc(12 * var(--u));
   background: #ffffff;
   color: #000000;
-}
-
-.sy-w-inst {
-  display: flex;
-  flex-direction: column;
-  gap: calc(24 * var(--u));
-}
-
-.sy-w-inst-top {
-  display: flex;
-  gap: calc(12 * var(--u));
-}
-
-.sy-w-inst-l {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: calc(12 * var(--u));
-}
-
-.sy-w-title {
-  margin: 0;
-  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
-  font-weight: 700;
-  font-size: calc(24 * var(--u));
-  line-height: 0.85;
-  letter-spacing: calc(-0.48 * var(--u));
-  text-transform: uppercase;
-  color: #302006;
-}
-
-.sy-w-banks {
-  width: calc(206 * var(--u));
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: calc(2.264 * var(--u));
-}
-
-.sy-bank {
-  position: relative;
-  display: block;
-  height: calc(26.033 * var(--u));
-  overflow: hidden;
-  border-radius: calc(7.923 * var(--u));
-}
-
-.sy-bank img {
-  position: absolute;
-  max-width: none;
-  object-fit: cover;
-}
-
-.sy-bank--a {
-  width: calc(56.593 * var(--u));
-  background: #e1fae7;
-}
-
-.sy-bank--a img {
-  left: calc(-13.58 * var(--u));
-  top: calc(-14.72 * var(--u));
-  width: calc(84.89 * var(--u));
-  height: calc(56.593 * var(--u));
-}
-
-.sy-bank--b {
-  width: calc(56.593 * var(--u));
-  background: #e1fae7;
-}
-
-.sy-bank--b img {
-  left: 0;
-  top: calc(-4.53 * var(--u));
-  width: calc(56.073 * var(--u));
-  height: calc(36.559 * var(--u));
-}
-
-.sy-bank--c {
-  width: calc(88.286 * var(--u));
-  background: #f0f0f0;
-}
-
-.sy-bank--c img {
-  left: calc(-9.06 * var(--u));
-  top: calc(-13.58 * var(--u));
-  width: calc(103.485 * var(--u));
-  height: calc(54.33 * var(--u));
-}
-
-.sy-w-inst-r {
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  gap: calc(4 * var(--u));
-}
-
-.sy-w-sum {
-  margin: 0;
-  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
-  font-weight: 700;
-  line-height: 0.85;
-  letter-spacing: calc(-0.64 * var(--u));
-  text-transform: uppercase;
-  color: #302006;
-  white-space: nowrap;
-}
-
-.sy-w-sum span {
-  font-size: calc(24 * var(--u));
-}
-
-.sy-w-sum small {
-  font-size: calc(18 * var(--u));
-}
-
-.sy-w-first {
-  width: calc(325 * var(--u));
 }
 
 .sy-w-m {
@@ -518,12 +342,6 @@
   color: #7f7f7f;
 }
 
-.sy-w-s--95 {
-  width: calc(95 * var(--u));
-  line-height: 1.19;
-  letter-spacing: calc(-0.24 * var(--u));
-}
-
 .sy-w-proof {
   display: flex;
   align-items: center;
@@ -538,6 +356,40 @@
 
 .sy-w-proof .sy-w-m {
   white-space: pre;
+}
+
+.sy-wbtn {
+  position: relative;
+  height: calc(52 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: calc(12 * var(--u));
+  color: #55390b;
+  text-decoration: none;
+  transition:
+    filter 0.25s ease,
+    transform 0.25s ease;
+}
+
+.sy-wbtn .sy-gold {
+  border-radius: calc(12 * var(--u));
+}
+
+.sy-wbtn:hover {
+  filter: brightness(1.08);
+  transform: translateY(calc(-2 * var(--u)));
+}
+
+.sy-wbtn-text {
+  position: relative;
+  font-family: 'Alumni Sans SC', 'Inter Tight', sans-serif;
+  font-weight: 700;
+  font-size: calc(24 * var(--u));
+  line-height: 0.85;
+  letter-spacing: calc(-0.48 * var(--u));
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 @media (min-width: 1101px) {
@@ -707,15 +559,13 @@
 
   .sy-widget {
     position: relative;
-    top: auto;
+    bottom: auto;
     width: calc(346 * var(--u));
-    height: auto;
     margin-left: calc(-4 * var(--u));
   }
 
   .sy-w-head {
-    flex: none;
-    padding: calc(16 * var(--u)) calc(4 * var(--u));
+    padding: calc(16 * var(--u)) calc(4 * var(--u)) calc(8 * var(--u));
   }
 
   .sy-w-name {
@@ -723,15 +573,7 @@
     letter-spacing: calc(-0.8 * var(--u));
   }
 
-  .sy-w-boxes {
-    width: auto;
-  }
-
-  .sy-w-banks {
-    --u: calc(0.927 * var(--mu));
-  }
-
-  .sy-w-first {
-    width: auto;
+  .sy-wbtn:hover {
+    transform: none;
   }
 }

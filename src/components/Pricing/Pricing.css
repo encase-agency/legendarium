@@ -12,7 +12,7 @@
 .pr-heading {
   position: absolute;
   left: 50%;
-  top: calc(68 * var(--u));
+  top: calc(124 * var(--u));
   transform: translateX(-50%);
   margin: 0;
   text-align: center;
@@ -63,7 +63,7 @@
 .pr-pay {
   position: absolute;
   left: 50%;
-  top: calc(590 * var(--u));
+  top: calc(520 * var(--u));
   transform: translateX(-50%);
   width: calc(716 * var(--u));
   height: calc(62 * var(--u));
@@ -97,7 +97,7 @@
 .pr-card {
   position: absolute;
   left: calc(398 * var(--u));
-  top: calc(143 * var(--u));
+  top: calc(215 * var(--u));
   width: calc(716 * var(--u));
   overflow: hidden;
   border-radius: calc(12 * var(--u));
@@ -114,18 +114,24 @@
 }
 
 .pr-top {
-  height: calc(99 * var(--u));
+  height: calc(71 * var(--u));
   padding: calc(12 * var(--u)) calc(24 * var(--u)) calc(12 * var(--u)) calc(12 * var(--u));
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: calc(4 * var(--u));
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: calc(10 * var(--u));
 }
 
 .pr-row {
   display: flex;
   align-items: center;
   gap: calc(10 * var(--u));
+}
+
+.pr-row:not(.pr-row--note) {
+  flex: 1;
+  min-width: 0;
 }
 
 .pr-row--note {
@@ -197,7 +203,7 @@
 }
 
 .pr-for {
-  flex: 1;
+  flex: none;
   margin: 0;
   line-height: 1.19;
 }
@@ -434,7 +440,7 @@
 .pr-more {
   position: absolute;
   left: 50%;
-  top: calc(692 * var(--u));
+  top: calc(630 * var(--u));
   transform: translateX(-50%);
   width: calc(446 * var(--u));
   display: flex;
@@ -574,6 +580,10 @@
     height: auto;
     min-height: calc(99 * var(--u));
     padding: calc(12 * var(--u)) calc(8 * var(--u));
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: calc(4 * var(--u));
   }
 
   .pr-name {

@@ -109,6 +109,10 @@
   text-transform: uppercase;
 }
 
+.pm-name-m {
+  display: none;
+}
+
 .pm-price {
   flex: none;
   width: calc(220 * var(--u));
@@ -173,6 +177,9 @@
   align-items: center;
   justify-content: center;
   border-radius: calc(12 * var(--u));
+  border: 0;
+  padding: 0;
+  cursor: pointer;
   background: #303134;
   color: #ffffff;
   text-decoration: none;
@@ -212,58 +219,134 @@
 }
 
 .pm-close:focus-visible {
-  outline: 1px solid #ffffff;
-  outline-offset: calc(6 * var(--u));
+  outline: none;
 }
 
+/* the phone text of the button lives next to the desktop one */
+.pm-buy-m {
+  display: none;
+}
+
+/* Phone / tablet (Figma 695:5558): heading, the plan card, and the pay button pinned to the bottom of the screen. */
 @media (max-width: 1100px) {
   .pm {
-    --u: 1px;
+    --u: var(--mu);
   }
 
   .pm-stage {
     height: auto;
     min-height: 100svh;
-    padding: 96px 16px 48px;
+    box-sizing: border-box;
+    width: min(100%, calc(390 * var(--u)));
+    margin: 0 auto;
+    padding: calc(100 * var(--u)) calc(16 * var(--u)) calc(120 * var(--u));
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: calc(40 * var(--u));
   }
 
   .pm-heading,
-  .pm-card,
-  .pm-buy {
+  .pm-card {
     position: static;
     transform: none;
   }
 
   .pm-heading {
-    width: auto;
-    font-size: 40px;
+    width: calc(310 * var(--u));
+    font-size: calc(34 * var(--u));
+    letter-spacing: calc(-0.68 * var(--u));
   }
 
-  .pm-card,
-  .pm-buy {
+  .pm-card {
     width: 100%;
   }
 
-  .pm-close {
-    right: 20px;
-    top: 20px;
+  .pm-card-in {
+    padding: calc(8 * var(--u));
+  }
+
+  .pm-head {
+    align-items: center;
+    padding: calc(12 * var(--u)) calc(8 * var(--u));
+  }
+
+  .pm-label {
+    display: none;
+  }
+
+  .pm-name-d {
+    display: none;
+  }
+
+  .pm-name-m {
+    display: inline;
   }
 
   .pm-name {
     width: auto;
+    font-weight: 700;
+    font-size: calc(28 * var(--u));
+    letter-spacing: calc(-0.56 * var(--u));
   }
 
   .pm-price {
     width: auto;
+    height: auto;
+    letter-spacing: calc(-0.64 * var(--u));
+  }
+
+  .pm-price span {
+    font-size: calc(32 * var(--u));
+  }
+
+  .pm-price small {
+    font-size: calc(24 * var(--u));
+  }
+
+  .pm-list {
+    padding: calc(16 * var(--u));
+    gap: calc(14 * var(--u));
+  }
+
+  .pm-list li {
+    gap: calc(12 * var(--u));
   }
 
   .pm-list p {
     white-space: normal;
+    font-size: calc(14 * var(--u));
+  }
+
+  /* pinned to the bottom of the screen, under the thumb, however tall the content is */
+  .pm-buy {
+    position: fixed;
+    left: 50%;
+    top: auto;
+    bottom: max(16px, calc(env(safe-area-inset-bottom) + 12px));
+    transform: translateX(-50%);
+    width: min(calc(100vw - 32px), calc(358 * var(--u)));
+    z-index: 3;
+    height: calc(62 * var(--u));
+    min-height: 56px;
+    font-size: calc(26 * var(--u));
+  }
+
+  .pm-buy-d {
+    display: none;
+  }
+
+  .pm-buy-m {
+    display: inline;
+  }
+
+  .pm-close {
+    right: 24px;
+    top: calc(48 * var(--u));
+    position: fixed;
+    width: calc(20 * var(--u));
+    height: calc(20 * var(--u));
+    min-width: 20px;
+    min-height: 20px;
   }
 }
-
-.pm-buy:disabled { border: 0; opacity: .65; cursor: not-allowed; }

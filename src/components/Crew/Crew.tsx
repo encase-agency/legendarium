@@ -1,9 +1,12 @@
 import { useState } from 'react'
+
 import { Lines } from '../shared/Lines'
 import './Crew.css'
 import { asset } from '../../lib/asset'
 
 const A = asset('/assets/people')
+// Hover follows the pointer on computers only; on tablets and phones the block keeps its own layout.
+const hoverable = () => window.matchMedia('(hover: hover) and (min-width: 1101px)').matches
 
 // Figma "Анимация блока" (frames 518:2236, 521:2354, 521:2392, 521:2429): four
 // states, one per expanded column. Default (525:2485): all four at 340px.
@@ -37,7 +40,7 @@ const COLUMNS = [
   {
     id: 'community',
     title: 'Сообщество',
-    body: ['Общий чат, чаты факультетов,', 'обмен опытом и задачами,', 'офлайн-встречи.'],
+    body: ['Общий чат, чаты направлений,', 'обмен опытом и задачами,', 'офлайн-встречи.'],
   },
 ] as const satisfies readonly {
   id: string
@@ -52,13 +55,13 @@ export function Crew() {
 
   return (
     <section className="crew" id="crew">
-      <div className="cw-row" data-active={active ?? 'none'} onMouseLeave={() => setActive(null)}>
+      <div className="cw-row" data-active={active ?? 'none'} onMouseLeave={() => hoverable() && setActive(null)}>
         {COLUMNS.map((c, i) => (
           <div
             key={c.id}
             className={i === active ? 'cw-col is-active' : 'cw-col'}
             tabIndex={0}
-            onMouseEnter={() => setActive(i)}
+            onMouseEnter={() => hoverable() && setActive(i)}
             onFocus={() => setActive(i)}
             onClick={() => setActive(i)}
           >

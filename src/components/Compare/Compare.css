@@ -160,6 +160,16 @@
   text-decoration: none;
 }
 
+.cp-route {
+  transition: scale 0.3s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+@media (hover: hover) and (min-width: 1101px) {
+  .cp-route:hover {
+    scale: 1.07;
+  }
+}
+
 .cp-route img {
   position: absolute;
   inset: 0;

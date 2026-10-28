@@ -82,3 +82,37 @@ body {
     transform: translateX(-50%);
   }
 }
+
+/* Basic card hover (desktop only): the card lifts a little. Cards get .fx-card from useCardReveal (lib/motion.ts). */
+@media (hover: hover) and (min-width: 1101px) {
+  .fx-card {
+    transition:
+      translate 0.4s cubic-bezier(0.22, 0.8, 0.2, 1),
+      filter 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .fx-card:hover {
+    translate: 0 -8px;
+    filter: brightness(1.1);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  }
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Round "close" crosses: no blue focus ring (touch screens showed one right after a window opened) */
+.vm-close,
+.rv-close,
+.pf-close,
+.af-close,
+.md-close,
+.mn-close,
+.pm-close,
+.tt-close {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}

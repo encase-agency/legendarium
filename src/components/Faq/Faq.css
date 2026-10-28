@@ -1,5 +1,6 @@
 /* Figma 537:6074 / 537:5958: 1512px frame on #1b1d20; --u is one design pixel.
-   Closed rows are 86px tall (20 + 46 button + 20) with no borders; opened rows get 1px lines. */
+   Closed rows are 86px tall (20 + 46 button + 20) with a 1px line under each (and above the first); opened rows
+   get lines on both sides. */
 .faq {
   --u: calc(100vw / 1512);
   position: relative;
@@ -39,15 +40,15 @@
   padding: calc(20 * var(--u)) 0;
   border: 0 solid #393939;
   border-top-width: 0;
-  border-bottom-width: 0;
+  border-bottom-width: 1px;
   transition:
     border-width 0.3s ease,
     padding 0.3s ease;
 }
 
+.faq-row:first-child,
 .faq-row.is-open {
   border-top-width: 1px;
-  border-bottom-width: 1px;
 }
 
 .faq-row.is-open.is-pad24 {
@@ -105,8 +106,10 @@
   top: calc(24 * var(--u));
 }
 
-.faq-q:hover .faq-icon {
-  transform: scale(1.08);
+@media (hover: hover) and (min-width: 1101px) {
+  .faq-q:hover .faq-icon {
+    transform: scale(1.08);
+  }
 }
 
 .faq-q:focus-visible {
@@ -120,20 +123,19 @@
 
 .faq-icon img {
   position: absolute;
-  left: calc(14 * var(--u));
+  inset: 0;
+  margin: auto;
   transition:
     opacity 0.25s ease,
     transform 0.3s ease;
 }
 
 .faq-plus {
-  top: calc(14 * var(--u));
   width: calc(18 * var(--u));
   height: calc(18 * var(--u));
 }
 
 .faq-minus {
-  top: calc(24 * var(--u));
   width: calc(18 * var(--u));
   height: calc(2 * var(--u));
   opacity: 0;
@@ -248,29 +250,19 @@
     top: calc(24 * var(--u));
   }
 
-  .faq-icon img {
-    left: calc(12 * var(--u));
-  }
-
   .faq-plus {
-    top: calc(12 * var(--u));
     width: calc(16 * var(--u));
     height: calc(16 * var(--u));
   }
 
   .faq-minus {
-    top: calc(19 * var(--u));
     width: calc(16 * var(--u));
     height: calc(2 * var(--u));
   }
 
+  /* every answer is set in the size of "Изучите описания направлений…" */
   .faq-text {
     max-width: none;
-    font-size: calc(16 * var(--u));
-    letter-spacing: calc(-0.32 * var(--u));
-  }
-
-  .faq-row.is-pad24 .faq-text {
     font-size: calc(14 * var(--u));
     letter-spacing: calc(-0.28 * var(--u));
   }

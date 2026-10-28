@@ -175,6 +175,16 @@
   height: calc(132 * var(--u));
 }
 
+.cm-circle {
+  transition: scale 0.3s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+@media (hover: hover) and (min-width: 1101px) {
+  .cm-cta:hover .cm-circle {
+    scale: 1.07;
+  }
+}
+
 .cm-circle img {
   position: absolute;
   inset: 0;

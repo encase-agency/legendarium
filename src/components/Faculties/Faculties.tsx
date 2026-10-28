@@ -40,6 +40,7 @@ function CourseCard({ course, onOpen, focusable = true }: { course: Course; onOp
               : undefined
           }
         />
+        <img className="fc-play" src={`${A}/play.svg`} alt="" />
       </div>
       <h3 className="fc-title" style={card.titleWeight ? { fontWeight: card.titleWeight } : undefined}>
         {card.title}
