@@ -118,7 +118,7 @@
   padding: calc(12 * var(--u)) calc(24 * var(--u)) calc(12 * var(--u)) calc(12 * var(--u));
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: calc(10 * var(--u));
 }
