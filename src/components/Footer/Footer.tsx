@@ -1,5 +1,6 @@
 import { siteConfig } from '../../lib/siteConfig'
 import { linkAttrs } from '../../lib/documents'
+import { EncaseSignature } from './EncaseSignature'
 import { openCookieSettings } from '../Consent/preferences'
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
@@ -182,6 +183,7 @@ export function Footer() {
       ))}
 
       <img className="ft-wordmark" src={`${A}/wordmark-new.png`} alt="Легендариум" />
+      <EncaseSignature />
     </footer>
   )
 }

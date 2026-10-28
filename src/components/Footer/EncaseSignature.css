@@ -1,0 +1,24 @@
+/* Figma 764:3873: the signature sits under the last letter of the wordmark; 137 x 36.214 design px at (1318, 747). */
+.ft-encase {
+  position: absolute;
+  left: calc(1318 * var(--u));
+  top: calc((747 - 121) * var(--u));
+  width: calc(137 * var(--u));
+  height: calc(36.214 * var(--u));
+  pointer-events: none;
+}
+
+.ft-encase svg {
+  display: block;
+  overflow: visible;
+}
+
+@media (max-width: 1100px) {
+  .ft-encase {
+    left: auto;
+    right: calc(24 * var(--mu));
+    top: calc(560 * var(--mu));
+    width: calc(96 * var(--mu));
+    height: calc(25.4 * var(--mu));
+  }
+}
