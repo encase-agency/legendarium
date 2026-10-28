@@ -1,24 +1,53 @@
-/* Figma 764:3873: the signature sits under the last letter of the wordmark; 137 x 36.214 design px at (1318, 747). */
+/* Figma 764:3747: the signature is 200 x 67 design px at (1283, 731) in the 1512 x 809 frame (the top 121px of it belong to
+   the previous block). */
 .ft-encase {
   position: absolute;
-  left: calc(1318 * var(--u));
-  top: calc((747 - 121) * var(--u));
-  width: calc(137 * var(--u));
-  height: calc(36.214 * var(--u));
+  left: calc(1283 * var(--u));
+  top: calc((731 - 121) * var(--u));
+  width: calc(200 * var(--u));
+  height: calc(67 * var(--u));
   pointer-events: none;
 }
 
-.ft-encase svg {
-  display: block;
-  overflow: visible;
+/* the picture of the lettering is the mask of every layer */
+.enc-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  -webkit-mask: var(--enc-mask) center / 100% 100% no-repeat;
+  mask: var(--enc-mask) center / 100% 100% no-repeat;
+}
+
+.enc-ink {
+  background: #111111;
+}
+
+.enc-orange {
+  background: linear-gradient(100deg, #ff8a3d 0%, #ff6816 45%, #e24f00 100%);
+}
+
+.enc-gold {
+  background: linear-gradient(120deg, #e9b44f 0%, #c28a2c 50%, #8f6218 100%);
+}
+
+/* the bright band that rides the edge of a colour layer */
+.enc-sheen {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  width: 22%;
+  margin-left: -22%;
+  background: linear-gradient(100deg, rgba(255, 244, 205, 0) 0%, rgba(255, 244, 205, 0.95) 55%, rgba(255, 244, 205, 0) 100%);
+  transform: skewX(-18deg);
+  opacity: 0;
 }
 
 @media (max-width: 1100px) {
   .ft-encase {
     left: auto;
-    right: calc(24 * var(--mu));
-    top: calc(560 * var(--mu));
-    width: calc(96 * var(--mu));
-    height: calc(25.4 * var(--mu));
+    right: calc(18 * var(--mu));
+    top: calc(558 * var(--mu));
+    width: calc(120 * var(--mu));
+    height: calc(40 * var(--mu));
   }
 }
