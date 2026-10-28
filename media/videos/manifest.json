@@ -1,0 +1,15 @@
+[
+  {
+    "file": "Данила 30к, ии (полный кейс).mp4",
+    "status": "prepared",
+    "bytes": 10189122,
+    "duration": "177.200000",
+    "width": 1512,
+    "height": 982,
+    "video": "h264",
+    "audio": [
+      "aac"
+    ],
+    "output": "case-danila-ai.mp4"
+  }
+]
