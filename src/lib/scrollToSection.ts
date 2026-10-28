@@ -20,12 +20,13 @@ function targetTop(id: string, offset: number): number | null {
 
 let cancelPending: (() => void) | undefined
 
-export function scrollToSection(id: string, offset = 0) {
+/** `instant`: jump without the long smooth scroll through every pinned block on the way (no flicker, lands exactly). */
+export function scrollToSection(id: string, offset = 0, instant = false) {
   cancelPending?.()
   const top = targetTop(id, offset)
   if (top === null) return
   const viewport = window
-  const behavior: ScrollBehavior = viewport.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+  const behavior: ScrollBehavior = instant || viewport.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
   let idleTimer = 0
   let deadline = 0
   let corrections = 0

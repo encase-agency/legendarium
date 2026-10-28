@@ -1,4 +1,5 @@
-import type { CSSProperties } from 'react'
+import { useRef, type CSSProperties } from 'react'
+import { useCardReveal } from '../../lib/motion'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import './Pain.css'
 import { asset } from '../../lib/asset'
@@ -126,8 +127,10 @@ function CardIcon({ icon }: { icon: Icon }) {
 }
 
 export function Pain() {
+  const ref = useRef<HTMLElement>(null)
+  useCardReveal(ref, '.pn-card')
   return (
-    <section className="pain" id="pain">
+    <section className="pain" id="pain" ref={ref}>
       <h2 className="pn-heading">Когда пора что-то менять?</h2>
       <p className="pn-sub">Когда хочется изменить свою работу и доход, но пока непонятно, с чего начать.</p>
 

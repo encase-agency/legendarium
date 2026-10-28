@@ -59,7 +59,7 @@ export function Header() {
             href="#pricing"
             onClick={(e) => {
               e.preventDefault()
-              scrollToSection('pricing')
+              scrollToSection('pricing', 0, true)
             }}
           >
             Вступить в Легендариум

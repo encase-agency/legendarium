@@ -1,4 +1,5 @@
-import type { CSSProperties } from 'react'
+import { useRef, type CSSProperties } from 'react'
+import { useCardReveal } from '../../lib/motion'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import { Lines } from '../shared/Lines'
 import './Steps.css'
@@ -23,8 +24,10 @@ const CARDS: readonly {
 ]
 
 export function Steps() {
+  const ref = useRef<HTMLElement>(null)
+  useCardReveal(ref, '.sp-card')
   return (
-    <section className="steps" id="route">
+    <section className="steps" id="route" ref={ref}>
       <h2 className="sp-heading">
         Понятные шаги. Практика.{' '}
         <br />

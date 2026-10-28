@@ -1,10 +1,14 @@
+import { useRef } from 'react'
+import { useCardReveal } from '../../lib/motion'
 import { siteConfig } from '../../lib/siteConfig'
 import './Legal.css'
 
 // Figma 530:5791.
 export function Legal() {
+  const ref = useRef<HTMLElement>(null)
+  useCardReveal(ref, '.lg-card')
   return (
-    <section className="lg" id="legal">
+    <section className="lg" id="legal" ref={ref}>
       <div className="lg-head">
         <h2 className="lg-heading">
           Легендариум работает <em>официально</em>

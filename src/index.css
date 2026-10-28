@@ -116,3 +116,37 @@ a {
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Buttons with the gold arrow tile: the arrow slides a little along its own direction on hover. */
+.arrow-icon-pos,
+.hero-cta-icon img {
+  transition: translate 0.25s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+@media (hover: hover) {
+  /* the arrow box is turned 180deg, so the shift is written in its own frame */
+  a:hover .arrow-icon-pos,
+  button:hover .arrow-icon-pos {
+    translate: calc(-3 * var(--u, 1px)) calc(3 * var(--u, 1px));
+  }
+
+  .hero-cta:hover .hero-cta-icon img {
+    translate: 3px -3px;
+  }
+
+  /* white buttons grow */
+  .sh-btn--light {
+    transition:
+      transform 0.25s cubic-bezier(0.22, 0.8, 0.2, 1),
+      opacity 0.15s ease;
+  }
+
+  .sh-btn--light:hover {
+    transform: scale(1.07);
+    opacity: 1;
+  }
+
+  .sh-btn--light:active {
+    transform: scale(0.97);
+  }
+}
