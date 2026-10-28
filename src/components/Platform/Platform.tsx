@@ -56,27 +56,7 @@ export function Platform() {
       tl.to(shade, { opacity: 0.6, ease: 'none', duration: 1 }, 0)
       tl.to({}, { duration: 0.2 })
     })
-    // Phone / tablet: the same mechanic. The block is pinned, card 2 slides up over card 1 (which narrows and dims).
-    // The next block no longer rolls over it, and on a short screen (the cards are taller than the window) the block
-    // is pinned by its bottom edge, so the end of the text is never cut off.
-    mm.add('(max-width: 1100px)', () => {
-      gsap.set(first, { transformOrigin: '50% 0%' })
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: () => (section.offsetHeight > window.innerHeight ? 'bottom bottom' : 'top top'),
-          end: () => `+=${Math.round(window.innerHeight * 1.15)}`,
-          pin: true,
-          scrub: 0.5,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      })
-      tl.fromTo(second, { y: () => window.innerHeight }, { y: 0, ease: 'none', duration: 1 }, 0)
-      tl.to(first, { scale: 0.92, ease: 'none', duration: 1 }, 0)
-      // (phone: no dark tint over the first card, only the narrowing)
-      tl.to({}, { duration: 0.15 })
-    })
+    // Phone / tablet: no pinning and no overlapping, the two cards just follow each other with the page scroll.
     return () => mm.revert()
   }, [])
 

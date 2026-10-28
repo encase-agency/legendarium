@@ -159,31 +159,33 @@
   display: none;
 }
 
-/* Phone / tablet layout (Figma 549:7199): two 362px cards lying on top of each other; card 2 is 24px lower, so a strip of
-   card 1 stays visible above it. Pinned and animated like on desktop (see Platform.tsx). */
+/* Phone / tablet layout (Figma 549:7199): two 362px cards one after another, scrolled like the rest of the page (no
+   pinning, no overlapping). */
 @media (max-width: 1100px) {
   .platform {
     --u: var(--mu);
-    min-height: 100svh;
+    height: auto;
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    padding: calc(56 * var(--u)) 0;
   }
 
   .pf-stack {
     width: calc(362 * var(--u));
     height: auto;
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    gap: calc(8 * var(--u));
   }
 
   .pf-card,
   .pf-card--2 {
     position: relative;
-    grid-area: 1 / 1;
     top: auto;
     height: auto;
-    align-self: start;
+    align-self: stretch;
     flex-direction: column;
     align-items: stretch;
     gap: calc(8 * var(--u));
@@ -192,8 +194,8 @@
   }
 
   .pf-card--2 {
-    margin-top: calc(24 * var(--u));
-    transform: translateY(100vh);
+    margin-top: 0;
+    transform: none;
     box-shadow: none;
   }
 
