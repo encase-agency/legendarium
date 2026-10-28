@@ -123,6 +123,7 @@ export function VideoModal({ item, closing, onClose }: Props) {
             title={`Видео: ${item.person}`}
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
             onLoad={() => setFrameReady(true)}
             style={{ opacity: frameReady ? 1 : 0 }}
           />}

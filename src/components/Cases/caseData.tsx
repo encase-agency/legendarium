@@ -72,7 +72,7 @@ export const CASES: CaseData[] = [
       </>
     ),
     video: { id: 'c8a31259-6df2-434b-a71a-f0d6b77affa8' },
-    poster: 'n1.jpg',
+    poster: 'n1-v2.jpg',
     person: 'Денис',
     summary: 'Партнёрский бизнес · 150 000 ₽ оставил себе',
   },

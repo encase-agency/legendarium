@@ -1,11 +1,89 @@
 import { Br, Pct, PctS, type CaseData } from './caseData'
 
 // Figma 659:4246: the "Смотреть больше" window, cases 8-18. Only the reviews that have a video in the Kinescope folder
-// are listed; the last four are short entries (a name and a direction, no written story).
+// are listed (cases 8 and 9 still play from the Yandex Disk folder); the last four are short entries (a name and a direction, no written story).
 export const REVIEWS: CaseData[] = [
   {
-    id: 'r10',
+    id: 'r8',
     label: 'Кейс 8',
+    title: 'Первые 50 000 ₽ за две недели на дизайне',
+    facts: [
+      { label: 'Направление', value: 'Дизайн' },
+      { label: 'Наставник', value: 'Владислав' },
+      { label: 'Срок результата', value: '2 недели' },
+    ],
+    wasLabel: 'Старт:',
+    was: (
+      <>
+        Начал разбираться в дизайне с{' '}
+        <Br />
+        наставником Владиславом.
+      </>
+    ),
+    steps: [
+      'Осваивал дизайн.',
+      'Применил советы наставника.',
+      <>
+        Начал брать оплачиваемую
+        <Br />
+        работу.
+      </>,
+    ],
+    result: (
+      <>
+        Первые 50 000 ₽ за две недели
+        <em> — по его словам, подписка уже окупилась.</em>
+      </>
+    ),
+    video: { file: 'IMG_6254.MOV' },
+    poster: 'r8-v2.jpg',
+    person: 'Участник направления дизайна',
+    summary: 'Дизайн · 50 000 ₽ за две недели',
+  },
+  {
+    id: 'r9',
+    label: 'Кейс 9',
+    title: '35 000 ₽ за две недели на дизайне',
+    facts: [
+      { label: 'Имя', value: 'Игорь' },
+      { label: 'Направление', value: 'Дизайн' },
+      { label: 'В проекте', value: 'Около месяца' },
+    ],
+    wasLabel: 'Старт:',
+    was: (
+      <>
+        В проекте около месяца, выбрал{' '}
+        <Br />
+        направление дизайна.
+      </>
+    ),
+    steps: [
+      <>
+        Учился у наставника
+        <Br />
+        Владислава.
+      </>,
+      'Применил знания на практике.',
+      <>
+        Получил оплачиваемые
+        <Br />
+        заказы.
+      </>,
+    ],
+    result: (
+      <>
+        35 000 ₽ примерно за две недели
+        <em> — и планирует расти дальше.</em>
+      </>
+    ),
+    video: { file: 'IMG_7120.MP4' },
+    poster: 'r9-v2.jpg',
+    person: 'Игорь',
+    summary: 'Дизайн · 35 000 ₽ за две недели',
+  },
+  {
+    id: 'r10',
+    label: 'Кейс 10',
     title: 'Первые 20 000 ₽ за неделю на дизайне',
     facts: [
       { label: 'Имя', value: 'Захар' },
@@ -33,13 +111,13 @@ export const REVIEWS: CaseData[] = [
       </>
     ),
     video: { id: 'ee3db7d3-6b71-47a6-9379-65f9df4a30d6' },
-    poster: 'r10.jpg',
+    poster: 'r10-v2.jpg',
     person: 'Захар',
     summary: 'Дизайн · первые 20 000 ₽ за неделю',
   },
   {
     id: 'r11',
-    label: 'Кейс 9',
+    label: 'Кейс 11',
     title: 'Около 20 000 ₽ меньше чем за месяц',
     facts: [
       { label: 'Имя', value: 'Павел' },
@@ -78,7 +156,7 @@ export const REVIEWS: CaseData[] = [
   },
   {
     id: 'r12',
-    label: 'Кейс 10',
+    label: 'Кейс 12',
     title: '1 548 $ за три дня торговли',
     facts: [
       { label: 'Направление', value: 'Трейдинг' },
@@ -103,13 +181,13 @@ export const REVIEWS: CaseData[] = [
       </>
     ),
     video: { id: 'e996ad3a-83b8-4c9e-a7f6-076259ac3f4b' },
-    poster: 'r12.jpg',
+    poster: 'r12-v2.jpg',
     person: 'Участник Легендариума',
     summary: 'Трейдинг · 1 548 $ за три дня',
   },
   {
     id: 'r13',
-    label: 'Кейс 11',
+    label: 'Кейс 13',
     title: 'С 140 $ до более 4 000 $ за семь недель',
     facts: [
       { label: 'Имя', value: 'Алексей' },
@@ -139,7 +217,7 @@ export const REVIEWS: CaseData[] = [
   },
   {
     id: 'r14',
-    label: 'Кейс 12',
+    label: 'Кейс 14',
     title: (
       <>
         Около 60
@@ -193,7 +271,7 @@ export const REVIEWS: CaseData[] = [
   },
   {
     id: 'r17',
-    label: 'Кейс 13',
+    label: 'Кейс 15',
     title: (
       <>
         Плюс 22
@@ -229,7 +307,7 @@ export const REVIEWS: CaseData[] = [
   },
   {
     id: 'r18',
-    label: 'Кейс 14',
+    label: 'Кейс 16',
     title: 'После ошибок вернулся к обучению и изменил подход',
     facts: [
       { label: 'Направление', value: 'Трейдинг' },
@@ -269,7 +347,7 @@ export const REVIEWS: CaseData[] = [
   },
   {
     id: 'r19',
-    label: 'Кейс 15',
+    label: 'Кейс 17',
     title: 'Реклама в Telegram',
     facts: [
       { label: 'Имя', value: 'Илья' },
@@ -282,7 +360,7 @@ export const REVIEWS: CaseData[] = [
   },
   {
     id: 'r20',
-    label: 'Кейс 16',
+    label: 'Кейс 18',
     title: 'Реклама в Telegram и Max',
     facts: [
       { label: 'Имя', value: 'Александр' },
@@ -295,7 +373,7 @@ export const REVIEWS: CaseData[] = [
   },
   {
     id: 'r21',
-    label: 'Кейс 17',
+    label: 'Кейс 19',
     title: 'Нейросети и генерация контента',
     facts: [
       { label: 'Имя', value: 'Паша' },
@@ -308,7 +386,7 @@ export const REVIEWS: CaseData[] = [
   },
   {
     id: 'r22',
-    label: 'Кейс 18',
+    label: 'Кейс 20',
     title: 'Партнёрский бизнес: результат Дениса коротко',
     facts: [
       { label: 'Имя', value: 'Денис' },

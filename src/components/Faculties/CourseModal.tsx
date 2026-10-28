@@ -158,6 +158,7 @@ export function CourseModal({ course, closing, onClose }: Props) {
                 title={`Видео: ${modal.title.join(' ')}`}
                 allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
                 allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
                 onLoad={() => setFrameReady(true)}
                 style={{ opacity: frameReady ? 1 : 0 }}
               />

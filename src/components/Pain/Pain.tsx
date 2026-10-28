@@ -156,7 +156,7 @@ export function Pain() {
         </article>
       ))}
 
-      <a className="pn-card pn-card--cta" href="#pricing" style={{ '--x': 1118, '--y': 541 } as CSSProperties}>
+      <a className="pn-card pn-card--cta" href="#directions" style={{ '--x': 1118, '--y': 541 } as CSSProperties}>
         <p className="pn-cta-title">
           <span className="pn-d">
             Выбрать направление

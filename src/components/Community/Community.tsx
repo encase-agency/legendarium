@@ -7,37 +7,6 @@ const A = asset('/assets/community')
 
 const CHECKS = ['Стабильно зарабатывает онлайн', 'Живёт по своим правилам', 'Путешествует по миру', 'Помогает родным и близким']
 
-// iPhone 14 Pro mockup from Figma 529:2698 (133.586 x 275.036 design px); inset values are the
-// design's own percentages. Only the layers that are visible are kept.
-function Phone() {
-  return (
-    <div className="cm-phone">
-      <div className="ph-screenbg" />
-      <div className="ph-strokeout" />
-      <img className="ph-stroke" src={`${A}/phone-stroke.svg`} alt="" />
-      <div className="ph-screen">
-        <img src={`${A}/screen2.jpg`} alt="" />
-      </div>
-      <i className="ph-ant ph-ant--bottom" />
-      <i className="ph-ant ph-ant--lb" />
-      <i className="ph-ant ph-ant--lt" />
-      <i className="ph-ant ph-ant--rb" />
-      <i className="ph-ant ph-ant--r" />
-      <i className="ph-ant ph-ant--top" />
-      <div className="ph-speaker" />
-      <i className="ph-btn ph-btn--minus" />
-      <i className="ph-btn ph-btn--plus" />
-      <i className="ph-btn ph-btn--silence" />
-      <i className="ph-btn ph-btn--power" />
-      <div className="ph-cam" />
-      <img className="ph-lens1" src={`${A}/lens1.svg`} alt="" />
-      <span className="ph-lens">
-        <img src={`${A}/lens.png`} alt="" />
-      </span>
-    </div>
-  )
-}
-
 interface Row {
   label: string
   title: ReactNode
@@ -52,14 +21,7 @@ const ROWS: Row[] = [
   {
     label: 'Чаты направлений',
     title: 'Вопросы по конкретной работе, обратная связь и опыт людей из того же направления',
-    media: (
-      <img
-        className="cm-crop"
-        src={`${A}/r318.jpg`}
-        alt=""
-        style={{ width: '197.42%', height: '429.22%', left: '-55.78%', top: '-168.71%' } as CSSProperties}
-      />
-    ),
+    media: <img className="cm-cover" src={`${A}/chat-list.jpg`} alt="" />,
   },
   {
     label: 'Общий чат',
@@ -69,7 +31,7 @@ const ROWS: Row[] = [
         <br />и задачи между участниками
       </>
     ),
-    media: <Phone />,
+    media: <img className="cm-cover" src={`${A}/chat-group.jpg`} alt="" />,
   },
   {
     label: 'Регулярные эфиры',

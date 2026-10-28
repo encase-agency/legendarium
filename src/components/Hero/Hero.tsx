@@ -94,7 +94,7 @@ export function Hero() {
           </p>
         </div>
 
-        <a className="hero-link" href="#route">
+        <a className="hero-link" href="#showcase">
           Как работает
         </a>
 

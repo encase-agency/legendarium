@@ -103,6 +103,8 @@
 .fu-glyph--flag {
   left: calc(14 * var(--u));
   width: calc(16 * var(--u));
+  /* the tile is turned 180deg (as in the file), which flipped the flag upside down: turn it back */
+  transform: rotate(180deg);
 }
 
 .fu-glyph--flag img {
