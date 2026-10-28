@@ -656,3 +656,40 @@
 
 /* Terms may wrap within their column instead of overlapping adjacent features. */
 .pr-item { min-width: 0; max-width: 100%; white-space: normal; }
+
+/* "Получить доступ" on the Legend plan: a soft highlight sweeps through the gold from right to left, then rests (about every 2s). */
+.pr-pay .pr-gold::after,
+.sy-wbtn .sy-gold::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 38%;
+  background: linear-gradient(
+    100deg,
+    rgba(255, 244, 205, 0) 0%,
+    rgba(255, 244, 205, 0.55) 50%,
+    rgba(255, 244, 205, 0) 100%
+  );
+  transform: translateX(300%) skewX(-18deg);
+  animation: pr-sheen 2.2s cubic-bezier(0.45, 0, 0.3, 1) infinite;
+}
+
+@keyframes pr-sheen {
+  0% {
+    transform: translateX(300%) skewX(-18deg);
+  }
+  50%,
+  100% {
+    transform: translateX(-140%) skewX(-18deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pr-pay .pr-gold::after,
+  .sy-wbtn .sy-gold::after {
+    animation: none;
+    opacity: 0;
+  }
+}

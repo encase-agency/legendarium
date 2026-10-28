@@ -2,6 +2,7 @@ import { startAnalytics, stopAnalytics } from './analytics'
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { siteConfig } from '../../lib/siteConfig'
+import { linkAttrs } from '../../lib/documents'
 import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
 import { CONSENT_SETTINGS_EVENT, NECESSARY_ONLY, readCookieConsent, saveCookieConsent, canReloadAfterRevocation, type CookieCategories, type CookieConsent } from './preferences'
 import './Consent.css'
@@ -23,7 +24,7 @@ function Settings({ initial, onSave, onClose }: { initial: CookieCategories; onS
         <label className="consent-category"><input type="checkbox" checked disabled /><span><strong>Необходимые — всегда включены</strong><small>Обеспечивают работу сайта и сохраняют ваш выбор.</small></span></label>
         <label className="consent-category"><input type="checkbox" checked={draft.analytics} onChange={event => setDraft({ ...draft, analytics: event.target.checked })} /><span><strong>Аналитические</strong><small>Помогают анализировать посещения сайта. Яндекс Метрика и Google Analytics запускаются только с вашего согласия.</small></span></label>
         <label className="consent-category"><input type="checkbox" checked={draft.marketing} onChange={event => setDraft({ ...draft, marketing: event.target.checked })} /><span><strong>Маркетинговые</strong><small>Сохраняют ваш выбор для маркетинговых технологий. Сейчас такие технологии на сайте не подключены.</small></span></label>
-        {siteConfig.documents.privacy && <a href={siteConfig.documents.privacy} target="_blank" rel="noreferrer">Политика обработки ПДн</a>}
+        {siteConfig.documents.privacy && <a {...linkAttrs(siteConfig.documents.privacy)}>Политика обработки ПДн</a>}
         <div className="consent-actions"><button type="button" onClick={() => onSave(NECESSARY_ONLY)}>Только необходимые</button><button type="button" onClick={() => onSave(draft)}>Сохранить настройки</button></div>
       </div>
     </div>, document.body,
@@ -76,7 +77,7 @@ export function Consent() {
     {storageError && <aside className="consent" role="status"><p>Аналитика отключена в этой вкладке. Браузер не позволил сохранить отказ. Удалите данные сайта в настройках браузера, чтобы прежнее согласие не восстановилось при следующем посещении.</p><button type="button" onClick={() => setStorageError(false)}>Закрыть</button></aside>}
     {!choice && !editing && <aside className="consent" aria-label="Файлы cookie">
       <p>Используем необходимые файлы cookie для работы сайта. Аналитические и маркетинговые технологии включаются только с вашего согласия. Выбор сохраняется на 12 месяцев.</p>
-      {siteConfig.documents.privacy && <a href={siteConfig.documents.privacy} target="_blank" rel="noreferrer">Политика обработки ПДн</a>}
+      {siteConfig.documents.privacy && <a {...linkAttrs(siteConfig.documents.privacy)}>Политика обработки ПДн</a>}
       <div className="consent-actions"><button type="button" onClick={() => choose(NECESSARY_ONLY)}>Только необходимые</button><button type="button" onClick={() => choose({ necessary: true, analytics: true, marketing: true })}>Принять</button><button type="button" onClick={() => setEditing(true)}>Настройки</button></div>
     </aside>}
     {editing && <Settings initial={choice ?? NECESSARY_ONLY} onSave={choose} onClose={() => setEditing(false)} />}

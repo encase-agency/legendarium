@@ -1,4 +1,5 @@
 import { siteConfig } from '../../lib/siteConfig'
+import { linkAttrs } from '../../lib/documents'
 import { openCookieSettings } from '../Consent/preferences'
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
@@ -149,7 +150,7 @@ export function Footer() {
           <ul>
             {c.links.map((l) => (
               <li key={l.label}>
-                <>{l.action ? <button type="button" onClick={l.action}>{l.label}</button> : l.href ? <a href={l.href}>{l.label}</a> : <span className="ft-unavailable" title="Информация пока недоступна">{l.label}</span>}</>
+                <>{l.action ? <button type="button" onClick={l.action}>{l.label}</button> : l.href ? <a {...linkAttrs(l.href)}>{l.label}</a> : <span className="ft-unavailable" title="Информация пока недоступна">{l.label}</span>}</>
               </li>
             ))}
           </ul>

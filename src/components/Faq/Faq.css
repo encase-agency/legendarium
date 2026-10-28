@@ -222,9 +222,14 @@
     padding: calc(24 * var(--u)) 0;
   }
 
+  /* Figma 549:9219: the text column ends 4px before the 40px round button and wraps there, it never runs under it. */
   .faq-q {
     min-height: calc(40 * var(--u));
-    padding-right: calc(78 * var(--u));
+    padding-right: calc(44 * var(--u));
+  }
+
+  .faq-a-in {
+    padding-right: calc(44 * var(--u));
   }
 
   .faq-row.is-open .faq-q {

@@ -14,13 +14,12 @@ const PUBLIC_DEFAULTS: SiteEnvironment = {
   VITE_WHATSAPP_URL: 'https://wa.me/79934559287',
   VITE_LEGEND_CONTACT_URL: 'https://t.me/m/4VlmAiy-NDUy',
   VITE_BASIC_CONTACT_URL: 'https://t.me/m/DlFOK1NJYmRi',
-  VITE_PRIVACY_URL: 'https://docs.google.com/document/d/1JESrdsZvAK2eZKJCvbCCs7b7Rrv8KTMp/edit',
-  VITE_PERSONAL_DATA_URL: 'https://docs.google.com/document/d/1Lb7IoavwB9ohZpPBfYAYLIx49fmImUqI/edit',
-  VITE_OFFER_URL: 'https://docs.google.com/document/d/1hrr79_8ZxMHN2slB2pmwqjJfPi9dEk2M/edit',
-  VITE_NEWSLETTER_URL: 'https://docs.google.com/document/d/1MdRMozX7k8l29kmKgMXNzTbGjLx7QD3J/edit',
   VITE_LICENSE_TEXT: 'Образовательная лицензия № Л035-01252-46/01391373. Выдана Министерством образования и науки Курской области. Бессрочная.',
   VITE_LICENSE_URL: 'https://islod.obrnadzor.gov.ru/rlic/details/106e3d18-b623-7243-d9af-9a571df66c73/',
 }
+
+/** The four legal documents are pages of the site; an explicit https URL in the environment still overrides them. */
+const internalDocument = (slug: string, value?: string) => externalUrl(value) ?? `#/documents/${slug}`
 
 function externalUrl(value?: string): string | undefined {
   if (!value) return undefined
@@ -45,7 +44,7 @@ export function createSiteConfig(env: SiteEnvironment) {
     checkout: { legend: externalUrl(env.VITE_GETCOURSE_LEGEND_URL), basic: externalUrl(env.VITE_GETCOURSE_BASIC_URL) },
     contact: { location: env.VITE_CONTACT_LOCATION?.trim(), email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(env.VITE_CONTACT_EMAIL ?? '') ? env.VITE_CONTACT_EMAIL : undefined, phone: /^\+?[\d ()-]{7,}$/.test(env.VITE_CONTACT_PHONE ?? '') ? env.VITE_CONTACT_PHONE : undefined, andrewUrl: externalUrl(env.VITE_ANDREW_CONTACT_URL) },
     socials: { telegram: externalUrl(env.VITE_TELEGRAM_URL), directTelegram: externalUrl(env.VITE_TELEGRAM_DIRECT_URL), instagram: externalUrl(env.VITE_INSTAGRAM_URL), whatsapp: externalUrl(env.VITE_WHATSAPP_URL), youtube: externalUrl(env.VITE_YOUTUBE_URL) },
-    documents: { newsletter: externalUrl(env.VITE_NEWSLETTER_URL), privacy: externalUrl(env.VITE_PRIVACY_URL), personalData: externalUrl(env.VITE_PERSONAL_DATA_URL), offer: externalUrl(env.VITE_OFFER_URL), terms: externalUrl(env.VITE_TERMS_URL), cookies: externalUrl(env.VITE_COOKIES_URL) },
+    documents: { newsletter: internalDocument('newsletter', env.VITE_NEWSLETTER_URL), privacy: internalDocument('privacy', env.VITE_PRIVACY_URL), personalData: internalDocument('personal-data', env.VITE_PERSONAL_DATA_URL), offer: internalDocument('offer', env.VITE_OFFER_URL), terms: externalUrl(env.VITE_TERMS_URL), cookies: externalUrl(env.VITE_COOKIES_URL) },
     license: { text: env.VITE_LICENSE_TEXT?.trim(), url: externalUrl(env.VITE_LICENSE_URL) },
     analytics: { google: /^G-[A-Z0-9]+$/.test(env.VITE_GA_ID ?? '') ? env.VITE_GA_ID : undefined, yandex: /^[1-9]\d*$/.test(env.VITE_YANDEX_ID ?? '') ? env.VITE_YANDEX_ID : undefined },
   }

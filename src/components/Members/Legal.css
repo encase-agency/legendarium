@@ -139,10 +139,12 @@
     gap: calc(4 * var(--u));
   }
 
+  /* Figma 549:8939: every card is as tall as its text, 24px above and below, 16px at the sides */
   .lg-card {
     flex: none;
-    min-height: calc(124 * var(--u));
+    padding: calc(24 * var(--u)) calc(16 * var(--u));
     justify-content: center;
+    gap: calc(10 * var(--u));
   }
 
   .lg-card h3 {

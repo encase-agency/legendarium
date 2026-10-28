@@ -48,5 +48,5 @@ test('October 27 enrollment chats and four supplied legal documents remain disti
   assert.notEqual(config.enrollment.legend, config.enrollment.basic)
   const urls = [config.documents.privacy, config.documents.personalData, config.documents.offer, config.documents.newsletter]
   assert.equal(new Set(urls).size, 4)
-  assert.ok(urls.every(url => url.startsWith('https://docs.google.com/document/d/')))
+  assert.deepEqual(urls, ['#/documents/privacy', '#/documents/personal-data', '#/documents/offer', '#/documents/newsletter'])
 })

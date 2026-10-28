@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { useCardReveal } from '../../lib/motion'
 import { siteConfig } from '../../lib/siteConfig'
+import { linkAttrs } from '../../lib/documents'
 import './Legal.css'
 
 // Figma 530:5791.
@@ -36,7 +37,7 @@ export function Legal() {
         <article className="lg-card">
           <h3>Образовательная лицензия</h3>
           <p>
-            {siteConfig.license.text ?? 'Реквизиты образовательной лицензии уточняются.'}
+            {siteConfig.license.text?.replace(/^Образовательная лицензия\s*/i, '') ?? 'Реквизиты образовательной лицензии уточняются.'}
           </p>
           {siteConfig.license.url && <p className="lg-link">
             <a href={siteConfig.license.url} target="_blank" rel="noreferrer">
@@ -53,7 +54,7 @@ export function Legal() {
             <br />и гарантии прописаны{' '}
             <br />в договоре. Его можно прочитать до оплаты.
           </p>
-          <p className="lg-link">{siteConfig.documents.offer ? <a href={siteConfig.documents.offer} target="_blank" rel="noreferrer">Прочитать оферту</a> : 'Оферта пока недоступна.'}</p>
+          <p className="lg-link">{siteConfig.documents.offer ? <a {...linkAttrs(siteConfig.documents.offer)}>Прочитать оферту</a> : 'Оферта пока недоступна.'}</p>
         </article>
 
         <article className="lg-card">

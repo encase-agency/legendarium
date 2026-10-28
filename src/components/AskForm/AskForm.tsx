@@ -5,6 +5,7 @@ import { ArrowIcon } from '../shared/ArrowIcon'
 import { createPortal } from 'react-dom'
 import './AskForm.css'
 import { siteConfig } from '../../lib/siteConfig'
+import { linkAttrs } from '../../lib/documents'
 import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
 import { asset } from '../../lib/asset'
 
@@ -140,7 +141,7 @@ export function AskForm({ closing, onClose }: Props) {
               </div>
             </div>
             <p className="af-legal">
-              {!available ? 'Приём заявок временно недоступен. Настраиваем форму связи.' : <>Нажимая кнопку, ты соглашаешься с <a href={siteConfig.documents.privacy} target="_blank" rel="noreferrer">политикой конфиденциальности</a> и <a href={siteConfig.documents.personalData} target="_blank" rel="noreferrer">обработкой персональных данных</a>.</>}
+              {!available ? 'Приём заявок временно недоступен. Настраиваем форму связи.' : <>Нажимая кнопку, ты соглашаешься с <a {...linkAttrs(siteConfig.documents.privacy)}>политикой конфиденциальности</a> и <a {...linkAttrs(siteConfig.documents.personalData)}>обработкой персональных данных</a>.</>}
             </p>
           </form>
 

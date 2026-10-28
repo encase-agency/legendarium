@@ -1,0 +1,142 @@
+.dp {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  background: #ffffff;
+  color: #1b1d20;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+}
+
+.dp-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dp-page {
+  box-sizing: border-box;
+  width: min(100%, 860px);
+  margin: 0 auto;
+  padding: 72px 24px 96px;
+}
+
+/* the documents carry their own heading: the page title is only for screen readers */
+.dp-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.dp-body {
+  font-size: 15px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.dp-body p {
+  margin: 0 0 10px;
+}
+
+.dp-body p.c {
+  text-align: center;
+}
+
+.dp-body p.r {
+  text-align: right;
+}
+
+.dp-body ul,
+.dp-body ol {
+  margin: 0 0 10px;
+  padding-left: 24px;
+}
+
+.dp-body li p {
+  margin-bottom: 4px;
+}
+
+.dp-body a {
+  color: #8a5d12;
+  text-decoration: underline;
+}
+
+.dp-body table {
+  display: block;
+  max-width: 100%;
+  margin: 12px 0 16px;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.dp-body td {
+  min-width: 120px;
+  padding: 6px 8px;
+  border: 1px solid #c9c9c9;
+  vertical-align: top;
+}
+
+.dp-body td p {
+  margin: 0;
+}
+
+.dp-status {
+  color: #6b6b6b;
+}
+
+.dp-status button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: #8a5d12;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* The cross stays in the top right corner while the document scrolls. */
+.dp-close {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid #d8d8d8;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #1b1d20;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.dp-close:hover,
+.dp-close:focus-visible {
+  background: #f0f0f0;
+  outline: none;
+}
+
+@media (max-width: 700px) {
+  .dp-page {
+    padding: 64px 16px 72px;
+  }
+
+  .dp-body {
+    font-size: 14px;
+  }
+
+  .dp-close {
+    top: 12px;
+    right: 12px;
+  }
+}
