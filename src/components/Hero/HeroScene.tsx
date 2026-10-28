@@ -128,6 +128,16 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
   const [phoneLayout, setPhoneLayout] = useState(isPhoneLayout)
   const [failed, setFailed] = useState(false)
   const [ready, setReady] = useState(false)
+  const [portraitGone, setPortraitGone] = useState(false)
+  useEffect(() => {
+    if (!ready) {
+      setPortraitGone(false)
+      return
+    }
+    // let the scene paint its first frame before the still portrait steps aside
+    const timer = window.setTimeout(() => setPortraitGone(true), 250)
+    return () => window.clearTimeout(timer)
+  }, [ready])
   useEffect(() => {
     const query = window.matchMedia('(max-width: 1100px)')
     const change = () => { setReady(false); setPhoneLayout(query.matches) }
@@ -1034,7 +1044,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
   ])
 
   return <>
-    <HeroPortrait />
+    <HeroPortrait hidden={portraitGone && !failed} />
     <div ref={mountRef} className="hero-scene" style={{ opacity: ready && !failed ? 1 : 0 }} />
     {isDebug && <Suspense fallback={null}><HeroDebugControls onChange={updateDebugControls}
       replayBrush={handleAutoBrushReplay} pauseBrush={handleAutoBrushPause}
