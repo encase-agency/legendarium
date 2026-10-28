@@ -135,6 +135,10 @@
   margin-top: calc(4 * var(--u));
 }
 
+.md-cta-bar {
+  display: contents;
+}
+
 .md-cta {
   display: flex;
   align-items: center;
@@ -350,6 +354,35 @@ button.md-play:focus-visible {
   .md-close {
     right: 20px;
     top: 24px;
+  }
+
+  /* The button stays in the bottom right corner while the text scrolls and rests there at the end. The bar under it is
+     opaque and starts 4px above the button, so the text never reaches the button. */
+  .md-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .md-cta-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end;
+    margin: 12px -20px 0;
+    padding: 4px 20px max(20px, env(safe-area-inset-bottom));
+    background: #1b1d20;
+  }
+
+  .md-cta-bar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 20px;
+    background: linear-gradient(to top, #1b1d20, rgba(27, 29, 32, 0));
+    pointer-events: none;
   }
 }
 

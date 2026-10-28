@@ -41,6 +41,7 @@ function PlayIcon() {
 
 export function Showcase() {
   const sectionRef = useRef<HTMLElement>(null)
+  const firstRef = useRef<HTMLDivElement>(null)
   const secondRef = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState<number | null>(null)
   const [closing, setClosing] = useState(false)
@@ -72,8 +73,9 @@ export function Showcase() {
 
   useLayoutEffect(() => {
     const section = sectionRef.current
+    const first = firstRef.current
     const second = secondRef.current
-    if (!section || !second) return
+    if (!section || !first || !second) return
 
     // Decode both posters up front so the second card never pops in (or hitches) while it flies up.
     ;[`${ASSETS}/poster-b.jpg`, `${ASSETS}/poster-journey.jpg`].forEach((src) => {
@@ -83,27 +85,36 @@ export function Showcase() {
     })
 
     const mm = gsap.matchMedia()
-    // Phone / tablet: the same mechanic, the first video stays where it is while the second one lands on it
-    // (Figma 622:2935 -> 530:4739).
+    // Phone / tablet (Figma 622:2935 -> 530:4739): one after another - the first video rises, then the second one
+    // lands on it, and only then the licence text melts in.
     mm.add('(max-width: 1100px)', () => {
+      const licence = section.querySelector<HTMLElement>('.sc-license')
+      if (licence) gsap.set(licence, { opacity: 0, y: 28 })
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: () => `+=${Math.round(window.innerHeight * 0.9)}`,
+          end: () => `+=${Math.round(window.innerHeight * 2.2)}`,
           pin: true,
-          scrub: 0.5,
+          scrub: 0.8,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       })
       tl.fromTo(
-        second,
-        { y: () => section.clientHeight - second.offsetTop + 40, force3D: true },
-        { y: 0, ease: 'none', duration: 0.6 },
+        first,
+        { y: () => section.clientHeight - first.offsetTop + 40, force3D: true },
+        { y: 0, ease: 'power2.inOut', duration: 0.6 },
         0,
       )
-      tl.to({}, { duration: 0.4 })
+      tl.fromTo(
+        second,
+        { y: () => section.clientHeight - second.offsetTop + 40, force3D: true },
+        { y: 0, ease: 'power2.inOut', duration: 0.6 },
+        0.65,
+      )
+      if (licence) tl.to(licence, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.4 }, 1.3)
+      tl.to({}, { duration: 0.3 })
     })
     mm.add('(min-width: 1101px)', () => {
       const tl = gsap.timeline({
@@ -139,7 +150,7 @@ export function Showcase() {
         ))}
       </div>
 
-      <div className="sc-card sc-card--first">
+      <div className="sc-card sc-card--first" ref={firstRef}>
         <div className="sc-card-inner">
           <button type="button" className="sc-video" onClick={() => openVideo(0)} aria-label={VIDEOS[0].person}>
             <img className="sc-poster-b" src={`${ASSETS}/poster-b.jpg`} alt="" />

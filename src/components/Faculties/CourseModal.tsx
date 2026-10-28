@@ -130,12 +130,14 @@ export function CourseModal({ course, closing, onClose }: Props) {
               <BlockView block={b} key={i} />
             ))}
           </div>
-          <a className="md-cta" href="#pricing" onClick={onClose}>
-            Начать сейчас
-            <span className="md-cta-icon">
-              <ArrowIcon src={`${A}/arrow.svg`} />
-            </span>
-          </a>
+          <div className="md-cta-bar">
+            <a className="md-cta" href="#pricing" onClick={onClose}>
+              Начать сейчас
+              <span className="md-cta-icon">
+                <ArrowIcon src={`${A}/arrow.svg`} />
+              </span>
+            </a>
+          </div>
         </div>
 
         <div className="md-right">

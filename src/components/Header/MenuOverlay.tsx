@@ -11,9 +11,8 @@ const ITEMS: { label: string; id: string }[] = [
   { label: 'Направления обучения', id: 'directions' },
   { label: 'Наставники', id: 'faculties' },
   { label: 'История Андрея', id: 'founder' },
-  { label: 'Кейсы учеников', id: 'cases' },
   { label: 'Тарифы', id: 'pricing' },
-  { label: 'Отзывы', id: 'results' },
+  { label: 'Отзывы', id: 'cases' },
   { label: 'Частые вопросы', id: 'faq' },
   { label: 'Контакты', id: 'footer' },
 ]

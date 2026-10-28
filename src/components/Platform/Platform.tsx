@@ -74,7 +74,7 @@ export function Platform() {
       })
       tl.fromTo(second, { y: () => window.innerHeight }, { y: 0, ease: 'none', duration: 1 }, 0)
       tl.to(first, { scale: 0.92, ease: 'none', duration: 1 }, 0)
-      tl.to(shade, { opacity: 0.6, ease: 'none', duration: 1 }, 0)
+      // (phone: no dark tint over the first card, only the narrowing)
       tl.to({}, { duration: 0.15 })
     })
     return () => mm.revert()

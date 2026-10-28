@@ -106,7 +106,7 @@ export function FounderPath() {
           </p>
           <p>Я сам прошёл этот путь и точно знаю, что помогает двигаться вперёд.</p>
         </div>
-        <a className="fp-cta" href="#results">
+        <a className="fp-cta" href="#cases">
           Как этот путь прошли участники
           <span className="fp-cta-icon">
             <ArrowIcon src={`${A}/arrow.svg`} />
