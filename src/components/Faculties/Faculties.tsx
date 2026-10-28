@@ -3,11 +3,14 @@ import { ArrowIcon } from '../shared/ArrowIcon'
 import { COURSES, type Course } from './courses'
 import './Faculties.css'
 import { asset } from '../../lib/asset'
+import { usePhoneLayout } from '../../lib/usePhoneLayout'
 
 const CourseModal = lazy(() => import('./CourseModal').then(module => ({ default: module.CourseModal })))
 
 const A = asset('/assets/faculties')
-const VISIBLE = 6
+// the mentors shown before "Смотреть больше": six on a computer, four on a phone
+const VISIBLE_DESKTOP = 6
+const VISIBLE_PHONE = 4
 
 function CourseCard({ course, onOpen, focusable = true }: { course: Course; onOpen: () => void; focusable?: boolean }) {
   const { poster, card } = course
@@ -53,6 +56,8 @@ function CourseCard({ course, onOpen, focusable = true }: { course: Course; onOp
 
 // Figma 527:2522 (collapsed) and 528:2583 (all faculties open).
 export function Faculties() {
+  const phone = usePhoneLayout()
+  const VISIBLE = phone ? VISIBLE_PHONE : VISIBLE_DESKTOP
   const [expanded, setExpanded] = useState(false)
   const [open, setOpen] = useState<number | null>(null)
   const [closing, setClosing] = useState(false)

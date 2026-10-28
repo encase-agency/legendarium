@@ -4,17 +4,23 @@ import { CaseRow } from './CaseRow'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import './Cases.css'
 import { asset } from '../../lib/asset'
+import { usePhoneLayout } from '../../lib/usePhoneLayout'
 
 const VideoModal = lazy(() => import('./VideoModal').then(module => ({ default: module.VideoModal })))
 const ReviewsModal = lazy(() => import('./ReviewsModal').then(module => ({ default: module.ReviewsModal })))
 const reviewData = () => import('./reviewData').then(module => module.REVIEWS)
 
-type Open = { list: 'cases' | 'reviews'; index: number }
+// cases: the cases of the page; more: the list behind "Смотреть больше"
+type Open = { list: 'cases' | 'more'; index: number }
+
+// a phone shows three cases, the rest of them go behind "Смотреть больше" together with the reviews
+const PHONE_CASES = 3
 type Reviews = Awaited<ReturnType<typeof reviewData>>
 
 // Figma 574:2116. A click on a case (or its play button) opens the video player; "Смотреть больше" opens the window
 // with more reviews (Figma 659:4246), whose rows open the player on top of it.
 export function Cases() {
+  const phone = usePhoneLayout()
   const [open, setOpen] = useState<Open | null>(null)
   const [closing, setClosing] = useState(false)
   const [reviews, setReviews] = useState(false)
@@ -67,7 +73,9 @@ export function Cases() {
     [],
   )
 
-  const video = open && (open.list === 'cases' ? CASES : reviewList)[open.index]
+  const shown = phone ? CASES.slice(0, PHONE_CASES) : CASES
+  const more = phone ? [...CASES.slice(PHONE_CASES), ...reviewList] : reviewList
+  const video = open && (open.list === 'cases' ? CASES : more)[open.index]
 
   return (
     <section className="cases" id="cases">
@@ -79,7 +87,7 @@ export function Cases() {
       <p className="cs-sub">Всё возможно, если выполнять рекомендации наставников.</p>
 
       <div className="cs-list">
-        {CASES.map((c, i) => (
+        {shown.map((c, i) => (
           <CaseRow item={c} key={c.id} onOpen={() => openVideo({ list: 'cases', index: i })} />
         ))}
       </div>
@@ -95,9 +103,9 @@ export function Cases() {
         <Suspense fallback={null}>
           <ReviewsModal
             closing={reviewsClosing}
-            reviews={reviewList}
+            reviews={more}
             onClose={closeReviews}
-            onOpenVideo={(index) => openVideo({ list: 'reviews', index })}
+            onOpenVideo={(index) => openVideo({ list: 'more', index })}
           />
         </Suspense>
       )}
