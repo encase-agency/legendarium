@@ -208,15 +208,8 @@
     --u: var(--mu);
     padding: calc(56 * var(--u)) 0;
     gap: calc(32 * var(--u));
-    /* rolls over the pinned "Одна проверенная система" block */
-    position: relative;
-    z-index: 5;
-    margin-top: -100svh;
   }
 
-  html[data-dir-list] .faculties {
-    margin-top: 0;
-  }
 
   .fc-head {
     gap: calc(16 * var(--u));

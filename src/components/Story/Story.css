@@ -45,10 +45,6 @@
   top: calc(84 * var(--u));
 }
 
-.sy-card:nth-child(n + 2) {
-  box-shadow: 0 calc(-12 * var(--u)) calc(40 * var(--u)) rgba(0, 0, 0, 0.35);
-}
-
 .sy-shade {
   position: absolute;
   inset: 0;

@@ -778,7 +778,8 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
           scale: phoneNow ? 2.2 : 1,
           blot: phoneNow,
           speed: phoneNow ? 1.02 : 1,
-          rows: phoneNow ? [0.07, 0.2, 0.33, 0.46] : undefined,
+          // phone: three drops, the topmost one (it ran under the button and was cut off) is gone
+          rows: phoneNow ? [0.2, 0.33, 0.46] : undefined,
         }
         liquidRef.current.step(
           dt,

@@ -206,9 +206,10 @@ export class ArrowBrush {
           // The first pass starts at the chin and climbs to the top of the head, the next one comes back down.
           const bottomUp = this.pass % 2 === 0
           this.autos = []
-          for (let i = 0; i < 4; i++) {
+          const count = (f.rows ?? AUTO_ROWS).length
+          for (let i = 0; i < count; i++) {
             this.autos.push({
-              row: bottomUp ? 3 - i : i,
+              row: bottomUp ? count - 1 - i : i,
               dir: i % 2 === 0 ? 1 : -1,
               solid: i % 2 === 0,
               start: this.passStart + (i * AUTO_STAGGER) / sp,
@@ -217,7 +218,7 @@ export class ArrowBrush {
             })
           }
         }
-      } else if (this.autoTime > this.passStart + (3 * AUTO_STAGGER + AUTO_DUR) / (f.speed ?? 1)) {
+      } else if (this.autoTime > this.passStart + (((f.rows ?? AUTO_ROWS).length - 1) * AUTO_STAGGER + AUTO_DUR) / (f.speed ?? 1)) {
         this.passStart = -1
         this.autoClock = 0
         this.pass++

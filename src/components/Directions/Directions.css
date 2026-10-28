@@ -461,7 +461,11 @@
     --u: var(--mu);
   }
 
-  /* the section is pinned for one more screen and the next block rolls over it */
+  /* the empty dark face of the drum is only for the desktop transition: no grey square at the end on a phone */
+  .dr-card--black {
+    display: none;
+  }
+
   .directions {
     min-height: 100svh;
     background: #f4f4f4;
@@ -469,6 +473,8 @@
 
   .directions.is-list {
     min-height: 0;
+    /* the list brings its own 56px top and bottom space, like every other block */
+    padding: 0;
   }
 
   .dl {

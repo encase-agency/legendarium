@@ -236,17 +236,8 @@ export function Directions() {
         }
       }
 
-      // Pinned for one more screen while the next block ("Наши наставники") rolls over it.
-      const st = ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: () => `+=${window.innerHeight}`,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onRefresh: refresh,
-      })
-
+      // (the block is no longer pinned on a phone: it scrolls like any other, so the arrows at its foot are never
+      // hidden and the next block does not roll over it)
       const MAX = LAST - 1
       let dragging = false
       let startX = 0
@@ -297,7 +288,6 @@ export function Directions() {
         phone = false
         stepRef.current = null
         tween?.kill()
-        st.kill()
         scene.removeEventListener('pointerdown', onDown)
         scene.removeEventListener('pointermove', onMove)
         scene.removeEventListener('pointerup', onUp)

@@ -287,6 +287,7 @@ export const COURSES: Course[] = [
   {
     id: 'mobile',
     poster: { src: 'p3.jpg', crop: { w: 117.9, h: 122.03, left: -9.04, top: -10.93 } },
+    video: { id: '8e950070-af3b-45e2-9a59-37ecc64f6681' },
     card: {
       title: 'Мобильная съёмка',
       body: (

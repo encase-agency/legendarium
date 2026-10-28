@@ -84,8 +84,6 @@ export function Story() {
         },
         end,
       )
-      // the shadow the cards cast on each other is gone once the page is light: no grey blur around the stack
-      cards.slice(1).forEach((c) => tl.to(c, { boxShadow: '0 0 0 rgba(0,0,0,0)', ease: 'none', duration: 0.6 }, end))
       tl.to({}, { duration: 0.2 })
     })
     return () => mm.revert()

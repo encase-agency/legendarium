@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { HeroPortrait } from './HeroPortrait'
 import { useIsDebug } from '../../lib/useIsDebug'
-import { ArrowUpRightIcon, CertifiedBadge, TargetIcon } from './icons'
+import { ArrowUpRightIcon, TargetIcon } from './icons'
 import { Loader } from './Loader'
 import { INTRO_SKIPPED } from '../../lib/intro'
 import './Hero.css'
@@ -98,7 +98,6 @@ export function Hero() {
           Как работает
         </a>
 
-        <CertifiedBadge className="hero-cert-badge" />
       </div>
 
       {introActive && <Loader onDone={() => setIntroActive(false)} />}
