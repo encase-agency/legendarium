@@ -8,9 +8,10 @@ gsap.registerPlugin(ScrollTrigger)
 
 /**
  * "Encase agency" under the wordmark (Figma 764:3747). When the footer comes into view the signature is written as if by
- * hand (a black pen stroke runs from left to right), then an orange sheen runs through it, then a gold one, like on the
- * "Получить доступ" button of the Legend plan, and the lettering stays gold. Every layer is the same lettering (the
- * picture is used as a mask), so the colours always follow the strokes exactly.
+ * hand in orange (the pen runs from left to right), then a gold sheen runs through it, like on the "Получить доступ"
+ * button of the Legend plan, and the lettering stays gold. Both layers are the same lettering (the picture is used as a
+ * mask), so the colours follow the strokes exactly. Behind the gold edge the orange is taken away at the same pace, so
+ * nothing changes colour once the sheen has passed.
  */
 export function EncaseSignature() {
   const rootRef = useRef<HTMLDivElement>(null)
@@ -19,41 +20,32 @@ export function EncaseSignature() {
     const root = rootRef.current
     if (!root) return
     const ink = root.querySelector<HTMLElement>('.enc-ink')
-    const orange = root.querySelector<HTMLElement>('.enc-orange')
     const gold = root.querySelector<HTMLElement>('.enc-gold')
-    if (!ink || !orange || !gold) return
-    const layers = [ink, orange, gold]
+    const sheen = gold?.querySelector<HTMLElement>('.enc-sheen')
+    if (!ink || !gold || !sheen) return
 
     const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (calm) {
-      gsap.set([ink, orange], { opacity: 0 })
+      gsap.set(ink, { opacity: 0 })
       return
     }
 
-    // p: how much of the lettering is uncovered (0..1); the bright band of a colour layer rides the edge
-    const state = layers.map(() => ({ p: 0 }))
-    const paint = (layer: HTMLElement, p: number) => {
-      layer.style.clipPath = `inset(0 ${(1 - p) * 100}% 0 0)`
-      const sheen = layer.querySelector<HTMLElement>('.enc-sheen')
-      if (sheen) {
-        sheen.style.left = `${p * 100}%`
-        sheen.style.opacity = p > 0 && p < 1 ? '1' : '0'
-      }
+    // write: how much of the lettering the pen has uncovered (0..1); sweep: how far the gold has gone (0..1)
+    const state = { write: 0, sweep: 0 }
+    const paint = () => {
+      ink.style.clipPath = `inset(0 ${(1 - state.write) * 100}% 0 ${state.sweep * 100}%)`
+      gold.style.clipPath = `inset(0 ${(1 - state.sweep) * 100}% 0 0)`
+      sheen.style.left = `${state.sweep * 100}%`
+      sheen.style.opacity = state.sweep > 0 && state.sweep < 1 ? '1' : '0'
     }
-    layers.forEach((layer, i) => paint(layer, state[i].p))
-
-    const run = (i: number, dur: number, at: number, ease: string, tl: gsap.core.Timeline) =>
-      tl.to(state[i], { p: 1, duration: dur, ease, onUpdate: () => paint(layers[i], state[i].p) }, at)
+    paint()
 
     const tl = gsap.timeline({
       paused: true,
       scrollTrigger: { trigger: root, start: 'top 95%', once: true, onEnter: () => tl.play() },
     })
-    run(0, 2.6, 0, 'power1.inOut', tl) // the pen
-    run(1, 1.3, 2.9, 'power1.inOut', tl) // orange sheen
-    run(2, 1.3, 4.5, 'power1.inOut', tl) // gold sheen
-    // the gold has taken over: the layers under it are not needed any more
-    tl.set([ink, orange], { opacity: 0 }, 5.9)
+    tl.to(state, { write: 1, duration: 2.6, ease: 'power1.inOut', onUpdate: paint }, 0) // the pen, in orange
+    tl.to(state, { sweep: 1, duration: 1.4, ease: 'power1.inOut', onUpdate: paint }, 3) // the gold sheen
 
     return () => {
       tl.scrollTrigger?.kill()
@@ -65,9 +57,6 @@ export function EncaseSignature() {
   return (
     <div className="ft-encase" ref={rootRef} style={mask} aria-label="Encase agency" role="img">
       <div className="enc-layer enc-ink" />
-      <div className="enc-layer enc-orange">
-        <i className="enc-sheen" />
-      </div>
       <div className="enc-layer enc-gold">
         <i className="enc-sheen" />
       </div>

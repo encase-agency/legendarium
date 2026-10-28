@@ -19,10 +19,6 @@
 }
 
 .enc-ink {
-  background: #111111;
-}
-
-.enc-orange {
   background: linear-gradient(100deg, #ff8a3d 0%, #ff6816 45%, #e24f00 100%);
 }
 
