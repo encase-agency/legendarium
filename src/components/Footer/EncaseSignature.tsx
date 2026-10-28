@@ -7,7 +7,7 @@ import './EncaseSignature.css'
 gsap.registerPlugin(ScrollTrigger)
 
 /**
- * "Encase agency" under the wordmark (Figma 764:3747). When the footer comes into view the signature is written as if by
+ * "Сайт сделан агентством" with the "Encase agency" signature under it, the last column of the footer (Figma 764:3747). When the footer comes into view the signature is written as if by
  * hand in orange (the pen runs from left to right), then a gold sheen runs through it, like on the "Получить доступ"
  * button of the Legend plan, and the lettering stays gold; the same gold sheen runs through it again every 4 seconds. Both layers are the same lettering (the picture is used as a
  * mask), so the colours follow the strokes exactly. Behind the gold edge the orange is taken away at the same pace, so
@@ -75,10 +75,13 @@ export function EncaseSignature() {
 
   const mask = { '--enc-mask': `url(${asset('/assets/footer/encase-mask.png')})` } as React.CSSProperties
   return (
-    <div className="ft-encase" ref={rootRef} style={mask} aria-label="Encase agency" role="img">
-      <div className="enc-layer enc-ink" />
-      <div className="enc-layer enc-gold">
-        <i className="enc-sheen" />
+    <div className="ft-col ft-col--agency">
+      <p className="ft-title">Сайт сделан агентством</p>
+      <div className="ft-encase" ref={rootRef} style={mask} aria-label="Encase agency" role="img">
+        <div className="enc-layer enc-ink" />
+        <div className="enc-layer enc-gold">
+          <i className="enc-sheen" />
+        </div>
       </div>
     </div>
   )

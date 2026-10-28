@@ -1,9 +1,18 @@
-/* Figma 764:3747: the signature is 200 x 67 design px at (1283, 731) in the 1512 x 809 frame (the top 121px of it belong to
-   the previous block). */
+/* Figma 764:3747: the column sits at x 1310 like the other footer columns; the signature is 200 x 67 design px at
+   (1280, 361), i.e. 30px left of the title and 19px below its top. */
+.ft-col--agency {
+  left: calc(1310 * var(--u));
+  min-width: 0;
+}
+
+.ft-col--agency .ft-title {
+  white-space: nowrap;
+}
+
 .ft-encase {
   position: absolute;
-  left: calc(1283 * var(--u));
-  top: calc((731 - 121) * var(--u));
+  left: calc(-30 * var(--u));
+  top: calc(19 * var(--u));
   width: calc(200 * var(--u));
   height: calc(67 * var(--u));
   pointer-events: none;
@@ -39,11 +48,18 @@
 }
 
 @media (max-width: 1100px) {
-  .ft-encase {
+  /* a column like the others, below "Документы": the title, then the signature */
+  .ft-col--agency {
+    grid-column: 1 / -1;
     left: auto;
-    right: calc(18 * var(--mu));
-    top: calc(558 * var(--mu));
-    width: calc(120 * var(--mu));
-    height: calc(40 * var(--mu));
+  }
+
+  .ft-encase {
+    position: relative;
+    left: calc(-19 * var(--mu));
+    top: 0;
+    width: calc(160 * var(--mu));
+    height: calc(53.6 * var(--mu));
+    margin-top: calc(-4 * var(--mu));
   }
 }

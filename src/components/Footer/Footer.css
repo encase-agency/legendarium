@@ -140,7 +140,8 @@
 .ft-col button { background: none; border: 0; padding: 0; font-family: inherit; text-align: left; cursor: pointer; }
 .ft-col button:focus-visible { outline: 2px solid #8d6427; outline-offset: 3px; }
 @media (max-width: 1100px) {
-  .ft { height: calc(662 * var(--u)); }
-  .ft-wordmark { top: calc(600 * var(--u)); }
+  /* room for the "Сайт сделан агентством" column under "Документы" */
+  .ft { --ft-extra: calc(80 * var(--mu)); height: calc(662 * var(--u) + var(--ft-extra)); }
+  .ft-wordmark { top: calc(600 * var(--u) + var(--ft-extra)); }
   .ft-shield--m { margin-top: calc(64 * var(--mu)); }
 }
