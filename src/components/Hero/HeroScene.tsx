@@ -34,6 +34,15 @@ const HERO_IMAGES_PHONE: Record<keyof typeof HERO_IMAGES, string> = {
   knight: asset('/assets/hero/optimized/new-knight-cutout-phone.webp'),
 }
 
+/** Portrait iPad (768-1100px): the wide frame of the photo (the jacket reaches both edges), made from the transparent photo and
+ *  the layers of the phone set moved onto it (see the Figma frames 809:3680 / 809:3741). */
+const HERO_IMAGES_TABLET: Record<keyof typeof HERO_IMAGES, string> = {
+  base: asset('/assets/hero/optimized/tablet-base.webp'),
+  blueprint: asset('/assets/hero/optimized/tablet-blueprint.webp'),
+  knight: asset('/assets/hero/optimized/tablet-knight.webp'),
+}
+const TABLET_MASK = asset('/assets/hero/optimized/tablet-mask.webp')
+
 type HeroImageKey = keyof typeof HERO_IMAGES
 
 /** Flat backdrop color (layer 1), matches the original photos' background. */
@@ -125,10 +134,13 @@ const REDUCED_MOTION_TIME_SCALE = 0.03
 /** the phone / portrait tablet layout: up to 767px, and up to 1100px when the screen is held upright (a wider screen held sideways gets the computer layout) */
 const PHONE_QUERY = '(max-width: 767px), (max-width: 1100px) and (orientation: portrait)'
 const isPhoneLayout = () => typeof window !== 'undefined' && window.matchMedia(PHONE_QUERY).matches
+const isTabletLayout = () => isPhoneLayout() && window.matchMedia('(min-width: 768px)').matches
+const imagesFor = () => (isTabletLayout() ? HERO_IMAGES_TABLET : isPhoneLayout() ? HERO_IMAGES_PHONE : HERO_IMAGES)
 
 export function HeroScene({ isDebug }: HeroSceneProps) {
   const [phoneLayout, setPhoneLayout] = useState(isPhoneLayout)
   const [failed, setFailed] = useState(false)
+  const [tabletLayout, setTabletLayout] = useState(isTabletLayout)
   const [ready, setReady] = useState(false)
   const [portraitGone, setPortraitGone] = useState(false)
   useEffect(() => {
@@ -141,10 +153,10 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     return () => window.clearTimeout(timer)
   }, [ready])
   useEffect(() => {
-    const query = window.matchMedia(PHONE_QUERY)
-    const change = () => { setReady(false); setPhoneLayout(query.matches) }
-    query.addEventListener('change', change)
-    return () => query.removeEventListener('change', change)
+    const queries = [window.matchMedia(PHONE_QUERY), window.matchMedia('(min-width: 768px)')]
+    const change = () => { setReady(false); setPhoneLayout(isPhoneLayout()); setTabletLayout(isTabletLayout()) }
+    queries.forEach((query) => query.addEventListener('change', change))
+    return () => queries.forEach((query) => query.removeEventListener('change', change))
   }, [])
   const mountRef = useRef<HTMLDivElement>(null)
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
@@ -288,7 +300,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     if (cached) return cached
     if (!loaderRef.current) return undefined
 
-    const texture = loaderRef.current.load((isPhoneLayout() ? HERO_IMAGES_PHONE : HERO_IMAGES)[key], () => {
+    const texture = loaderRef.current.load(imagesFor()[key], () => {
       texture.colorSpace = THREE.SRGBColorSpace
       const mount = mountRef.current
       if (mount) {
@@ -561,7 +573,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     }
 
     const loadPersonTexture = (key: HeroImageKey) => {
-      const texture = loaderRef.current!.load((phoneLayout ? HERO_IMAGES_PHONE : HERO_IMAGES)[key], () => {
+      const texture = loaderRef.current!.load(imagesFor()[key], () => {
         if (disposed) { texture.dispose(); return }
         texture.colorSpace = THREE.SRGBColorSpace
         // Defensive: this is already THREE's default, but pinned explicitly
@@ -602,7 +614,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     // needed beyond the identity calibration uniforms above. Intentionally
     // not sRGB-decoded: it's a raw intensity mask, not a color photo.
     const openingMaskTexture = loaderRef.current!.load(
-      phoneLayout ? asset('/assets/hero/optimized/new-knight-opening-mask-phone.webp') : HERO_CONFIG.knightHelmet.openingMaskUrl,
+      isTabletLayout() ? TABLET_MASK : phoneLayout ? asset('/assets/hero/optimized/new-knight-opening-mask-phone.webp') : HERO_CONFIG.knightHelmet.openingMaskUrl,
       () => {
       if (disposed) { openingMaskTexture.dispose(); return }
       maskLoaded = true
@@ -949,7 +961,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phoneLayout, failed])
+  }, [phoneLayout, tabletLayout, failed])
 
   // Keep the debug flag in sync; the animation loop picks it up on the next tick.
   useEffect(() => {

@@ -544,15 +544,15 @@
     top: calc(284px + var(--tw));
   }
 
-  /* the picture: the whole photo (1600 x 1312) 1.25 times as wide as the screen, so that the jacket reaches both edges; the head from 420px down; the
-     hero clips what goes below it (the black strip behind carries on the jacket) */
+  /* the picture: the wide frame of the photo (Figma 809:3680: 104.5% of the width, aspect 0.935, from 351px down; the head
+     lands at about 420px); the hero clips what goes below it */
   .hero-scene,
   .hero-static {
     inset: auto;
-    left: -12.5vw;
-    top: calc(420px - 15.4vw);
-    width: 125vw;
-    height: calc(125vw / 1.22);
+    left: -2.25vw;
+    top: 351px;
+    width: 104.5vw;
+    height: calc(104.5vw / 0.935);
   }
 
   .hero-static img {
