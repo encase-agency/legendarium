@@ -122,7 +122,9 @@ interface KnightHelmetConfig {
 const REDUCED_MOTION_TIME_SCALE = 0.03
 
 /** Phone / tablet layout (<= 1100px): no pointer or touch effects, the man is placed exactly as in the mobile frame. */
-const isPhoneLayout = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 1100px)').matches
+/** the phone / portrait tablet layout: up to 767px, and up to 1100px when the screen is held upright (a wider screen held sideways gets the computer layout) */
+const PHONE_QUERY = '(max-width: 767px), (max-width: 1100px) and (orientation: portrait)'
+const isPhoneLayout = () => typeof window !== 'undefined' && window.matchMedia(PHONE_QUERY).matches
 
 export function HeroScene({ isDebug }: HeroSceneProps) {
   const [phoneLayout, setPhoneLayout] = useState(isPhoneLayout)
@@ -139,7 +141,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     return () => window.clearTimeout(timer)
   }, [ready])
   useEffect(() => {
-    const query = window.matchMedia('(max-width: 1100px)')
+    const query = window.matchMedia(PHONE_QUERY)
     const change = () => { setReady(false); setPhoneLayout(query.matches) }
     query.addEventListener('change', change)
     return () => query.removeEventListener('change', change)
