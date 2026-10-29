@@ -30,9 +30,12 @@ export function Directions() {
     const next = !expanded
     const section = sectionRef.current
     flushSync(() => setExpanded(next))
-    // folding the list back: the page is much shorter now, so go to the top of the block (not to the mentors below it)
+    // folding the list back: the page is much shorter now, so show the start of the next block, "Наши наставники"
     if (!next && section) {
-      const land = () => window.scrollTo({ top: Math.max(0, Math.round(section.getBoundingClientRect().top + window.scrollY)), behavior: 'instant' })
+      const land = () => {
+        const target = document.getElementById('faculties') ?? section
+        window.scrollTo({ top: Math.max(0, Math.round(target.getBoundingClientRect().top + window.scrollY)), behavior: 'instant' })
+      }
       land()
       requestAnimationFrame(land)
     }
