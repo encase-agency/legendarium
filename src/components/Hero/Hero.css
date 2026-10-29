@@ -463,3 +463,52 @@
     object-fit: fill;
   }
 }
+
+/* iPad: a round black pulsing "scroll down" button in the middle of the first screen's bottom edge: a finger on the man
+   (the picture reacts to touch) must not be the only way to go on. */
+.hero-down {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1100px) {
+  .hero-down {
+    position: absolute;
+    left: 50%;
+    /* the first screen is the height of the window, the picture goes a little lower */
+    top: calc(100svh - 84px);
+    z-index: 40;
+    width: 56px;
+    height: 56px;
+    margin-left: -28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #1b1d20;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    box-sizing: border-box;
+    color: #ffffff;
+    animation: hero-down-pulse 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes hero-down-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55);
+  }
+  60% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 16px rgba(255, 255, 255, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-down {
+    animation: none;
+  }
+}
