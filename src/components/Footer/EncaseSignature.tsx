@@ -45,10 +45,15 @@ export function EncaseSignature() {
     paint()
     if (calm) return
 
+    const phone = window.matchMedia('(max-width: 1100px)').matches
     const PASS = 0.84
     const tl = gsap.timeline({
       paused: true,
-      scrollTrigger: { trigger: root, start: 'top 95%', once: true, onEnter: () => tl.play() },
+      // on a computer: when the signature itself comes into view; on a phone the footer is tall, so it starts together
+      // with the falling shields (the same moment: the top of the footer at 80% of the screen)
+      scrollTrigger: phone
+        ? { trigger: root.closest('footer') ?? root, start: 'top 80%', once: true, onEnter: () => tl.play() }
+        : { trigger: root, start: 'top 95%', once: true, onEnter: () => tl.play() },
     })
     tl.to(state, { write: 1, duration: 1.56, ease: 'power1.inOut', onUpdate: paint }, 0) // the pen, in orange
     tl.to(state, { sweep: 1, duration: PASS, ease: 'power1.inOut', onUpdate: paint }, 1.8) // the gold sheen
