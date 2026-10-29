@@ -5,6 +5,7 @@
   background: #f4f4f4;
   color: #000000;
   font-family: 'Inter Tight', system-ui, sans-serif;
+  overflow-anchor: none;
 }
 
 .dl {

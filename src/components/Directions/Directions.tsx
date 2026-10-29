@@ -1,10 +1,9 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { flushSync } from 'react-dom'
 import { DIRECTION_CARDS } from './cards'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import { Lines } from '../shared/Lines'
 import { useSmallPhone } from '../../lib/usePhoneLayout'
-import { scrollToSection } from '../../lib/scrollToSection'
 import './Directions.css'
 import { asset } from '../../lib/asset'
 
@@ -25,15 +24,22 @@ export function Directions() {
   const cards = phone ? PHONE_CARDS : DIRECTION_CARDS
   const shown = phone && !expanded ? cards.slice(0, PHONE_FIRST) : cards
 
+  const sectionRef = useRef<HTMLElement>(null)
+
   const toggle = () => {
     const next = !expanded
+    const section = sectionRef.current
     flushSync(() => setExpanded(next))
-    // folding the list back: stay at the top of the block instead of being left somewhere in the middle of the page
-    if (!next) scrollToSection('directions', 0, true)
+    // folding the list back: the page is much shorter now, so go to the top of the block (not to the mentors below it)
+    if (!next && section) {
+      const land = () => window.scrollTo({ top: Math.max(0, Math.round(section.getBoundingClientRect().top + window.scrollY)), behavior: 'instant' })
+      land()
+      requestAnimationFrame(land)
+    }
   }
 
   return (
-    <section className="directions" id="directions">
+    <section className="directions" id="directions" ref={sectionRef}>
       <div className="dl">
         <div className="dl-head">
           <h2 className="dl-heading">
