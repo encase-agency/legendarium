@@ -1,7 +1,7 @@
 import { Br, Pct, PctS, type CaseData } from './caseData'
 
 // Figma 659:4246: the "Смотреть больше" window, cases 8-19. Only the reviews that have a video in the Kinescope folder
-// are listed (cases 8 and 9 still play from the Yandex Disk folder).
+// are listed.
 export const REVIEWS: CaseData[] = [
   {
     id: 'r8',
@@ -35,7 +35,7 @@ export const REVIEWS: CaseData[] = [
         <em> — по его словам, подписка уже окупилась.</em>
       </>
     ),
-    video: { file: 'IMG_6254.MOV' },
+    video: { id: 'e386b42c-d812-430d-a126-63d2e25e713e' },
     poster: 'r8-v2.jpg',
     person: 'Участник направления дизайна',
     summary: 'Дизайн · 50 000 ₽ за две недели',
@@ -76,7 +76,7 @@ export const REVIEWS: CaseData[] = [
         <em> — и планирует расти дальше.</em>
       </>
     ),
-    video: { file: 'IMG_7120.MP4' },
+    video: { id: '367ea702-9c00-4415-897d-221250060319' },
     poster: 'r9-v2.jpg',
     person: 'Игорь',
     summary: 'Дизайн · 35 000 ₽ за две недели',

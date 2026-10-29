@@ -147,3 +147,12 @@ a {
     transform: scale(0.97);
   }
 }
+
+/* iPad: the list of directions uses the whole width of the screen (the other blocks stay a centred column) */
+@media (min-width: 768px) and (max-width: 1100px) {
+  #root > #directions {
+    width: 100%;
+    box-shadow: none;
+    clip-path: none;
+  }
+}
