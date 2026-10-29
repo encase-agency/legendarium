@@ -294,6 +294,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
           (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height,
           mount.clientWidth / mount.clientHeight,
           isPhoneLayout(),
+          window.matchMedia('(min-width: 768px)').matches,
         )
         texture.repeat.set(repeatX, repeatY)
         texture.offset.set(offsetX, offsetY)
@@ -575,6 +576,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
             (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height,
             currentMount.clientWidth / currentMount.clientHeight,
             phoneLayout,
+            window.matchMedia('(min-width: 768px)').matches,
           )
           texture.repeat.set(repeatX, repeatY)
           texture.offset.set(offsetX, offsetY)
@@ -658,6 +660,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
           (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height,
           aspect,
           phoneLayout,
+          window.matchMedia('(min-width: 768px)').matches,
         )
         texture.repeat.set(repeatX, repeatY)
         texture.offset.set(offsetX, offsetY)

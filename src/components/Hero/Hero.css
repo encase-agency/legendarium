@@ -521,3 +521,77 @@
     white-space: nowrap;
   }
 }
+
+/* iPad (768-1100px, Figma 809:3680 = 768 x 1180 and 809:3741 = 834 x 1194): the text block is the phone one at its own size
+   (it is not stretched), centred; the man is large, from edge to edge. The hero uses the whole width of the screen.
+   Phones (up to 767px) and computers (from 1101px) are not touched by this block. */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .hero {
+    --u: 1px;
+    /* the frames are 768 and 834 wide: what lies between them moves a little with the width */
+    --tw: clamp(0px, (100vw - 768px) * 0.303, 20px);
+    height: calc(1180px + (100vw - 768px) * 0.2121);
+  }
+
+  .hero-headline {
+    top: calc(127px + var(--tw));
+  }
+
+  .hero-paragraph {
+    top: calc(198px + var(--tw));
+  }
+
+  .hero-cta {
+    top: calc(284px + var(--tw));
+  }
+
+  /* the picture: the whole photo (1600 x 1312) 1.25 times as wide as the screen, so that the jacket reaches both edges; the head from 420px down; the
+     hero clips what goes below it (the black strip behind carries on the jacket) */
+  .hero-scene,
+  .hero-static {
+    inset: auto;
+    left: -12.5vw;
+    top: calc(420px - 15.4vw);
+    width: 125vw;
+    height: calc(125vw / 1.22);
+  }
+
+  .hero-static img {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero::before {
+    height: 300px;
+  }
+
+  .hero-info-card {
+    top: 1024px;
+  }
+
+  .hero-right-footer {
+    left: calc(50% - 150px);
+    top: 1125px;
+  }
+
+  .hero-link {
+    left: calc(50% + 60px);
+    top: 1133px;
+  }
+
+  .hero-down {
+    top: calc(100svh - 84px);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1100px) {
+  #root > #hero {
+    width: 100%;
+    box-shadow: none;
+    clip-path: inset(0);
+    overflow: hidden;
+  }
+}
