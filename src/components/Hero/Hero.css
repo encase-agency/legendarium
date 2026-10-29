@@ -136,6 +136,9 @@
   margin: 0;
   width: 26.65%;
   min-width: 18em;
+  /* the lines are broken by hand as in the design: on a narrower screen (iPad sideways) the text keeps those lines
+     instead of wrapping again and running into the button */
+  white-space: nowrap;
   font-size: clamp(0.8rem, 0.93vw, 0.95rem);
   line-height: 1.3;
   color: #313131;
