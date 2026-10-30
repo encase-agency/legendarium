@@ -225,3 +225,15 @@
     min-height: 0;
   }
 }
+
+/* iPad: the row of photos is not clipped by the edges of the centred column, the tiles at the ends stay whole */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .rs {
+    overflow-x: visible;
+    overflow-y: clip;
+  }
+
+  .rs-svg {
+    overflow: visible;
+  }
+}

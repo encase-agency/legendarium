@@ -15,7 +15,7 @@ const ASSETS = asset('/assets/showcase')
 
 const STATS = [
   { value: '12+', label: 'Направлений' },
-  { value: '1 000+', label: 'Выпускников' },
+  { value: '1 000+', label: 'Выпускников' },
   { value: '12 месяцев', label: 'Доступа' },
 ]
 
@@ -25,13 +25,13 @@ const VIDEOS: VideoItem[] = [
     video: { id: '145fbcde-8216-498f-890c-27e533b9c87d' },
     poster: `${ASSETS}/poster-b.jpg`,
     person: 'Путь участника до первого заработка',
-    summary: 'Егор. Монтаж и контент · около 108 000 ₽ за июнь',
+    summary: 'Егор. Монтаж и контент · около 108 000 ₽ за июнь',
   },
   {
     video: { id: '56a22d6f-2ba6-47ec-9b27-349d47e65e6f' },
     poster: `${ASSETS}/poster-journey.jpg`,
     person: 'Путь участника: от первого шага до своего дела',
-    summary: 'Алексей. Трейдинг · депозит 12 600 ₽ → 378 000 ₽ за 7 недель',
+    summary: 'Алексей. Трейдинг · депозит 12 600 ₽ → 378 000 ₽ за 7 недель',
   },
 ]
 
@@ -158,7 +158,7 @@ export function Showcase() {
           </button>
           <div className="sc-text">
             <p className="sc-title">Путь участника до первого заработка</p>
-            <p className="sc-sub">Егор. Монтаж и контент · около 108 000 ₽ за июнь</p>
+            <p className="sc-sub">Егор. Монтаж и контент · около 108 000 ₽ за июнь</p>
           </div>
         </div>
       </div>
@@ -176,7 +176,7 @@ export function Showcase() {
               до своего дела
             </p>
             <p className="sc-sub">
-              Алексей. Трейдинг · депозит 12 600 ₽ → 378 000 ₽ <br className="sc-mbr" />
+              Алексей. Трейдинг · депозит 12 600 ₽ → 378 000 ₽ <br className="sc-mbr" />
               за 7 недель
             </p>
           </div>

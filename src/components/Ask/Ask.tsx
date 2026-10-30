@@ -40,7 +40,8 @@ export function Ask() {
     const cursor = cursorRef.current
     if (!section || !layer || !canvas || !cursor) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const phone = window.matchMedia('(max-width: 1100px)').matches
+    // touch screens (also iPad sideways, wider than 1100px) have no pointer to follow: the photos drop along a virtual swipe
+    const phone = window.matchMedia('(max-width: 1100px), (pointer: coarse)').matches
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 

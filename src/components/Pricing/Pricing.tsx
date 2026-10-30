@@ -13,6 +13,7 @@ const BONUS = [
   'Мышление победителя',
   'Инвестиции',
   'Блог с нуля (YouTube и др)',
+  'Тестостерон релис (ТР)',
 ]
 
 function Item({ title, sub, wide }: { title: string; sub: string; wide?: boolean }) {
@@ -103,7 +104,7 @@ export function Pricing() {
                 <li className="is-top">
                   <img src={`${A}/check-b.svg`} alt="" className="pr-check is-18" />
                   <div className="pr-bonus">
-                    <p className="pr-t">5 бонусных курсов:</p>
+                    <p className="pr-t">6 бонусных курсов:</p>
                     <div className="pr-chips">
                       {BONUS.map((b) => (
                         <span key={b}>{b}</span>
@@ -122,7 +123,7 @@ export function Pricing() {
           <p className="pr-more-1">
             Нужен только доступ к урокам?{' '}
             <br className="pr-mbr" />
-            Базовая подписка - 5 900 ₽/мес
+            Базовая подписка - 5 900 ₽/мес
           </p>
           <p className="pr-more-2">
             12 направлений, уроки без личных разборов,{' '}

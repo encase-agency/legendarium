@@ -388,6 +388,39 @@
   white-space: nowrap;
 }
 
+/* Touch screens wider than 1100px (iPad sideways): the section is tall and the stack sticks to the top of the screen. */
+@media (min-width: 1101px) {
+  .sy.is-sticky {
+    display: block;
+    height: calc(100svh + var(--sy-dist, 0px));
+    min-height: 0;
+    overflow: clip;
+  }
+
+  .sy.is-sticky .sy-stack {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    margin-inline: auto;
+  }
+
+  .sy.is-sticky .sy-card {
+    top: calc((100svh - 513 * var(--u)) / 2);
+  }
+
+  .sy.is-sticky .sy-card:nth-child(2) {
+    top: calc((100svh - 513 * var(--u)) / 2 + 28 * var(--u));
+  }
+
+  .sy.is-sticky .sy-card:nth-child(3) {
+    top: calc((100svh - 513 * var(--u)) / 2 + 56 * var(--u));
+  }
+
+  .sy.is-sticky .sy-card:nth-child(4) {
+    top: calc((100svh - 513 * var(--u)) / 2 + 84 * var(--u));
+  }
+}
+
 @media (min-width: 1101px) {
   /* Below the fold until the scroll animation brings each card up. */
   .sy-card:nth-child(n + 2) {

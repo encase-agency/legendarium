@@ -226,3 +226,11 @@
     top: calc(446.1 * var(--u));
   }
 }
+
+/* iPad: the photos dropped at the ends of the swipe are not clipped by the edges of the centred column */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .ask {
+    overflow-x: visible;
+    overflow-y: clip;
+  }
+}

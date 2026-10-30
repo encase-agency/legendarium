@@ -18,7 +18,7 @@ const LIST_3 = [
   'Образовательная лицензия и договор.',
 ]
 
-const LIST_4 = ['Доступ после оплаты', 'Первый платёж по рассрочке — через 30 дней.', 'Отмена по условиям оферты']
+const LIST_4 = ['Доступ после оплаты', 'Первый платёж по рассрочке — через 30 дней.', 'Личная работа с наставниками в чате и на ежедневных прямых эфирах']
 
 /** How far each card narrows / dims once 1, 2 or 3 cards lie on top of it. */
 const SCALE = [1, 0.92, 0.89, 0.86]
@@ -42,18 +42,29 @@ export function Story() {
     if (!section || !stack || cards.length < 2) return
 
     const mm = gsap.matchMedia()
-    mm.add('(min-width: 1101px)', () => {
+    // On computers the section is pinned by ScrollTrigger. On touch screens (iPad sideways) a fixed pin lags behind the
+    // native scroll and the cards fly over the neighbouring blocks, so there the section is made tall and the stack
+    // sticks inside it with plain CSS (`position: sticky`), ScrollTrigger only reads the progress.
+    const build = (sticky: boolean) => {
       gsap.set(cards, { transformOrigin: '50% 0%' })
       const steps = cards.length - 1
+      const distance = () => Math.round(window.innerHeight * 0.815 * (steps * 1.15 + 1.35))
+      if (sticky) {
+        section.classList.add('is-sticky')
+        section.style.setProperty('--sy-dist', `${distance()}px`)
+      }
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: () => `+=${Math.round(window.innerHeight * 0.815 * (steps * 1.15 + 1.35))}`,
-          pin: true,
-          scrub: 0.5,
-          anticipatePin: 1,
+          end: () => `+=${distance()}`,
+          pin: !sticky,
+          scrub: sticky ? true : 0.5,
+          anticipatePin: sticky ? 0 : 1,
           invalidateOnRefresh: true,
+          onRefreshInit: () => {
+            if (sticky) section.style.setProperty('--sy-dist', `${distance()}px`)
+          },
         },
       })
       for (let i = 1; i <= steps; i++) {
@@ -77,7 +88,7 @@ export function Story() {
         {
           y: () => {
             const u = stack.offsetWidth / 1464
-            return Math.max(0, section.offsetHeight / 2 - 213.6 * u)
+            return Math.max(0, (sticky ? stack.offsetHeight : section.offsetHeight) / 2 - 213.6 * u)
           },
           ease: 'none',
           duration: 1,
@@ -85,7 +96,13 @@ export function Story() {
         end,
       )
       tl.to({}, { duration: 0.2 })
-    })
+      return () => {
+        section.classList.remove('is-sticky')
+        section.style.removeProperty('--sy-dist')
+      }
+    }
+    mm.add('(min-width: 1101px) and (not (pointer: coarse))', () => build(false))
+    mm.add('(min-width: 1101px) and (pointer: coarse)', () => build(true))
     return () => mm.revert()
   }, [])
 
