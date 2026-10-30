@@ -549,13 +549,16 @@
 
   .sy-list {
     gap: calc(8 * var(--u));
+    white-space: normal;
   }
 
   .sy-list li {
     gap: calc(13 * var(--u));
+    align-items: flex-start;
   }
 
   .sy-list .sy-n {
+    flex: none;
     width: calc(8 * var(--u));
     font-size: calc(14 * var(--u));
     letter-spacing: calc(-0.28 * var(--u));
