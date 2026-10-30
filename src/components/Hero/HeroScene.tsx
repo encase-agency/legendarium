@@ -132,7 +132,7 @@ const REDUCED_MOTION_TIME_SCALE = 0.03
 
 /** Phone / tablet layout (<= 1100px): no pointer or touch effects, the man is placed exactly as in the mobile frame. */
 /** the phone / portrait tablet layout: up to 767px, and up to 1100px when the screen is held upright (a wider screen held sideways gets the computer layout) */
-const PHONE_QUERY = '(max-width: 767px), (max-width: 1100px) and (orientation: portrait)'
+const PHONE_QUERY = '(max-width: 767px), (max-width: 1100px) and (orientation: portrait), (max-width: 1100px) and (max-aspect-ratio: 8/5)'
 const isPhoneLayout = () => typeof window !== 'undefined' && window.matchMedia(PHONE_QUERY).matches
 const TABLET_MIN = '(min-width: 566px)'
 const isTabletLayout = () => isPhoneLayout() && window.matchMedia(TABLET_MIN).matches
