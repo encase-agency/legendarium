@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { scrollToSection } from './lib/scrollToSection'
 import { Header } from './components/Header/Header'
 import { Hero } from './components/Hero/Hero'
@@ -43,6 +44,28 @@ function App() {
     }
     document.addEventListener('click', onClick)
     return () => document.removeEventListener('click', onClick)
+  }, [])
+
+  // The pinned blocks (Story, Platform, ...) compute where they start from the height of everything above them.
+  // When that height changes later (a FAQ row opens, a lazy image or a font arrives) the starts are recalculated,
+  // otherwise a pinned block jumps in too early and lies on top of the previous one.
+  useEffect(() => {
+    let timer = 0
+    let height = document.body.offsetHeight
+    const ro = new ResizeObserver(() => {
+      window.clearTimeout(timer)
+      timer = window.setTimeout(() => {
+        const next = document.body.offsetHeight
+        if (Math.abs(next - height) < 2) return
+        height = next
+        ScrollTrigger.refresh()
+      }, 250)
+    })
+    ro.observe(document.body)
+    return () => {
+      window.clearTimeout(timer)
+      ro.disconnect()
+    }
   }, [])
 
   return (
