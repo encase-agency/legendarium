@@ -198,8 +198,15 @@
     height: calc(883 * var(--u));
   }
 
+  /* the section is as wide as the screen: the two men stay pinned to its edges, the text and the button
+     stay in the centred 390-design-px column, so wider screens only grow the gap between them */
+  .compare {
+    --cx: calc(50% - 195 * var(--u));
+  }
+
   .cp-photo--helmet {
-    left: calc(249 * var(--u));
+    left: auto;
+    right: calc(-40 * var(--u));
     top: calc(496 * var(--u));
     width: calc(181 * var(--u));
     height: calc(393 * var(--u));
@@ -213,7 +220,7 @@
   }
 
   .cp-title {
-    left: calc(39 * var(--u));
+    left: calc(var(--cx) + 39 * var(--u));
     top: calc(56 * var(--u));
     width: calc(312 * var(--u));
     transform: none;
@@ -234,7 +241,7 @@
   }
 
   .cp-columns {
-    left: calc(38.5 * var(--u));
+    left: calc(var(--cx) + 38.5 * var(--u));
     top: calc(196 * var(--u));
     width: calc(313 * var(--u));
     transform: none;

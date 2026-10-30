@@ -156,3 +156,12 @@ a {
     clip-path: none;
   }
 }
+
+/* «Суть в том…»: full-width section, the men stay at the screen edges (landscape phones and tablets) */
+@media (max-width: 1100px) {
+  #root > #compare {
+    width: 100%;
+    box-shadow: none;
+    clip-path: none;
+  }
+}

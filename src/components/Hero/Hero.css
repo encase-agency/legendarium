@@ -524,7 +524,7 @@
 /* iPad (768-1100px, Figma 809:3680 = 768 x 1180 and 809:3741 = 834 x 1194): the text block is the phone one at its own size
    (it is not stretched), centred; the man is large, from edge to edge. The hero uses the whole width of the screen.
    Phones (up to 767px) and computers (from 1101px) are not touched by this block. */
-@media (min-width: 768px) and (max-width: 1100px) and (orientation: portrait) {
+@media (min-width: 566px) and (max-width: 1100px) and (orientation: portrait), (min-width: 566px) and (max-width: 767px) {
   .hero {
     --u: 1px;
     /* the frames are 768 and 834 wide: what lies between them moves a little with the width */
@@ -563,8 +563,9 @@
     object-fit: cover;
   }
 
+  /* no black strip: the jacket runs on its own to the bottom edge, as in the frames */
   .hero::before {
-    height: 300px;
+    display: none;
   }
 
   .hero-info-card {
@@ -583,7 +584,22 @@
 
 }
 
-@media (min-width: 768px) and (max-width: 1100px) {
+/* wide phones (landscape) and narrow portrait screens, 566-767px: the iPad block above, the picture keeps its 768px size and
+   is cropped by the screen, so the shoulders always run to the edges */
+@media (min-width: 566px) and (max-width: 767px) {
+  .hero {
+    height: 1180px;
+  }
+
+  .hero-scene,
+  .hero-static {
+    left: calc(50% - 401px);
+    width: 802px;
+    height: calc(802px / 0.935);
+  }
+}
+
+@media (min-width: 566px) and (max-width: 1100px) and (orientation: portrait), (min-width: 566px) and (max-width: 767px) {
   #root > #hero {
     width: 100%;
     box-shadow: none;

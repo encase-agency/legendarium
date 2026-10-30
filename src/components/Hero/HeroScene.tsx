@@ -134,7 +134,8 @@ const REDUCED_MOTION_TIME_SCALE = 0.03
 /** the phone / portrait tablet layout: up to 767px, and up to 1100px when the screen is held upright (a wider screen held sideways gets the computer layout) */
 const PHONE_QUERY = '(max-width: 767px), (max-width: 1100px) and (orientation: portrait)'
 const isPhoneLayout = () => typeof window !== 'undefined' && window.matchMedia(PHONE_QUERY).matches
-const isTabletLayout = () => isPhoneLayout() && window.matchMedia('(min-width: 768px)').matches
+const TABLET_MIN = '(min-width: 566px)'
+const isTabletLayout = () => isPhoneLayout() && window.matchMedia(TABLET_MIN).matches
 const imagesFor = () => (isTabletLayout() ? HERO_IMAGES_TABLET : isPhoneLayout() ? HERO_IMAGES_PHONE : HERO_IMAGES)
 
 export function HeroScene({ isDebug }: HeroSceneProps) {
@@ -153,7 +154,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
     return () => window.clearTimeout(timer)
   }, [ready])
   useEffect(() => {
-    const queries = [window.matchMedia(PHONE_QUERY), window.matchMedia('(min-width: 768px)')]
+    const queries = [window.matchMedia(PHONE_QUERY), window.matchMedia(TABLET_MIN)]
     const change = () => { setReady(false); setPhoneLayout(isPhoneLayout()); setTabletLayout(isTabletLayout()) }
     queries.forEach((query) => query.addEventListener('change', change))
     return () => queries.forEach((query) => query.removeEventListener('change', change))
@@ -308,7 +309,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
           (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height,
           mount.clientWidth / mount.clientHeight,
           isPhoneLayout(),
-          window.matchMedia('(min-width: 768px)').matches,
+          isTabletLayout(),
         )
         texture.repeat.set(repeatX, repeatY)
         texture.offset.set(offsetX, offsetY)
@@ -590,7 +591,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
             (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height,
             currentMount.clientWidth / currentMount.clientHeight,
             phoneLayout,
-            window.matchMedia('(min-width: 768px)').matches,
+            isTabletLayout(),
           )
           texture.repeat.set(repeatX, repeatY)
           texture.offset.set(offsetX, offsetY)
@@ -674,7 +675,7 @@ export function HeroScene({ isDebug }: HeroSceneProps) {
           (texture.image as HTMLImageElement).width / (texture.image as HTMLImageElement).height,
           aspect,
           phoneLayout,
-          window.matchMedia('(min-width: 768px)').matches,
+          isTabletLayout(),
         )
         texture.repeat.set(repeatX, repeatY)
         texture.offset.set(offsetX, offsetY)

@@ -20,7 +20,7 @@ interface Photo {
 const PHOTOS: Photo[] = [
   { id: 'p1', src: 'p305.jpg', box: { x: 1060, y: 416.89, w: 310.892, h: 392.619 }, card: { w: 235.309, h: 346.661, transform: 'rotate(13.74deg)' }, m: { x: 424.24, y: 92.13, w: 202.38, h: 255.582, cw: 153.178, ch: 225.665 } },
   { id: 'p2', src: 'p306.jpg', box: { x: 141, y: 413.89, w: 310.892, h: 392.619 }, card: { w: 235.309, h: 346.661, transform: 'rotate(166.26deg) scaleY(-1)' }, base: '#8f8f8f', m: { x: -174, y: 90.18, w: 202.38, h: 255.582, cw: 153.178, ch: 225.665 } },
-  { id: 'p3', src: 'p303.jpg', box: { x: 923.3, y: 345, w: 334.928, h: 440.753 }, card: { w: 272.374, h: 401.266, transform: 'rotate(9.51deg)' }, m: { x: 204, y: 8, w: 218.027, h: 286.916, cw: 177.307, ch: 261.211 } },
+  { id: 'p3', src: 'p307.jpg', box: { x: 923.3, y: 345, w: 334.928, h: 440.753 }, card: { w: 272.374, h: 401.266, transform: 'rotate(9.51deg)' }, m: { x: 204, y: 8, w: 218.027, h: 286.916, cw: 177.307, ch: 261.211 } },
   { id: 'p4', src: 'p304.jpg', box: { x: 241.3, y: 345, w: 334.928, h: 440.753 }, card: { w: 272.374, h: 401.266, transform: 'rotate(170.49deg) scaleY(-1)' }, base: '#9e9e9e', m: { x: 29, y: 8, w: 218.027, h: 286.916, cw: 177.307, ch: 261.211 } },
   { id: 'p5', src: 'p301.jpg', box: { x: 758.47, y: 296.2, w: 335.857, h: 470.588 }, card: { w: 306.092, h: 450.939, transform: 'rotate(3.87deg)' }, m: { x: 160, y: 8, w: 218.632, h: 306.337, cw: 199.256, ch: 293.547 } },
   { id: 'p6', src: 'p302.jpg', box: { x: 395.29, y: 296, w: 335.857, h: 470.588 }, card: { w: 306.092, h: 450.939, transform: 'rotate(176.13deg) scaleY(-1)' }, base: '#d9d9d9', m: { x: 71, y: 8, w: 218.632, h: 306.337, cw: 199.256, ch: 293.547 } },
@@ -66,7 +66,7 @@ export function Members() {
           </div>
         ))}
         <div className="mb-center">
-          <img src={`${A}/p300.jpg`} alt="" loading="lazy" />
+          <img src={`${A}/p303.jpg`} alt="" loading="lazy" />
         </div>
       </div>
 
