@@ -62,6 +62,25 @@ export function Faculties() {
   const [open, setOpen] = useState<number | null>(null)
   const [closing, setClosing] = useState(false)
   const timer = useRef<number>(0)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+
+  // The rows open and fold above the button. On a computer the page follows the button while that happens, so it stays
+  // under the pointer (a second click folds the list again instead of hitting a card); on a phone the page stays still
+  // when the list opens and keeps the button in view when it folds.
+  const toggle = () => {
+    const button = toggleRef.current
+    const follow = !!button && (expanded || window.matchMedia('(hover: hover) and (pointer: fine)').matches)
+    const top = button?.getBoundingClientRect().top ?? 0
+    setExpanded(!expanded)
+    if (!button || !follow) return
+    const start = performance.now()
+    const step = () => {
+      const shift = button.getBoundingClientRect().top - top
+      if (Math.abs(shift) > 0.5) window.scrollBy({ top: shift, behavior: 'instant' })
+      if (performance.now() - start < 700) requestAnimationFrame(step)
+    }
+    requestAnimationFrame(step)
+  }
 
   const openModal = (i: number) => {
     window.clearTimeout(timer.current)
@@ -113,7 +132,7 @@ export function Faculties() {
         </div>
       </div>
 
-      <button className="fc-all" type="button" onClick={() => setExpanded((v) => !v)} aria-expanded={expanded}>
+      <button className="fc-all" type="button" ref={toggleRef} onClick={toggle} aria-expanded={expanded}>
         {expanded ? 'Свернуть' : 'Смотреть больше'}
         <span className="fc-all-icon">
           <ArrowIcon src={`${A}/arrow.svg`} />

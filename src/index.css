@@ -21,6 +21,13 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Chromium browsers (Chrome, Yandex) shift the page on their own when a block above or below the view grows or folds
+   (FAQ row, "Смотреть больше"); the blocks that open do their own scroll handling, so the anchoring stays off. */
+html,
+body {
+  overflow-anchor: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }

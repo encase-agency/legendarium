@@ -48,7 +48,8 @@ function App() {
 
   // The pinned blocks (Story, Platform, ...) compute where they start from the height of everything above them.
   // When that height changes later (a FAQ row opens, a lazy image or a font arrives) the starts are recalculated,
-  // otherwise a pinned block jumps in too early and lies on top of the previous one.
+  // otherwise a pinned block jumps in too early and lies on top of the previous one. Only the computer pins Story over
+  // what comes before it; on a phone and a tablet the recalculation is skipped, it makes the browser move the page.
   useEffect(() => {
     let timer = 0
     let height = document.body.offsetHeight
@@ -58,6 +59,7 @@ function App() {
         const next = document.body.offsetHeight
         if (Math.abs(next - height) < 2) return
         height = next
+        if (!window.matchMedia('(min-width: 1101px) and (not (pointer: coarse))').matches) return
         ScrollTrigger.refresh()
       }, 250)
     })
