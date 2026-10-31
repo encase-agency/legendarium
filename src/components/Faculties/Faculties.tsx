@@ -62,32 +62,20 @@ export function Faculties() {
   const [open, setOpen] = useState<number | null>(null)
   const [closing, setClosing] = useState(false)
   const timer = useRef<number>(0)
-  const toggleRef = useRef<HTMLButtonElement>(null)
 
-  // The rows open and fold above the button. On a computer the page follows the button while that happens, so it stays
-  // under the pointer (a second click folds the list again instead of hitting a card). On a phone the page stays still
-  // when the list opens, and when it folds the view goes to the start of the next block, "Изменить жизнь проще, когда".
+  // Opening leaves the page where it is: the rows appear below the visible ones. Folding takes the view to the start of the
+  // next block, "Изменить жизнь проще, когда", as the page is much shorter afterwards.
   const toggle = () => {
-    const button = toggleRef.current
-    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
     const next = document.getElementById('community')
-    const goNext = expanded && phone && !!next
-    const follow = !!button && !goNext && (expanded || fine)
-    const top = button?.getBoundingClientRect().top ?? 0
     setExpanded(!expanded)
-    if (!goNext && !follow) return
+    if (!expanded || !next) return
     const start = performance.now()
-    const step = () => {
-      if (goNext) {
-        const shift = next.getBoundingClientRect().top
-        if (Math.abs(shift) > 0.5) window.scrollBy({ top: shift, behavior: 'instant' })
-      } else if (button) {
-        const shift = button.getBoundingClientRect().top - top
-        if (Math.abs(shift) > 0.5) window.scrollBy({ top: shift, behavior: 'instant' })
-      }
-      if (performance.now() - start < 700) requestAnimationFrame(step)
+    const land = () => {
+      const shift = next.getBoundingClientRect().top
+      if (Math.abs(shift) > 0.5) window.scrollBy({ top: shift, behavior: 'instant' })
+      if (performance.now() - start < 700) requestAnimationFrame(land)
     }
-    requestAnimationFrame(step)
+    requestAnimationFrame(land)
   }
 
   const openModal = (i: number) => {
@@ -140,7 +128,7 @@ export function Faculties() {
         </div>
       </div>
 
-      <button className="fc-all" type="button" ref={toggleRef} onClick={toggle} aria-expanded={expanded}>
+      <button className="fc-all" type="button" onClick={toggle} aria-expanded={expanded}>
         {expanded ? 'Свернуть' : 'Смотреть больше'}
         <span className="fc-all-icon">
           <ArrowIcon src={`${A}/arrow.svg`} />

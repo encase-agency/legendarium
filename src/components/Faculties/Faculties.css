@@ -183,8 +183,6 @@
   color: #ffffff;
   text-decoration: none;
   white-space: nowrap;
-  /* the same width for "Смотреть больше" and "Свернуть": the second click lands on the button, not beside it */
-  min-width: calc(220 * var(--u));
 }
 
 .fc-all[aria-expanded='true'] {
@@ -257,7 +255,6 @@
   }
 
   .fc-all {
-    min-width: 0;
     gap: calc(12 * var(--u));
     height: calc(42 * var(--u));
     padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(18 * var(--u));
