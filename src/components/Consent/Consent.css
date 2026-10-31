@@ -3,6 +3,8 @@
 .consent-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .consent button { cursor: pointer; font: inherit; border: 1px solid #4a4c51; border-radius: 10px; background: #313131; color: #ffffff; padding: 10px 14px; transition: background 0.2s ease, border-color 0.2s ease; }
 .consent button:hover { background: #3b3d42; border-color: #6a6c72; }
+.consent .consent-accept { background: #ffffff; border-color: #ffffff; color: #0a0a0f; font-weight: 600; }
+.consent .consent-accept:hover { background: #e9e9ec; border-color: #e9e9ec; }
 .consent button:focus-visible, .consent a:focus-visible, .consent input:focus-visible { outline: 3px solid #b07f30; outline-offset: 3px; }
 .consent a { color: inherit; text-decoration: underline; }
 .consent-backdrop { position: fixed; z-index: 10001; inset: 0; background: rgba(10, 11, 13, 0.7); display: grid; place-items: center; padding: 16px; }

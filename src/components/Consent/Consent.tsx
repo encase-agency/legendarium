@@ -78,7 +78,7 @@ export function Consent() {
     {!choice && !editing && <aside className="consent" aria-label="Файлы cookie">
       <p>Используем необходимые файлы cookie для работы сайта. Аналитические и маркетинговые технологии включаются только с вашего согласия. Выбор сохраняется на 12 месяцев.</p>
       {siteConfig.documents.privacy && <a {...linkAttrs(siteConfig.documents.privacy)}>Политика обработки ПДн</a>}
-      <div className="consent-actions"><button type="button" onClick={() => choose(NECESSARY_ONLY)}>Только необходимые</button><button type="button" onClick={() => choose({ necessary: true, analytics: true, marketing: true })}>Принять</button><button type="button" onClick={() => setEditing(true)}>Настройки</button></div>
+      <div className="consent-actions"><button type="button" onClick={() => choose(NECESSARY_ONLY)}>Только необходимые</button><button type="button" className="consent-accept" onClick={() => choose({ necessary: true, analytics: true, marketing: true })}>Принять</button><button type="button" onClick={() => setEditing(true)}>Настройки</button></div>
     </aside>}
     {editing && <Settings initial={choice ?? NECESSARY_ONLY} onSave={choose} onClose={() => setEditing(false)} />}
   </>
