@@ -65,18 +65,26 @@ export function Faculties() {
   const toggleRef = useRef<HTMLButtonElement>(null)
 
   // The rows open and fold above the button. On a computer the page follows the button while that happens, so it stays
-  // under the pointer (a second click folds the list again instead of hitting a card); on a phone the page stays still
-  // when the list opens and keeps the button in view when it folds.
+  // under the pointer (a second click folds the list again instead of hitting a card). On a phone the page stays still
+  // when the list opens, and when it folds the view goes to the start of the next block, "Изменить жизнь проще, когда".
   const toggle = () => {
     const button = toggleRef.current
-    const follow = !!button && (expanded || window.matchMedia('(hover: hover) and (pointer: fine)').matches)
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    const next = document.getElementById('community')
+    const goNext = expanded && phone && !!next
+    const follow = !!button && !goNext && (expanded || fine)
     const top = button?.getBoundingClientRect().top ?? 0
     setExpanded(!expanded)
-    if (!button || !follow) return
+    if (!goNext && !follow) return
     const start = performance.now()
     const step = () => {
-      const shift = button.getBoundingClientRect().top - top
-      if (Math.abs(shift) > 0.5) window.scrollBy({ top: shift, behavior: 'instant' })
+      if (goNext) {
+        const shift = next.getBoundingClientRect().top
+        if (Math.abs(shift) > 0.5) window.scrollBy({ top: shift, behavior: 'instant' })
+      } else if (button) {
+        const shift = button.getBoundingClientRect().top - top
+        if (Math.abs(shift) > 0.5) window.scrollBy({ top: shift, behavior: 'instant' })
+      }
       if (performance.now() - start < 700) requestAnimationFrame(step)
     }
     requestAnimationFrame(step)
