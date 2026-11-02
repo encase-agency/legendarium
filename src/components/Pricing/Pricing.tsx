@@ -126,9 +126,7 @@ export function Pricing() {
             Базовая подписка
           </p>
           <p className="pr-more-2">
-            12 направлений, уроки без личных разборов,{' '}
-            <br className="pr-mbr" />
-            оплата помесячно
+            12 направлений, уроки без личных разборов
           </p>
         </div>
         <button type="button" className="pr-access" onClick={openModal}>
