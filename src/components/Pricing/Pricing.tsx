@@ -123,7 +123,7 @@ export function Pricing() {
           <p className="pr-more-1">
             Нужен только доступ к урокам?{' '}
             <br className="pr-mbr" />
-            Базовая подписка - 5 900 ₽/мес
+            Базовая подписка
           </p>
           <p className="pr-more-2">
             12 направлений, уроки без личных разборов,{' '}
