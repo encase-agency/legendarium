@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { scrollToSection } from '../../lib/scrollToSection'
 import { MenuOverlay } from './MenuOverlay'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import './Header.css'
 import { asset } from '../../lib/asset'
 
@@ -59,6 +60,7 @@ export function Header() {
             href="#pricing"
             onClick={(e) => {
               e.preventDefault()
+              trackAnalyticsGoal('cta_header_click')
               scrollToSection('pricing', 0, true)
             }}
           >

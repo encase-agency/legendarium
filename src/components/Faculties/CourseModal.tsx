@@ -1,4 +1,5 @@
 import { useDialogLifecycle } from '../../lib/useDialogLifecycle'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import type { Block, Course, Line } from './courses'
@@ -131,7 +132,7 @@ export function CourseModal({ course, closing, onClose }: Props) {
             ))}
           </div>
           <div className="md-cta-bar">
-            <a className="md-cta" href="#pricing" onClick={onClose}>
+            <a className="md-cta" href="#pricing" onClick={() => { trackAnalyticsGoal('cta_course_start_click'); onClose() }}>
               Начать сейчас
               <span className="md-cta-icon">
                 <ArrowIcon src={`${A}/arrow.svg`} />

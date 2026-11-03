@@ -2,6 +2,7 @@ import { siteConfig } from '../../lib/siteConfig'
 import { linkAttrs } from '../../lib/documents'
 import { EncaseSignature } from './EncaseSignature'
 import { openCookieSettings } from '../Consent/preferences'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -14,7 +15,7 @@ const A = asset('/assets/footer')
 
 // Figma 545:6889: the footer's own frame is 1512x809, the top 121px of it show the end of the previous block,
 // which here is the real last card of the Story stack, so the footer starts right below it.
-const COLS: { title: string; w?: number; x: number; links: { label: string; href?: string; action?: () => void }[] }[] = [
+const COLS: { title: string; w?: number; x: number; links: { label: string; href?: string; action?: () => void; goal?: string }[] }[] = [
   {
     title: 'Информация',
     x: 50,
@@ -38,10 +39,10 @@ const COLS: { title: string; w?: number; x: number; links: { label: string; href
     title: 'Социальные сети',
     x: 482,
     links: [
-      { label: 'Instagram', href: siteConfig.socials.instagram },
-      { label: 'Telegram', href: siteConfig.socials.telegram },
-      { label: 'WhatsApp', href: siteConfig.socials.whatsapp },
-      { label: 'YouTube', href: siteConfig.socials.youtube },
+      { label: 'Instagram', href: siteConfig.socials.instagram, goal: 'social_instagram_click' },
+      { label: 'Telegram', href: siteConfig.socials.telegram, goal: 'social_telegram_click' },
+      { label: 'WhatsApp', href: siteConfig.socials.whatsapp, goal: 'social_whatsapp_click' },
+      { label: 'YouTube', href: siteConfig.socials.youtube, goal: 'social_youtube_click' },
     ],
   },
   {
@@ -151,7 +152,7 @@ export function Footer() {
           <ul>
             {c.links.map((l) => (
               <li key={l.label}>
-                <>{l.action ? <button type="button" onClick={l.action}>{l.label}</button> : l.href ? <a {...linkAttrs(l.href)}>{l.label}</a> : <span className="ft-unavailable" title="Информация пока недоступна">{l.label}</span>}</>
+                <>{l.action ? <button type="button" onClick={l.action}>{l.label}</button> : l.href ? <a {...linkAttrs(l.href)} onClick={l.goal ? () => trackAnalyticsGoal(l.goal!) : undefined}>{l.label}</a> : <span className="ft-unavailable" title="Информация пока недоступна">{l.label}</span>}</>
               </li>
             ))}
           </ul>

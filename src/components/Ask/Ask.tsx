@@ -3,6 +3,7 @@ import gsap from 'gsap'
 import './Ask.css'
 import { asset } from '../../lib/asset'
 import { siteConfig } from '../../lib/siteConfig'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 
 const A = asset('/assets/ask')
 const PHOTOS = Array.from({ length: 19 }, (_, i) => `${A}/a${String(i + 1).padStart(2, '0')}.jpg`)
@@ -306,7 +307,7 @@ export function Ask() {
         Андрею
       </h2>
 
-      <a className="ask-cta" href={siteConfig.contact.andrewUrl} target="_blank" rel="noreferrer">
+      <a className="ask-cta" href={siteConfig.contact.andrewUrl} target="_blank" rel="noreferrer" onClick={() => trackAnalyticsGoal('contact_andrew_click')}>
         <img className="ask-disc" src={`${A}/disc.svg`} alt="" />
         <span className="ask-cta-text">
           Написать{' '}

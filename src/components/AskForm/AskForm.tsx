@@ -1,4 +1,5 @@
 import { sendLead } from './sendLead'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { scrollToSection } from '../../lib/scrollToSection'
 import { ArrowIcon } from '../shared/ArrowIcon'
@@ -60,6 +61,7 @@ export function AskForm({ closing, onClose }: Props) {
     try {
       await sendLead(ENDPOINT, name.trim(), tg.trim(), controller.signal)
       setStatus('success')
+      trackAnalyticsGoal('lead_form_sent')
     } catch {
       if (requestRef.current !== controller) return
       setStatus('idle')
@@ -132,7 +134,7 @@ export function AskForm({ closing, onClose }: Props) {
                 <button type="submit" className={valid && available ? 'af-btn af-btn--on' : 'af-btn'} disabled={!valid || status === 'sending' || !available}>
                   {status === 'sending' ? 'Отправляем…' : 'Отправить заявку'}
                 </button>
-                {siteConfig.socials.directTelegram && <a className="af-tg" href={siteConfig.socials.directTelegram} target="_blank" rel="noreferrer">
+                {siteConfig.socials.directTelegram && <a className="af-tg" href={siteConfig.socials.directTelegram} target="_blank" rel="noreferrer" onClick={() => trackAnalyticsGoal('contact_telegram_click')}>
                   {touched ? 'Написать в Telegram' : 'Написать напрямую в Telegram'}
                   <span className="af-tg-icon">
                     <ArrowIcon src={`${A}/arrow.svg`} />

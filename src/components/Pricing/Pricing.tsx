@@ -35,6 +35,7 @@ export function Pricing() {
   const timer = useRef<number>(0)
 
   const openModal = () => {
+    trackAnalyticsGoal('tariff_basic_open')
     window.clearTimeout(timer.current)
     setClosing(false)
     setOpen(true)
