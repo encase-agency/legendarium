@@ -96,3 +96,13 @@ test('revocation drops goals pending the script download without replaying them 
   app.trackAnalyticsGoal('tariff_basic_click')
   assert.deepEqual(window.ym.a.at(-1), [123, 'reachGoal', 'tariff_basic_click'])
 })
+
+test('goal params are passed to Yandex only when given, also after the script loads', async () => {
+  const app = await harness({ analytics: { yandex: '123' } })
+  app.startAnalytics()
+  app.trackAnalyticsGoal('faq_open', { question: 'Когда я смогу получить первый доход?' })
+  app.scripts.find(script => script.dataset.analytics === 'yandex').onload()
+  assert.deepEqual(window.ym.a.at(-1), [123, 'reachGoal', 'faq_open', { question: 'Когда я смогу получить первый доход?' }])
+  app.trackAnalyticsGoal('tariff_basic_open')
+  assert.deepEqual(window.ym.a.at(-1), [123, 'reachGoal', 'tariff_basic_open'])
+})

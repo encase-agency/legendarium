@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import { flushSync } from 'react-dom'
 import { DIRECTION_CARDS } from './cards'
 import { ArrowIcon } from '../shared/ArrowIcon'
@@ -28,6 +29,7 @@ export function Directions() {
 
   const toggle = () => {
     const next = !expanded
+    if (next) trackAnalyticsGoal('directions_expand')
     const section = sectionRef.current
     flushSync(() => setExpanded(next))
     // folding the list back: the page is much shorter now, so show the start of the next block, "Наши наставники"

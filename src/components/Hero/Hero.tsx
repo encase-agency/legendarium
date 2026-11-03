@@ -1,4 +1,5 @@
 import { lazy, Suspense, useLayoutEffect, useRef, useState } from 'react'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { HeroPortrait } from './HeroPortrait'
@@ -60,7 +61,7 @@ export function Hero() {
           Ты здесь не случайно и ты это понимаешь!
         </p>
 
-        <a className="btn btn-dark hero-cta" href="#pain">
+        <a className="btn btn-dark hero-cta" href="#pain" onClick={() => trackAnalyticsGoal('cta_hero_click')}>
           Выйти из матрицы
           <span className="hero-cta-icon">
             <ArrowUpRightIcon />

@@ -3,13 +3,14 @@ import { siteConfig } from '../../lib/siteConfig'
 type AnalyticsWindow = Window & {
   dataLayer?: unknown[]
   gtag?: (...args: unknown[]) => void
-  ym?: ((id: number, method: string, options?: object | string) => void) & { a?: unknown[][]; l?: number }
+  ym?: ((id: number, method: string, options?: object | string, params?: object) => void) & { a?: unknown[][]; l?: number }
 }
 let started = false
 let allowed = false
 let generation = 0
 let yandexReady = false
-let pendingYandexGoals: string[] = []
+type GoalParams = Record<string, string>
+let pendingYandexGoals: { goal: string; params?: GoalParams }[] = []
 export function startAnalytics() {
   if (started) return
   started = true
@@ -39,7 +40,7 @@ export function startAnalytics() {
       if (!allowed || generation !== currentGeneration) return
       target.ym?.(Number(yandex), 'init', { clickmap: false, trackLinks: true, accurateTrackBounce: true, webvisor: false })
       yandexReady = true
-      for (const goal of pendingYandexGoals) target.ym?.(Number(yandex), 'reachGoal', goal)
+      for (const { goal, params } of pendingYandexGoals) sendYandexGoal(target, Number(yandex), goal, params)
       pendingYandexGoals = []
     }
     document.head.append(script)
@@ -85,13 +86,19 @@ export function clearYandexCookies() {
 }
 
 /** Send real user actions only; unknown payment outcomes must never be reported as a success. */
-export function trackAnalyticsGoal(goal: string) {
+function sendYandexGoal(target: AnalyticsWindow, id: number, goal: string, params?: GoalParams) {
+  if (params) target.ym?.(id, 'reachGoal', goal, params)
+  else target.ym?.(id, 'reachGoal', goal)
+}
+
+/** Optional params (for example which FAQ question was opened) are short text values shown next to the goal in Metrica. */
+export function trackAnalyticsGoal(goal: string, params?: GoalParams) {
   if (!allowed || !/^[a-z][a-z0-9_]{0,63}$/.test(goal)) return
   const target = window as AnalyticsWindow
   const { google, yandex } = siteConfig.analytics
   if (yandex) {
-    if (yandexReady) target.ym?.(Number(yandex), 'reachGoal', goal)
-    else if (pendingYandexGoals.length < 100) pendingYandexGoals.push(goal)
+    if (yandexReady) sendYandexGoal(target, Number(yandex), goal, params)
+    else if (pendingYandexGoals.length < 100) pendingYandexGoals.push({ goal, params })
   }
-  if (google) target.gtag?.('event', goal)
+  if (google) target.gtag?.('event', goal, params)
 }

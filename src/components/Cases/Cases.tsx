@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import { CASES } from './caseData'
 import { CaseRow } from './CaseRow'
 import { ArrowIcon } from '../shared/ArrowIcon'
@@ -35,6 +36,7 @@ export function Cases() {
   }, [])
 
   const openVideo = (o: Open) => {
+    trackAnalyticsGoal('case_video_play')
     window.clearTimeout(timer.current)
     setClosing(false)
     setOpen(o)
@@ -50,6 +52,7 @@ export function Cases() {
   }, [])
 
   const openReviews = () => {
+    trackAnalyticsGoal('cases_more_open')
     loadReviews()
     window.clearTimeout(reviewsTimer.current)
     setReviewsClosing(false)

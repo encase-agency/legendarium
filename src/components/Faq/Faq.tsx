@@ -1,4 +1,5 @@
 import { useState, type CSSProperties } from 'react'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import './Faq.css'
 import { asset } from '../../lib/asset'
 
@@ -57,13 +58,15 @@ const ITEMS: Item[] = [
 export function Faq() {
   const [open, setOpen] = useState<Set<number>>(() => new Set())
 
-  const toggle = (i: number) =>
+  const toggle = (i: number) => {
+    if (!open.has(i)) trackAnalyticsGoal('faq_open', { question: ITEMS[i].q.slice(0, 100) })
     setOpen((prev) => {
       const next = new Set(prev)
       if (next.has(i)) next.delete(i)
       else next.add(i)
       return next
     })
+  }
 
   return (
     <section className="faq" id="faq">

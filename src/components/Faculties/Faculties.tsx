@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
+import { trackAnalyticsGoal } from '../Consent/analytics'
 import { ArrowIcon } from '../shared/ArrowIcon'
 import { COURSES, type Course } from './courses'
 import './Faculties.css'
@@ -68,6 +69,7 @@ export function Faculties() {
   const toggle = () => {
     const next = document.getElementById('community')
     setExpanded(!expanded)
+    if (!expanded) trackAnalyticsGoal('mentors_list_expand')
     if (!expanded || !next) return
     const start = performance.now()
     const land = () => {
@@ -79,6 +81,7 @@ export function Faculties() {
   }
 
   const openModal = (i: number) => {
+    trackAnalyticsGoal('mentor_card_open', { card: COURSES[i].modal.title.join(' ').slice(0, 100) })
     window.clearTimeout(timer.current)
     setClosing(false)
     setOpen(i)
