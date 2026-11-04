@@ -16,7 +16,7 @@ const PUBLIC_DEFAULTS: SiteEnvironment = {
   VITE_BASIC_CONTACT_URL: 'https://t.me/m/DlFOK1NJYmRi',
   VITE_LICENSE_TEXT: 'Образовательная лицензия № Л035-01252-46/01391373. Выдана Министерством образования и науки Курской области. Бессрочная.',
   // Яндекс Метрика: номер счётчика публичный. Сам счётчик грузится только после согласия на аналитику.
-  VITE_YANDEX_ID: '114018335',
+  VITE_YANDEX_ID: '114074130',
   VITE_LICENSE_URL: 'https://islod.obrnadzor.gov.ru/rlic/details/106e3d18-b623-7243-d9af-9a571df66c73/',
 }
 
